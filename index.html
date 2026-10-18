@@ -72,9 +72,47 @@ function levelCost(p,i){return Math.ceil(10*Math.pow(p.level,1.65)*Math.pow(1.52
 function autoCost(p,i){return Math.ceil(18*Math.pow(1.68,i)*Math.pow(1.45,p.level-1));}
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100);}
 function harvest(i){const p=s.plots[i];if(!p||!p.unlocked)return;if(p.stock<1){toast('Cet arbre pousse encore.');return;}const amount=yieldKg(p,i)*p.stock;s.olives+=amount;const count=p.stock;p.stock=0;p.grow=growTime(p,i);render();save();toast('+'+fmt(amount)+' kg d’olives récoltées'+(count>1?' ('+count+' récoltes empilées)':''));}
-function renderPlots(){const root=document.getElementById('plots');root.innerHTML='';s.plots.forEach((p,i)=>{const card=document.createElement('button');card.type='button';card.className='plot'+(p.unlocked?'':' locked');card.dataset.harvest=String(i);card.style.setProperty('--olive',palette[i][0]);card.style.setProperty('--olive2',palette[i][1]);card.style.setProperty('--olive3',palette[i][2]);if(!p.unlocked){card.innerHTML='<div class="plot-top"><span class="plot-name">Parcelle '+(i+1)+'</span><span>🔒</span></div><div class="plot-scene"><div><div class="lock-art">🌿</div><div class="lock-cost">'+fmt(unlockCost(i))+' kg</div></div></div><div class="locked-copy">Débloquer le terroir</div>';card.removeAttribute('data-harvest');card.dataset.action='unlock';card.dataset.index=String(i);card.setAttribute('aria-label','Débloquer la parcelle '+(i+1)+' pour '+unlockCost(i)+' kg d’olives');}
-else{const ripe=p.stock>0;const gt=growTime(p,i);const pct=ripe?100:Math.max(0,Math.min(100,(1-(p.grow||gt)/gt)*100));let size=i>=9?'ancient':i>=5?'large':i>=2?'':'small';let status=ripe?(p.stock>=stackCap()&&p.auto?'PANIER PLEIN':('PRÊT · '+p.stock+' récolte'+(p.stock>1?'s':''))):('Pousse · '+fmt(p.grow||gt)+' s');card.innerHTML='<div class="plot-top"><span class="plot-name">Parcelle '+(i+1)+'</span><span class="level-tag">Niv. '+p.level+'</span></div><div class="plot-scene"><div class="tree '+size+'"><div class="canopy"></div><div class="trunk"></div></div></div><div class="plot-status '+(ripe?'ready':'')+'">'+status+'</div><div class="plot-bottom"><div><strong>'+fmt(yieldKg(p,i))+' kg</strong><div>par récolte</div><div class="progress"><span style="width:'+pct+'%"></span></div></div><div>'+ (p.auto?'📥 ×'+stackCap():'🌱 '+fmt(gt)+'s')+'</div></div><div class="plot-actions"><button type="button" data-action="level" data-index="'+i+'" '+(s.olives<levelCost(p,i)?'disabled':'')+'>⬆ Niv. '+fmt(levelCost(p,i))+' kg</button><button type="button" data-action="auto" data-index="'+i+'" '+(p.auto||s.olives<autoCost(p,i)?'disabled':'')+'>'+(p.auto?'✓ Auto actif':('🧺 '+fmt(autoCost(p,i))+' kg'))+'</button></div>';card.setAttribute('aria-label','Parcelle '+(i+1)+', '+names[i]+', niveau '+p.level+', '+(ripe?'prête à récolter':'en pousse'));}}
-root.appendChild(card);});}
+function renderPlots(){
+ const root=document.getElementById('plots');
+ root.innerHTML='';
+ s.plots.forEach((p,i)=>{
+  const card=document.createElement('div');
+  card.className='plot'+(p.unlocked?'':' locked');
+  card.style.setProperty('--olive',palette[i][0]);
+  card.style.setProperty('--olive2',palette[i][1]);
+  card.style.setProperty('--olive3',palette[i][2]);
+  card.tabIndex=0;
+  card.setAttribute('role','button');
+  if(!p.unlocked){
+   card.dataset.action='unlock';
+   card.dataset.index=String(i);
+   card.innerHTML='<div class="plot-top"><span class="plot-name">Parcelle '+(i+1)+'</span><span>🔒</span></div>'+
+    '<div class="plot-scene"><div><div class="lock-art">🌿</div><div class="lock-cost">'+fmt(unlockCost(i))+' kg</div></div></div>'+
+    '<div class="locked-copy">Débloquer le terroir</div>';
+   card.setAttribute('aria-label','Débloquer la parcelle '+(i+1)+' pour '+unlockCost(i)+' kg d’olives');
+  }else{
+   card.dataset.harvest=String(i);
+   const ripe=p.stock>0;
+   const gt=growTime(p,i);
+   const pct=ripe?100:Math.max(0,Math.min(100,(1-(p.grow||gt)/gt)*100));
+   const size=i>=9?'ancient':i>=5?'large':i>=2?'':'small';
+   const status=ripe?(p.stock>=stackCap()&&p.auto?'PANIER PLEIN':('PRÊT · '+p.stock+' récolte'+(p.stock>1?'s':''))):('Pousse · '+fmt(p.grow||gt)+' s');
+   card.innerHTML=
+    '<div class="plot-top"><span class="plot-name">Parcelle '+(i+1)+'</span><span class="level-tag">Niv. '+p.level+'</span></div>'+
+    '<div class="plot-scene"><div class="tree '+size+'"><div class="canopy"></div><div class="trunk"></div></div></div>'+
+    '<div class="plot-status '+(ripe?'ready':'')+'">'+status+'</div>'+
+    '<div class="plot-bottom"><div><strong>'+fmt(yieldKg(p,i))+' kg</strong><div>par récolte</div>'+
+    '<div class="progress"><span style="width:'+pct+'%"></span></div></div>'+
+    '<div>'+(p.auto?'📥 ×'+stackCap():'🌱 '+fmt(gt)+'s')+'</div></div>'+
+    '<div class="plot-actions">'+
+    '<button type="button" data-action="level" data-index="'+i+'" '+(s.olives<levelCost(p,i)?'disabled':'')+'>⬆ Niv. '+fmt(levelCost(p,i))+' kg</button>'+
+    '<button type="button" data-action="auto" data-index="'+i+'" '+((p.auto||s.olives<autoCost(p,i))?'disabled':'')+'>'+(p.auto?'✓ Auto actif':'🧺 '+fmt(autoCost(p,i))+' kg')+'</button>'+
+    '</div>';
+   card.setAttribute('aria-label','Parcelle '+(i+1)+', '+names[i]+', niveau '+p.level+', '+(ripe?'prête à récolter':'en pousse'));
+  }
+  root.appendChild(card);
+ });
+}
 function renderUpgrades(){const root=document.getElementById('upgrades');const specs=[{id:'yield',icon:'🌿',title:'Terroir généreux',desc:'Augmente le rendement de tous les oliviers de 20 % par niveau.',base:3,max:15},{id:'growth',icon:'☀️',title:'Soleil provençal',desc:'Accélère la pousse de toutes les parcelles.',base:2,max:12},{id:'stack',icon:'🧺',title:'Paniers plus grands',desc:'Ajoute 2 récoltes à la capacité de stockage des parcelles automatisées.',base:4,max:8}];root.innerHTML='';specs.forEach(u=>{const level=s.upgrades[u.id]||0;const cost=Math.ceil(u.base*Math.pow(1.8,level));const max=level>=u.max;const row=document.createElement('div');row.className='upgrade';row.innerHTML='<div class="upgrade-icon">'+u.icon+'</div><div class="upgrade-main"><div class="upgrade-title">'+u.title+' <span style="color:#809075;font-weight:700">Niv. '+level+'/'+u.max+'</span></div><div class="upgrade-desc">'+u.desc+'</div></div><button class="upgrade-price" data-action="upgrade" data-upgrade="'+u.id+'" '+((s.oil<cost||max)?'disabled':'')+'>'+(max?'MAX':('🏺 '+cost+' huile'))+'</button>';root.appendChild(row);});}
 function render(){document.getElementById('oliveCount').textContent=fmt(s.olives);document.getElementById('oilCount').textContent=fmt(s.oil);document.getElementById('bonusCount').textContent='×'+bonus().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});document.getElementById('plotCount').textContent=s.plots.filter(p=>p.unlocked).length;document.getElementById('yieldHint').textContent='Rendement : '+fmt(yieldKg(s.plots[0],0))+' kg / récolte';document.getElementById('pressButton').disabled=s.olives<10;renderPlots();renderUpgrades();}
 function resetOrchard(){s.plots=Array.from({length:12},freshPlot);s.plots[0].unlocked=true;s.plots[0].grow=growTime(s.plots[0],0);}
