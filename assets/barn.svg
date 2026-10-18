@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260">
+<defs><linearGradient id="redFront" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f05a4c"/><stop offset="1" stop-color="#ae2e2a"/></linearGradient><linearGradient id="redSide" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c63c35"/><stop offset="1" stop-color="#842c2b"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9a4a38"/><stop offset="1" stop-color="#5e332d"/></linearGradient><filter id="shadow" x="-15%" y="-15%" width="135%" height="145%"><feDropShadow dx="2" dy="7" stdDeviation="5" flood-color="#203b28" flood-opacity=".28"/></filter></defs>
+<ellipse cx="164" cy="234" rx="112" ry="17" fill="#31542c28"/><g filter="url(#shadow)">
+<path d="M64 102 L166 65 L267 108 L267 213 L166 244 L64 200Z" fill="url(#redSide)" stroke="#762b29" stroke-width="3"/><path d="M64 102 L166 65 L166 244 L64 200Z" fill="url(#redFront)" stroke="#812b2a" stroke-width="3"/>
+<path d="M43 110 L162 25 L289 98 L166 141Z" fill="url(#roof)" stroke="#60352e" stroke-width="4" stroke-linejoin="round"/><path d="M43 110 L162 25 L169 39 L56 120Z" fill="#c66b4b"/><path d="M162 25 L289 98 L269 108 L169 39Z" fill="#743b31"/>
+<g fill="none" stroke="#d88961" stroke-width="3" opacity=".9"><path d="M58 99 L180 137 M80 83 L203 130 M103 67 L225 122 M125 51 L248 113 M147 35 L271 104"/><path d="M61 119 L179 38 M86 128 L204 52 M112 137 L229 68 M137 143 L253 83"/></g>
+<!-- white crossbuck double barn doors -->
+<path d="M94 126 L143 143 L143 216 L94 196Z" fill="#a52e2b" stroke="#fff1cb" stroke-width="5"/><path d="M143 143 L160 137 L160 211 L143 216Z" fill="#862c29" stroke="#fff1cb" stroke-width="5"/><path d="M101 134 L136 202 M136 146 L101 189 M149 147 L154 203 M154 149 L149 206" stroke="#fff1ce" stroke-width="6" stroke-linecap="round"/>
+<path d="M64 102 L166 65 L267 108" fill="none" stroke="#fff0c8" stroke-width="5"/>
+<!-- upper loft doors -->
+<path d="M153 82 L178 73 L178 104 L153 113Z" fill="#852e2c" stroke="#f9e8c4" stroke-width="3"/><path d="M165 78 L165 109" stroke="#f7e7c1" stroke-width="2"/>
+<!-- side diamond window -->
+<path d="M209 135 L230 143 L230 165 L209 157Z" fill="#6fb6bb" stroke="#f5e5bd" stroke-width="4"/><path d="M219 139 L219 161 M209 146 L230 154" stroke="#f8edcb" stroke-width="2"/>
+<!-- hay bales -->
+<g stroke="#b37c35" stroke-width="2"><path d="M202 207 L221 201 L238 210 L219 217Z" fill="#f5cb62"/><path d="M202 207 L202 224 L219 232 L219 217Z" fill="#dba344"/><path d="M219 217 L238 210 L238 226 L219 232Z" fill="#e9b64b"/><path d="M227 188 L244 182 L259 190 L241 197Z" fill="#f6d36f"/><path d="M227 188 L227 202 L241 210 L241 197Z" fill="#dba344"/><path d="M241 197 L259 190 L259 204 L241 210Z" fill="#e9b64b"/></g>
+</g></svg>
