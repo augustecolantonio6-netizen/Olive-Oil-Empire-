@@ -92,7 +92,7 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
   <button class="icon-btn" title="Progression" aria-label="Progression" id="progressOpen">📈</button>
   <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">⚙️</button>
  </div>
- <div class="hint" id="hint">👆 Clique ou glisse sur les arbres mûrs pour récolter.</div>
+ <div class="hint" id="hint">👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.</div>
  <div class="bottom-chip" id="bottomChip">1 / 12 parcelles débloquées</div>
  <section class="panel" id="plotPanel" aria-live="polite">
   <button class="panel-x" id="plotClose" aria-label="Fermer">×</button>
@@ -347,7 +347,9 @@ function renderUI(){
  document.getElementById('bonusCount').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
  document.getElementById('bottomChip').textContent=unlockedCount()+' / 12 parcelles débloquées';
  document.getElementById('progressFill').style.width=Math.min(100,game.totalOil/25*100)+'%';
+ document.getElementById('bannerTitle').textContent=game.olives>=10?'MOULIN PRÊT !':(game.totalOil?'OLIVERAIE EN PROGRÈS !':'RÉCOLTE DES OLIVES !');
  document.getElementById('bannerSub').textContent=game.totalOil?'Cycle n° '+(game.totalOil+1)+' · Rendement permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
+ document.getElementById('hint').textContent=game.olives>=10?'🏺 Le moulin peut presser 1 kg d’huile : clique dessus à droite !':'👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.';
  updatePlotPanel();updateShop();
 }
 function pressMill(){
