@@ -164,6 +164,7 @@ function drawPlots(t){
   const turf=p.unlocked?(i===selected?'#c5e48b':'#b4d77a'):'#a8c780';
   poly([[x+2,y-34],[x+76,y+4],[x+2,y+43],[x-73,y+5]],'#62844825');
   poly(diamond,turf,p.unlocked?(i===selected?'#f6d55e':'#709b50'):'#7f9b66',i===selected?3:1.5);
+  targets.push({type:'plot',index:i,x:x-71,y:y-37,w:142,h:74});
   if(p.unlocked){
    // little grass clumps make each lot feel like a patch of land, not a card
    for(let k=0;k<4;k++){const gx=x+Math.sin(i*4+k*7)*42,gy=y+Math.cos(i*5+k*3)*19;ellipse(gx,gy,2,1.2,k%2?'#92bf62':'#cde38b');}
@@ -185,7 +186,6 @@ function drawPlots(t){
    ellipse(x,y-2,14,17,'#d8e2c3','#819969');text('🔒',x,y-1,18,'#5d7a49','900');
    roundBox(x-32,y+20,64,18,7,'#fff5d4','#c0b787');text(fmt(costs[i])+' kg',x,y+29,10,'#795e32','1000');
   }
-  targets.push({type:'plot',index:i,x:x-71,y:y-37,w:142,h:74});
  });
 }
 function drawFarmer(t){const x=246+Math.sin(t/900)*2,y=486;ellipse(x,y+16,17,6,'#66884a55');ellipse(x,y-8,9,11,'#f0bd91');ellipse(x,y-20,10,4,'#d99e38');poly([[x-10,y-19],[x,y-26],[x+11,y-19],[x+12,y-14],[x-12,y-14]],'#df9c31','#94652a',1);poly([[x-8,y+2],[x+7,y+1],[x+10,y+17],[x-8,y+17]],'#4c7891','#35576d',1);ctx.strokeStyle='#e7c29a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x-6,y+2);ctx.lineTo(x-13,y+10);ctx.moveTo(x+5,y+3);ctx.lineTo(x+13,y+7);ctx.stroke();ctx.strokeStyle='#6e5c43';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x-4,y+15);ctx.lineTo(x-5,y+23);ctx.moveTo(x+5,y+15);ctx.lineTo(x+9,y+22);ctx.stroke();ellipse(x+18,y+10,10,6,'#b87c37','#80552e');}
@@ -214,7 +214,7 @@ function renderUI(){
  document.getElementById('oliveCount').textContent=fmt(s.olives);document.getElementById('oilCount').textContent=fmt(s.oil);document.getElementById('totalOil').textContent=fmt(s.totalOil);document.getElementById('bonusCount').textContent='×'+bonus().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
  document.getElementById('plotLevel').textContent=s.plots[selected].level;document.getElementById('plotYield').textContent=fmt(plotYield(s.plots[selected],selected))+' kg';document.getElementById('plotTitle').textContent=names[selected];document.getElementById('plotEyebrow').textContent='TERROIR N° '+(selected+1);document.getElementById('plotDescription').textContent='Une variété méditerranéenne. La productivité augmente avec le niveau et chaque huile produite.';document.getElementById('levelCost').textContent=fmt(levelCost(s.plots[selected],selected))+' kg';document.getElementById('autoCost').textContent=s.plots[selected].auto?'ACTIF':fmt(autoCost(s.plots[selected],selected))+' kg';document.getElementById('levelBtn').disabled=s.olives<levelCost(s.plots[selected],selected);document.getElementById('autoBtn').disabled=s.plots[selected].auto||s.olives<autoCost(s.plots[selected],selected);document.getElementById('autoNote').textContent=s.plots[selected].auto?'Stockage actif : jusqu’à '+capacity()+' récoltes s’empilent sur ce terroir. Tu dois toujours les cueillir.':'Avant l’automatisation, il faut récolter chaque pousse. Après achat, les récoltes peuvent s’empiler. La cueillette reste manuelle.';
  document.getElementById('bottomChip').textContent=totalUnlocked()+' / 12 parcelles débloquées';document.getElementById('progressFill').style.width=Math.min(100,s.totalOil/25*100)+'%';document.getElementById('bannerSub').textContent=s.totalOil?'Cycle n° '+(s.totalOil+1)+' · Rendement permanent ×'+bonus().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
- renderShop();if(document.getElementById('plotPanel').classList.contains('open'))document.getElementById('plotPanel').classList.remove('open');
+ renderShop();
 }
 function renderShop(){document.getElementById('powerLevel').textContent='Niv. '+s.upgrades.power;document.getElementById('speedLevel').textContent='Niv. '+s.upgrades.speed;document.getElementById('stackLevel').textContent='Niv. '+s.upgrades.stack;document.getElementById('buyPower').textContent='🏺 '+Math.ceil(1*Math.pow(1.8,s.upgrades.power))+' huile';document.getElementById('buySpeed').textContent='🏺 '+Math.ceil(2*Math.pow(1.8,s.upgrades.speed))+' huiles';document.getElementById('buyStack').textContent='🏺 '+Math.ceil(3*Math.pow(1.8,s.upgrades.stack))+' huiles';document.getElementById('buyPower').disabled=s.oil<Math.ceil(Math.pow(1.8,s.upgrades.power));document.getElementById('buySpeed').disabled=s.oil<Math.ceil(2*Math.pow(1.8,s.upgrades.speed));document.getElementById('buyStack').disabled=s.oil<Math.ceil(3*Math.pow(1.8,s.upgrades.stack));}
 function buyUpgrade(id){const base={power:1,speed:2,stack:3}[id],lvl=s.upgrades[id],price=Math.ceil(base*Math.pow(1.8,lvl));if(s.oil<price){toast('Il te faut '+price+' huile pour cette amélioration.');return;}if(lvl>=15){toast('Cette amélioration est au niveau maximum.');return;}s.oil-=price;s.upgrades[id]++;renderUI();save();toast('Amélioration permanente achetée !');}
