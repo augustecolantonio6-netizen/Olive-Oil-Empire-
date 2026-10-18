@@ -83,8 +83,8 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
  <div class="brand"><span class="brand-olive">🫒</span><span>OLIVERAIE DE PROVENCE</span></div>
  <div class="resources">
   <div class="res-row"><div class="res-icon">🫒</div><div class="res-copy"><div class="res-label">Olives en réserve</div><div class="res-value"><span id="oliveCount">0</span> kg</div></div></div>
-  <div class="res-row"><div class="res-icon">🏺</div><div class="res-copy"><div class="res-label">Huile disponible</div><div class="res-value" id="oilCount">0</div></div></div>
-  <div class="res-row"><div class="res-icon">🌟</div><div class="res-copy"><div class="res-label">Huile produite</div><div class="res-value"><span id="totalOil">0</span> <span id="bonusCount" class="res-extra">×1,00</span></div><div class="meter"><span id="progressFill"></span></div></div></div>
+  <div class="res-row"><div class="res-icon">🏺</div><div class="res-copy"><div class="res-label">Huile disponible</div><div class="res-value"><span id="oilCount">0</span> <span class="res-extra">kg</span></div></div></div>
+  <div class="res-row"><div class="res-icon">🌟</div><div class="res-copy"><div class="res-label">Huile produite</div><div class="res-value"><span id="totalOil">0</span> kg <span id="bonusCount" class="res-extra">×1,00</span></div><div class="meter"><span id="progressFill"></span></div></div></div>
  </div>
  <div class="ribbon"><div class="ribbon-main" id="bannerTitle">RÉCOLTE DES OLIVES !</div><div class="ribbon-sub" id="bannerSub">De l'arbre à l'or vert</div></div>
  <div class="top-actions">
@@ -299,12 +299,12 @@ function resize(){
  ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
 }
 function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
-function hitAt(pt){for(let i=hitTargets.length-1;i>=0;i--){const h=hitTargets[i];if(h.type==='parcel'){const cx=h.x+h.w/2,cy=h.y+h.h/2;if(Math.abs(pt.x-cx)/69+Math.abs(pt.y-cy)/38>1)continue;}if(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h)return h;}return null;}
+function hitAt(pt){let best=null,bestScore=-Infinity;for(let i=0;i<hitTargets.length;i++){const h=hitTargets[i];if(h.type==='parcel'){const cx=h.x+h.w/2,cy=h.y+h.h/2;if(Math.abs(pt.x-cx)/69+Math.abs(pt.y-cy)/38>1)continue;}else if(!(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h))continue;if(h.type==='parcel'&&!(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h))continue;const cx=h.x+h.w/2,cy=h.y+h.h/2,dist=Math.hypot(pt.x-cx,pt.y-cy);const priority=h.type==='mill'?1000000:h.type==='tree'?10000:0;const score=priority+(h.y+h.h)*2-dist;if(score>bestScore){best=h;bestScore=score;}}return best;}
 function feedback(x,y,text,color){particles.push({x,y,text,color,at:performance.now()});}
 function harvest(i,x,y){
  const p=game.plots[i];if(!p||!p.unlocked)return;
  selected=i;
- if(p.stock<1){openPlotPanel(false);toast('Les olives poussent encore.');renderUI();return;}
+ if(p.stock<1){openPlotPanel(true);renderUI();toast('Les olives poussent encore.');return;}
  const amount=plotYield(p,i)*p.stock,n=p.stock;game.olives+=amount;p.stock=0;p.grow=growSeconds(p,i);
  feedback(x||plotPos(i).x,y||plotPos(i).y-24,'+'+fmt(amount)+' kg','#fff4b7');
  openPlotPanel(false);renderUI();save();toast('+'+fmt(amount)+' kg d’olives récoltées'+(n>1?' · '+n+' paniers':''));
