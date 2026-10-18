@@ -1,13 +1,14 @@
 # Olive Oil Empire 🫒
 
-Un jeu idle d'oliveraie en 2D cartoon/isométrique, dans l'esprit des jeux de ferme mobiles : décor vivant, ruban de progression, petits arbres animés, bâtiments cliquables et panneaux de ressources.
+Jeu idle d'oliveraie pour navigateur, en français, avec un décor cartoon isométrique inspiré des jeux de ferme mobiles.
 
-## Jouer en local
+## Lancer le jeu en local
 
-1. Ouvre le fichier **index.html** du dépôt (bouton **Download raw** si besoin).
-2. Double-clique sur le fichier téléchargé.
+**Télécharge le dépôt complet** avec **Code → Download ZIP**, puis décompresse-le. Conserve le dossier `assets/` à côté de `index.html` : il contient les sprites dessinés du jeu.
 
-Pour une sauvegarde plus fiable, ouvre un terminal dans le dossier du fichier et lance :
+Pour ouvrir simplement le jeu, double-clique sur `index.html`.
+
+Pour une sauvegarde plus fiable, ouvre un terminal dans le dossier et lance :
 
 ```bash
 python -m http.server 8000
@@ -15,28 +16,26 @@ python -m http.server 8000
 
 Puis ouvre http://localhost:8000.
 
-## Publier sur GitHub Pages
+## GitHub Pages
 
-Le dépôt contient déjà le workflow `.github/workflows/pages.yml`.
+Le workflow `.github/workflows/pages.yml` publie les fichiers statiques après chaque commit sur `main`.
 
-1. Va dans [Settings → Pages](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/settings/pages).
+1. Ouvre [Settings → Pages](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/settings/pages).
 2. Dans **Build and deployment → Source**, sélectionne **GitHub Actions**.
-3. Va dans [Actions](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/actions) et vérifie que le workflow **Deploy Olive Oil Empire to GitHub Pages** termine avec une coche verte.
-4. Le lien public apparaît ensuite dans **Settings → Pages**. Il devrait être : https://augustecolantonio6-netizen.github.io/Olive-Oil-Empire-/
+3. Vérifie le résultat dans [Actions](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/actions). Une coche verte confirme que la publication est terminée.
+4. Le site devrait ensuite être disponible ici : https://augustecolantonio6-netizen.github.io/Olive-Oil-Empire-/
 
-Si tu vois une 404, vérifie d'abord que la source est bien réglée sur **GitHub Actions**, puis ouvre le dernier workflow dans Actions pour consulter l'erreur éventuelle.
+## Contenu du projet
 
-## Jouer
+Le dossier `assets/` contient des sprites SVG indépendants : quatre états d'olivier, parcelles ouvertes et verrouillées, maison provençale, grange rouge, moulin traditionnel et caisse de récolte. Ils sont intégrés au canvas et restent séparés de l'interface HTML, de la progression et de la sauvegarde.
 
-- **Récolter :** clique sur un arbre mûr ou glisse la souris en passant sur plusieurs arbres.
-- **Choisir une parcelle :** clique sur la terre autour des arbres pour ouvrir son panneau.
-- **Débloquer une parcelle :** clique sur son cadenas et paie avec des olives.
-- **Améliorer un terroir :** dans le panneau de parcelle, paie en olives pour augmenter son niveau et son rendement.
-- **Empiler les récoltes :** paie l'automatisation de stockage. Les arbres continuent à pousser et les récoltes s'empilent, mais tu dois encore venir les cueillir.
-- **Produire de l'huile :** clique sur le moulin quand tu as au moins 10 kg d'olives. Tu obtiens 1 kg d'huile et le terrain revient à une parcelle.
-- **Prestige :** chaque huile produite ajoute un bonus de rendement permanent.
-- **Boutique :** dépense l'huile pour des améliorations permanentes de rendement, de pousse et de capacité des paniers.
+## Commandes de jeu
 
-## Sauvegarde
+- **Récolter :** clique sur un olivier mûr ou glisse sur plusieurs arbres.
+- **Parcelle :** clique sur une parcelle pour l'acheter si elle est verrouillée, ou pour afficher ses améliorations.
+- **Niveau :** dépense des olives pour augmenter le rendement du terroir.
+- **Automatisation :** les olives peuvent pousser et s'empiler en plusieurs récoltes ; la cueillette reste toujours manuelle.
+- **Moulin :** clique dessus avec au moins 10 kg d'olives pour produire 1 kg d'huile. La progression des parcelles repart à une seule parcelle, avec un bonus permanent de productivité.
+- **Boutique :** dépense l'huile pour des bonus permanents de rendement, vitesse de pousse et capacité de stockage.
 
-La partie est sauvegardée automatiquement dans le navigateur et n'avance pas hors ligne. Elle n'est pas synchronisée entre appareils. Le menu ⚙ permet d'exporter ou d'importer un fichier JSON et de recommencer une partie.
+La sauvegarde est locale au navigateur, sans production hors ligne. Le menu ⚙ permet d'exporter ou d'importer un fichier JSON et de recommencer.
