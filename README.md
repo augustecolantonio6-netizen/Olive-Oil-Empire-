@@ -29,6 +29,27 @@ Le workflow `.github/workflows/pages.yml` publie les fichiers statiques après c
 
 Le dossier `assets/` contient des sprites SVG indépendants : quatre états d'olivier, parcelles ouvertes et verrouillées, maison provençale, grange rouge, moulin traditionnel et caisse de récolte. Ils sont intégrés au canvas et restent séparés de l'interface HTML, de la progression et de la sauvegarde.
 
+## Progression économique des 12 parcelles
+
+Le rendement d'une récolte est calculé ainsi : **kg de base par arbre × nombre d'arbres × niveau de la parcelle × multiplicateur permanent**. Les coûts montent progressivement pour laisser un vrai choix entre acheter du terrain, améliorer un terroir et économiser pour le moulin.
+
+| Parcelle | Style de terroir | Arbres | kg/arbre au niveau 1 | kg/récolte au niveau 1 | Coût de déblocage |
+|---:|---|---:|---:|---:|---:|
+| 1 | Départ — jeune | 1 | 1 | 1 | Déjà ouverte |
+| 2 | Départ — jeune | 1 | 1,35 | 1,35 | 6 kg |
+| 3 | Départ — jeune | 2 | 1,8 | 3,6 | 24 kg |
+| 4 | Départ — jeune | 2 | 2,4 | 4,8 | 72 kg |
+| 5 | Productif | 2 | 3,2 | 6,4 | 155 kg |
+| 6 | Productif | 3 | 4,3 | 12,9 | 280 kg |
+| 7 | Productif | 3 | 5,8 | 17,4 | 550 kg |
+| 8 | Productif | 3 | 7,8 | 23,4 | 960 kg |
+| 9 | Premium — ancien | 4 | 10,5 | 42 | 1 600 kg |
+| 10 | Premium — ancien | 4 | 14 | 56 | 2 800 kg |
+| 11 | Premium — ancien | 4 | 18,5 | 74 | 4 500 kg |
+| 12 | Premium — ancien | 5 | 24 | 120 | 7 000 kg |
+
+Les prix d'amélioration du niveau et du stockage sont calculés selon la productivité de la parcelle et le bonus permanent déjà obtenu ; le coût exact est affiché dans le panneau avant l'achat.
+
 ## Commandes de jeu
 
 - **Récolter :** clique sur un olivier mûr ou glisse sur plusieurs parcelles. Chaque parcelle est récoltée au maximum une fois par geste.
