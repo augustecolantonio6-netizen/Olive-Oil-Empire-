@@ -2,240 +2,446 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#315b35">
 <title>Olive Oil Empire — Oliveraie Idle</title>
 <style>
-:root{--green:#315b35;--green2:#467b42;--cream:#fff6d9;--gold:#f7c84b;--red:#e9404c;--blue:#48a5dc;--ink:#344833}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Trebuchet MS,system-ui,-apple-system,sans-serif;color:var(--ink);background:#e7edda}body{padding:12px;display:flex;justify-content:center;align-items:flex-start}.stage{width:min(1500px,calc(100vw - 24px));aspect-ratio:2/1;position:relative;overflow:hidden;border:5px solid #fff9e9;border-radius:18px;background:#bddb8c;box-shadow:0 14px 45px #30472b30;isolation:isolate}#world{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}.top-left-mark{position:absolute;left:14px;top:13px;display:flex;gap:8px;align-items:center;background:linear-gradient(#497e47,#2c5936);border:2px solid #a8d28a;border-radius:10px;padding:7px 11px;color:#fff8dc;font-weight:1000;font-size:clamp(9px,1.05vw,14px);letter-spacing:1px;text-shadow:0 2px #25492c;box-shadow:0 3px #24492b;pointer-events:none}.crest{font-size:21px}.resource-panel{position:absolute;top:67px;left:12px;width:clamp(142px,17%,208px);padding:8px;background:#fff9e8ed;border:2px solid #b8c798;border-radius:11px;box-shadow:0 4px 0 #78996b,0 7px 15px #3d5a2b20}.resource-row{display:flex;align-items:center;gap:8px;min-height:32px;padding:4px 5px;border-bottom:1px solid #e6e3c9}.resource-row:last-child{border-bottom:0}.resource-icon{width:25px;height:25px;display:grid;place-items:center;border-radius:7px;background:#e9edcf;font-size:16px;flex-shrink:0}.resource-copy{min-width:0;flex:1}.resource-label{font-size:clamp(8px,.77vw,10px);font-weight:900;letter-spacing:.6px;color:#82906f;text-transform:uppercase}.resource-value{font-size:clamp(12px,1.25vw,17px);font-weight:1000;color:#385c36;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px white}.banner{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:clamp(220px,31%,390px);text-align:center;filter:drop-shadow(0 3px 0 #a72e38);pointer-events:none}.banner-main{background:linear-gradient(#ff6370,#e73646);border:2px solid #ff9ba0;border-radius:3px;color:white;font-weight:1000;font-size:clamp(13px,1.6vw,21px);letter-spacing:.6px;text-shadow:0 2px #ab2830;padding:7px 14px;position:relative}.banner-main:before,.banner-main:after{content:"";position:absolute;top:12px;border-style:solid;border-width:16px 17px 16px 0;border-color:transparent #ba2b38 transparent transparent;left:-16px;z-index:-1}.banner-main:after{left:auto;right:-16px;transform:scaleX(-1)}.banner-sub{margin-top:3px;color:#fffde4;font-size:clamp(9px,1vw,12px);font-weight:900;text-shadow:0 2px #45613e;letter-spacing:.3px}.top-actions{position:absolute;top:12px;right:12px;display:flex;gap:7px}.icon-btn{border:2px solid #d8f4ff;border-radius:10px;background:linear-gradient(#57bdf0,#2688c4);color:#fff;font-size:clamp(17px,2vw,26px);width:clamp(32px,4vw,48px);height:clamp(32px,4vw,48px);display:grid;place-items:center;text-shadow:0 2px #166193;box-shadow:0 3px #21628a;transition:transform .12s,filter .12s}.icon-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.hint{position:absolute;left:13px;bottom:14px;max-width:38%;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:10px;padding:8px 11px;box-shadow:0 3px #a2b38c;color:#526a43;font-size:clamp(9px,.95vw,12px);font-weight:900;pointer-events:none}.bottom-chip{position:absolute;bottom:13px;left:50%;transform:translateX(-50%);padding:7px 13px;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:100px;font-size:clamp(9px,.9vw,12px);font-weight:900;color:#557345;white-space:nowrap;pointer-events:none}.progress-wrap{height:5px;background:#d5ddba;border-radius:10px;margin-top:4px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#8bbb4d,#e2bd4c);transition:width .2s}.side-panel{position:absolute;right:13px;bottom:13px;width:clamp(210px,25%,305px);background:#fff9e9f2;border:2px solid #b8c798;border-radius:13px;box-shadow:0 4px #78996b,0 8px 16px #30472b22;padding:13px;display:none;z-index:4;max-height:60%;overflow:auto}.side-panel.open{display:block}.panel-x{float:right;border:0;background:#e8e9d5;border-radius:7px;color:#536a45;font-weight:1000;width:25px;height:25px}.panel-eyebrow{font-size:9px;color:#82936c;font-weight:1000;letter-spacing:1.5px;text-transform:uppercase}.side-panel h2{font-family:Georgia,serif;font-size:21px;margin:4px 0;color:#365c36}.panel-copy{font-size:11px;line-height:1.45;color:#718068;margin:5px 0 10px}.action-btn{border:2px solid #75a75b;border-bottom-width:4px;background:linear-gradient(#a8d96d,#7bb94a);color:#294f2e;border-radius:9px;padding:9px 10px;font-weight:1000;font-size:11px;width:100%;margin-top:7px;text-align:left;display:flex;justify-content:space-between;gap:6px}.action-btn:disabled{filter:grayscale(.5);opacity:.48}.action-btn.alt{border-color:#8b9cb0;background:linear-gradient(#dce9f3,#c2d7df);color:#3b5d65}.action-btn.gold{border-color:#cda33a;background:linear-gradient(#ffe28a,#f0bf48);color:#765119}.pill{display:inline-block;border-radius:100px;background:#e9efd5;color:#557143;padding:5px 8px;font-size:10px;font-weight:1000}.modal-backdrop{position:absolute;inset:0;background:#263a2880;z-index:8;display:none;align-items:center;justify-content:center;padding:15px}.modal-backdrop.open{display:flex}.modal{width:min(450px,95%);max-height:88%;overflow:auto;background:#fff9e9;border:3px solid #b8c798;border-radius:15px;box-shadow:0 8px #53734a;padding:18px}.modal h2{font-family:Georgia,serif;font-size:25px;margin:0 0 5px;color:#365c36}.modal p{font-size:12px;line-height:1.55;color:#738269}.shop-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #e2e4cf}.shop-icon{font-size:25px;width:38px;height:38px;display:grid;place-items:center;background:#edf0d9;border-radius:10px}.shop-desc{flex:1;min-width:0}.shop-desc strong{display:block;font-size:12px;color:#365c36}.shop-desc small{display:block;font-size:10px;color:#7f8a73;margin-top:3px;line-height:1.4}.shop-buy{border:2px solid #cda33a;background:#f7d168;color:#755219;border-radius:8px;padding:7px;font-size:10px;font-weight:1000;white-space:nowrap}.shop-buy:disabled{opacity:.45}.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}.close-btn{border:0;border-radius:8px;background:#e9ecd9;color:#516844;padding:9px 13px;font-weight:900}.toast{position:absolute;left:50%;top:22%;transform:translate(-50%,-8px);background:#fff9e7;border:2px solid #d8c16d;border-radius:100px;padding:10px 17px;color:#4b6539;font-size:13px;font-weight:1000;box-shadow:0 4px #9c984f;opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;z-index:12;text-align:center;max-width:85%}.toast.show{opacity:1;transform:translate(-50%,0)}.mini-stats{display:flex;gap:7px;margin:9px 0}.mini-stat{background:#eff0dc;border-radius:8px;padding:7px;flex:1}.mini-stat small{display:block;font-size:9px;font-weight:900;color:#83906e}.mini-stat strong{font-size:14px;color:#3f673a}.modal-link{font-size:11px;color:#72846a}
-@media(max-width:680px){body{padding:4px;align-items:flex-start}.stage{width:calc(100vw - 8px);border-width:3px;border-radius:10px;aspect-ratio:1.3/1;min-height:0}.resource-panel{top:53px;left:5px;width:123px;padding:4px;border-radius:7px}.resource-row{gap:5px;min-height:25px;padding:2px}.resource-icon{width:20px;height:20px;font-size:13px}.resource-label{font-size:7px}.resource-value{font-size:11px}.top-left-mark{top:5px;left:5px;font-size:8px;padding:4px 5px}.crest{font-size:14px}.banner{top:5px;width:42%;}.banner-main{font-size:10px;padding:5px 7px}.banner-sub{font-size:7px}.top-actions{top:5px;right:5px;gap:4px}.icon-btn{width:27px;height:27px;font-size:15px;border-radius:7px}.hint{left:5px;bottom:5px;max-width:42%;padding:5px 7px;font-size:8px}.bottom-chip{bottom:5px;padding:4px 7px;font-size:8px;max-width:45%;overflow:hidden;text-overflow:ellipsis}.side-panel{right:5px;bottom:5px;width:min(240px,65%);padding:9px;max-height:68%}.side-panel h2{font-size:18px}.panel-copy{font-size:10px}.action-btn{padding:7px;font-size:10px}.modal{padding:13px}.modal h2{font-size:22px}}
+:root{--leaf:#37643a;--leaf-dark:#264a2e;--leaf-light:#86b957;--cream:#fff8e1;--gold:#f5c74d;--red:#e93e4b;--blue:#3b9ed6;--ink:#334b31;--muted:#7b896e;--line:#d8ddbd}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#e8eddb;font-family:"Trebuchet MS",system-ui,-apple-system,sans-serif;color:var(--ink)}
+body{padding:12px;display:flex;justify-content:center;align-items:flex-start}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
+.stage{position:relative;width:min(1500px,calc(100vw - 24px));aspect-ratio:2.08/1;overflow:hidden;background:#b8d88b;border:5px solid #fff8e8;border-radius:18px;box-shadow:0 14px 45px #30472b30;isolation:isolate}
+#world{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.brand{position:absolute;left:14px;top:13px;z-index:2;display:flex;gap:8px;align-items:center;padding:7px 11px;background:linear-gradient(#4c8348,#2b5836);border:2px solid #b0d88b;border-radius:10px;color:#fff8dc;font-weight:1000;font-size:clamp(9px,1vw,14px);letter-spacing:1px;text-shadow:0 2px #25492c;box-shadow:0 3px #24492b;pointer-events:none}
+.brand-olive{font-size:22px;filter:drop-shadow(0 1px #213b27)}
+.resources{position:absolute;left:12px;top:65px;z-index:2;width:clamp(145px,17%,205px);padding:7px;background:#fff9e8ee;border:2px solid #b8c798;border-radius:11px;box-shadow:0 4px #78996b,0 7px 15px #3d5a2b20}
+.res-row{display:flex;align-items:center;gap:8px;min-height:34px;padding:4px 5px;border-bottom:1px solid #e6e3c9}
+.res-row:last-child{border-bottom:0}
+.res-icon{width:26px;height:26px;display:grid;place-items:center;flex-shrink:0;border-radius:7px;background:#edf0d7;font-size:17px}
+.res-copy{min-width:0;flex:1}
+.res-label{font-size:clamp(8px,.75vw,10px);font-weight:1000;letter-spacing:.65px;color:#82916e;text-transform:uppercase}
+.res-value{font-size:clamp(13px,1.25vw,17px);font-weight:1000;color:#385c36;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px white}
+.res-extra{font-size:10px;color:#8a956e;font-weight:900}
+.meter{height:5px;background:#e0e5c9;border-radius:10px;margin-top:4px;overflow:hidden}
+.meter>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8ab94a,#f0c34a);transition:width .2s}
+.ribbon{position:absolute;z-index:2;left:50%;top:10px;transform:translateX(-50%);width:clamp(225px,31%,390px);text-align:center;filter:drop-shadow(0 3px 0 #a72e38);pointer-events:none}
+.ribbon-main{position:relative;background:linear-gradient(#ff626f,#e73646);border:2px solid #ff9aa0;border-radius:3px;color:white;font-weight:1000;font-size:clamp(14px,1.55vw,21px);letter-spacing:.6px;text-shadow:0 2px #a52830;padding:7px 15px}
+.ribbon-main:before,.ribbon-main:after{content:"";position:absolute;top:10px;border-style:solid;border-width:16px 18px 16px 0;border-color:transparent #b72c38 transparent transparent;left:-16px;z-index:-1}
+.ribbon-main:after{left:auto;right:-16px;transform:scaleX(-1)}
+.ribbon-sub{margin-top:3px;color:#fffde4;font-size:clamp(9px,1vw,12px);font-weight:1000;text-shadow:0 2px #45613e;letter-spacing:.3px}
+.top-actions{position:absolute;right:12px;top:12px;z-index:3;display:flex;gap:7px}
+.icon-btn{width:clamp(33px,3.9vw,48px);height:clamp(33px,3.9vw,48px);display:grid;place-items:center;border:2px solid #d8f4ff;border-radius:10px;background:linear-gradient(#58c0f3,#2688c4);color:#fff;font-size:clamp(17px,2vw,25px);text-shadow:0 2px #166193;box-shadow:0 3px #21628a;transition:transform .12s,filter .12s}
+.icon-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.hint{position:absolute;z-index:2;left:13px;bottom:13px;max-width:38%;padding:8px 11px;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:10px;box-shadow:0 3px #a2b38c;color:#526a43;font-size:clamp(9px,.95vw,12px);font-weight:1000;pointer-events:none}
+.bottom-chip{position:absolute;z-index:2;bottom:13px;left:50%;transform:translateX(-50%);max-width:38%;padding:7px 13px;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:100px;font-size:clamp(9px,.9vw,12px);font-weight:1000;color:#557345;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.panel{position:absolute;z-index:5;right:13px;bottom:13px;width:clamp(220px,25%,310px);max-height:66%;overflow:auto;padding:13px;background:#fff9e9f5;border:2px solid #b8c798;border-radius:13px;box-shadow:0 4px #78996b,0 8px 16px #30472b22;display:none}
+.panel.open{display:block}
+.panel-x{float:right;width:25px;height:25px;border:0;border-radius:7px;background:#e8e9d5;color:#536a45;font-weight:1000}
+.eyebrow{font-size:9px;color:#82936c;font-weight:1000;letter-spacing:1.5px;text-transform:uppercase}
+.panel h2,.modal h2{font-family:Georgia,serif;font-size:22px;margin:4px 0;color:#365c36}
+.copy{font-size:11px;line-height:1.5;color:#718068;margin:6px 0 10px}
+.mini-stats{display:flex;gap:7px;margin:9px 0}
+.mini-stat{background:#eff0dc;border-radius:8px;padding:7px;flex:1;min-width:0}
+.mini-stat small{display:block;font-size:9px;font-weight:1000;color:#83906e}
+.mini-stat strong{font-size:14px;color:#3f673a}
+.action-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:7px;padding:9px 10px;border:2px solid #75a75b;border-bottom-width:4px;border-radius:9px;background:linear-gradient(#a8d96d,#7bb94a);color:#294f2e;font-weight:1000;font-size:11px;text-align:left}
+.action-btn.alt{border-color:#8b9cb0;background:linear-gradient(#dce9f3,#c2d7df);color:#3b5d65}
+.action-btn:disabled{filter:grayscale(.5);opacity:.45;cursor:not-allowed}
+.modal-backdrop{position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;padding:15px;background:#263a2880}
+.modal-backdrop.open{display:flex}
+.modal{width:min(455px,96%);max-height:88%;overflow:auto;padding:18px;background:#fff9e9;border:3px solid #b8c798;border-radius:15px;box-shadow:0 8px #53734a}
+.modal h2{font-size:25px;margin:4px 0 6px}
+.modal p{font-size:12px;line-height:1.55;color:#738269}
+.shop-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #e2e4cf}
+.shop-icon{width:38px;height:38px;display:grid;place-items:center;flex-shrink:0;background:#edf0d9;border-radius:10px;font-size:24px}
+.shop-desc{flex:1;min-width:0}
+.shop-desc strong{display:block;font-size:12px;color:#365c36}
+.shop-desc small{display:block;font-size:10px;color:#7f8a73;margin-top:3px;line-height:1.4}
+.shop-buy{border:2px solid #cda33a;border-radius:8px;padding:7px;background:#f7d168;color:#755219;font-size:10px;font-weight:1000;white-space:nowrap}
+.shop-buy:disabled{opacity:.45;cursor:not-allowed}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.close-btn{border:0;border-radius:8px;padding:9px 13px;background:#e9ecd9;color:#516844;font-weight:1000}
+.toast{position:absolute;z-index:12;left:50%;top:23%;transform:translate(-50%,-8px);padding:10px 17px;border:2px solid #d8c16d;border-radius:100px;background:#fff9e7;color:#4b6539;font-size:13px;font-weight:1000;box-shadow:0 4px #9c984f;opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;text-align:center;max-width:86%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:700px){
+ body{padding:4px}.stage{width:calc(100vw - 8px);aspect-ratio:1.45/1;min-height:280px;border-width:3px;border-radius:10px}
+ .brand{top:5px;left:5px;font-size:7px;padding:4px 5px}.brand-olive{font-size:15px}
+ .resources{top:49px;left:5px;width:112px;padding:4px;border-radius:7px}.res-row{gap:5px;min-height:26px;padding:2px}.res-icon{width:19px;height:19px;font-size:12px}.res-label{font-size:7px}.res-value{font-size:11px}.res-extra{font-size:8px}
+ .ribbon{top:5px;width:39%}.ribbon-main{font-size:10px;padding:5px 7px}.ribbon-sub{font-size:7px}
+ .top-actions{top:5px;right:5px;gap:4px}.icon-btn{width:27px;height:27px;font-size:15px;border-radius:7px}
+ .hint{left:5px;bottom:5px;max-width:44%;padding:5px 7px;font-size:8px}.bottom-chip{bottom:5px;padding:4px 7px;font-size:8px}
+ .panel{right:5px;bottom:5px;width:min(245px,67%);padding:9px;max-height:72%}.panel h2{font-size:18px}.copy{font-size:10px}.action-btn{padding:7px;font-size:10px}
+ .modal{padding:13px}.modal h2{font-size:22px}
+}
 </style>
 </head>
 <body>
 <main class="stage" id="stage">
-<canvas id="world" aria-label="Oliveraie en vue isométrique. Cliquez sur les arbres pour récolter, sur une parcelle pour l'améliorer, et sur le moulin pour presser l'huile."></canvas>
-<div class="top-left-mark"><span class="crest">🫒</span><span>OLIVERAIE DE PROVENCE</span></div>
-<div class="resource-panel">
- <div class="resource-row"><div class="resource-icon">🫒</div><div class="resource-copy"><div class="resource-label">Olives en réserve</div><div class="resource-value"><span id="oliveCount">1</span> kg</div></div></div>
- <div class="resource-row"><div class="resource-icon">🏺</div><div class="resource-copy"><div class="resource-label">Huile disponible</div><div class="resource-value"><span id="oilCount">0</span></div></div></div>
- <div class="resource-row"><div class="resource-icon">🌟</div><div class="resource-copy"><div class="resource-label">Huiles produites</div><div class="resource-value"><span id="totalOil">0</span> <small id="bonusCount">×1,00</small></div><div class="progress-wrap"><div id="progressFill" class="progress-fill"></div></div></div></div>
-</div>
-<div class="banner"><div class="banner-main" id="bannerTitle">RÉCOLTE DES OLIVES !</div><div class="banner-sub" id="bannerSub">De l'arbre à l'or vert</div></div>
-<div class="top-actions">
- <button class="icon-btn" title="Boutique des améliorations" aria-label="Ouvrir la boutique" id="shopOpen">🏺</button>
- <button class="icon-btn" title="Progression" aria-label="Voir la progression" id="progressOpen">📈</button>
- <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">⚙️</button>
-</div>
-<div class="hint" id="hint">👆 Clique ou glisse sur les arbres pour récolter !</div>
-<div class="bottom-chip" id="bottomChip">1 / 12 parcelles débloquées</div>
-<section class="side-panel" id="plotPanel" aria-live="polite">
- <button class="panel-x" id="plotClose" aria-label="Fermer">×</button>
- <div class="panel-eyebrow" id="plotEyebrow">TERROIR N° 1</div>
- <h2 id="plotTitle">Olive sauvage</h2>
- <p class="panel-copy" id="plotDescription">Un premier arbre pour lancer l'Oliveraie.</p>
- <div class="mini-stats"><div class="mini-stat"><small>RENDEMENT</small><strong id="plotYield">1 kg</strong></div><div class="mini-stat"><small>NIVEAU</small><strong id="plotLevel">1</strong></div></div>
- <button class="action-btn" id="levelBtn"><span>⬆ Améliorer le terroir</span><span id="levelCost">5 kg</span></button>
- <button class="action-btn alt" id="autoBtn"><span>🧺 Empiler les récoltes</span><span id="autoCost">18 kg</span></button>
- <p class="panel-copy" id="autoNote">L'automatisation stocke les récoltes successives. La cueillette reste manuelle.</p>
-</section>
-<div class="modal-backdrop" id="shopModal">
- <div class="modal"><div class="panel-eyebrow">INVESTIR L'HUILE</div><h2>La boutique du moulin</h2><p>L'huile est une monnaie rare. Ces bonus sont permanents, même lorsque tu recommences une parcelle.</p>
- <div class="shop-item"><div class="shop-icon">🌳</div><div class="shop-desc"><strong>Terroirs plus fertiles <span id="powerLevel"></span></strong><small>+25 % de rendement sur toutes les parcelles par niveau.</small></div><button class="shop-buy" id="buyPower">🏺 1 huile</button></div>
- <div class="shop-item"><div class="shop-icon">☀️</div><div class="shop-desc"><strong>Soleil provençal <span id="speedLevel"></span></strong><small>La pousse des olives devient plus rapide.</small></div><button class="shop-buy" id="buySpeed">🏺 2 huiles</button></div>
- <div class="shop-item"><div class="shop-icon">🧺</div><div class="shop-desc"><strong>Paniers plus grands <span id="stackLevel"></span></strong><small>Deux récoltes supplémentaires peuvent s'empiler par niveau.</small></div><button class="shop-buy" id="buyStack">🏺 3 huiles</button></div>
- <div class="modal-footer"><button class="close-btn" data-close="shopModal">Retour à la ferme</button></div></div>
-</div>
-<div class="modal-backdrop" id="progressModal">
- <div class="modal"><div class="panel-eyebrow">TON EMPIRE OLÉICOLE</div><h2>La route de l'huile</h2><p>Chaque fois que tu presses 10 kg d'olives, tu gagnes une huile, puis l'oliveraie recommence avec un rendement permanent supérieur.</p>
- <div class="mini-stats"><div class="mini-stat"><small>HUILES PRODUITES</small><strong id="progressTotal">0</strong></div><div class="mini-stat"><small>BONUS PERMANENT</small><strong id="progressBonus">×1,00</strong></div></div>
- <p class="panel-copy">Débloque des terroirs plus productifs, améliore leurs niveaux en dépensant des olives, puis investis l'huile dans la boutique.</p>
- <div class="modal-footer"><button class="close-btn" data-close="progressModal">Continuer</button></div></div>
-</div>
-<div class="modal-backdrop" id="settingsModal">
- <div class="modal"><div class="panel-eyebrow">OPTIONS DE LA FERME</div><h2>Sauvegarde locale</h2><p>La partie est sauvegardée automatiquement dans ce navigateur. Pas de progression hors ligne et pas de compte nécessaire.</p>
- <button class="action-btn alt" id="exportSave"><span>📦 Exporter une sauvegarde</span><span>JSON</span></button>
- <button class="action-btn alt" id="importSave"><span>📂 Importer une sauvegarde</span><span>JSON</span></button><input type="file" id="importFile" accept="application/json" hidden>
- <button class="action-btn" id="resetAsk"><span>↻ Recommencer la partie</span><span>!</span></button>
- <div class="modal-footer"><button class="close-btn" data-close="settingsModal">Retour</button></div></div>
-</div>
-<div class="modal-backdrop" id="resetModal">
- <div class="modal"><div class="panel-eyebrow">ATTENTION</div><h2>Effacer la partie ?</h2><p>La sauvegarde actuelle sera remplacée par une nouvelle partie. Exporte-la d'abord si tu veux la garder.</p><div class="modal-footer"><button class="close-btn" data-close="resetModal">Annuler</button><button class="shop-buy" id="resetConfirm">Effacer la partie</button></div></div>
-</div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+ <canvas id="world" aria-label="Oliveraie isométrique. Clique sur les arbres mûrs pour récolter, sur une parcelle pour l'améliorer et sur le moulin pour produire de l'huile."></canvas>
+ <div class="brand"><span class="brand-olive">🫒</span><span>OLIVERAIE DE PROVENCE</span></div>
+ <div class="resources">
+  <div class="res-row"><div class="res-icon">🫒</div><div class="res-copy"><div class="res-label">Olives en réserve</div><div class="res-value"><span id="oliveCount">0</span> kg</div></div></div>
+  <div class="res-row"><div class="res-icon">🏺</div><div class="res-copy"><div class="res-label">Huile disponible</div><div class="res-value" id="oilCount">0</div></div></div>
+  <div class="res-row"><div class="res-icon">🌟</div><div class="res-copy"><div class="res-label">Huile produite</div><div class="res-value"><span id="totalOil">0</span> <span id="bonusCount" class="res-extra">×1,00</span></div><div class="meter"><span id="progressFill"></span></div></div></div>
+ </div>
+ <div class="ribbon"><div class="ribbon-main" id="bannerTitle">RÉCOLTE DES OLIVES !</div><div class="ribbon-sub" id="bannerSub">De l'arbre à l'or vert</div></div>
+ <div class="top-actions">
+  <button class="icon-btn" title="Boutique des améliorations" aria-label="Boutique" id="shopOpen">🏺</button>
+  <button class="icon-btn" title="Progression" aria-label="Progression" id="progressOpen">📈</button>
+  <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">⚙️</button>
+ </div>
+ <div class="hint" id="hint">👆 Clique ou glisse sur les arbres mûrs pour récolter.</div>
+ <div class="bottom-chip" id="bottomChip">1 / 12 parcelles débloquées</div>
+ <section class="panel" id="plotPanel" aria-live="polite">
+  <button class="panel-x" id="plotClose" aria-label="Fermer">×</button>
+  <div class="eyebrow" id="plotEyebrow">TERROIR N° 1</div><h2 id="plotTitle">Olive sauvage</h2>
+  <p class="copy" id="plotDescription">Un premier olivier pour lancer la récolte.</p>
+  <div class="mini-stats"><div class="mini-stat"><small>RENDEMENT</small><strong id="plotYield">1 kg</strong></div><div class="mini-stat"><small>NIVEAU</small><strong id="plotLevel">1</strong></div></div>
+  <button class="action-btn" id="levelBtn"><span>⬆ Améliorer le terroir</span><span id="levelCost">5 kg</span></button>
+  <button class="action-btn alt" id="autoBtn"><span>🧺 Empiler les récoltes</span><span id="autoCost">18 kg</span></button>
+  <p class="copy" id="autoNote">L'automatisation empile les récoltes mûres. La cueillette reste manuelle.</p>
+ </section>
+ <div class="modal-backdrop" id="shopModal"><div class="modal">
+  <div class="eyebrow">INVESTIR L'HUILE</div><h2>La boutique du moulin</h2><p>L'huile est une monnaie de progression. Ces améliorations restent acquises après chaque nouveau cycle.</p>
+  <div class="shop-item"><div class="shop-icon">🌳</div><div class="shop-desc"><strong>Terroirs fertiles <span id="powerLevel"></span></strong><small>+25 % de rendement sur toutes les parcelles par niveau.</small></div><button class="shop-buy" id="buyPower">🏺 1 huile</button></div>
+  <div class="shop-item"><div class="shop-icon">☀️</div><div class="shop-desc"><strong>Soleil provençal <span id="speedLevel"></span></strong><small>Accélère la pousse de tous les oliviers.</small></div><button class="shop-buy" id="buySpeed">🏺 2 huiles</button></div>
+  <div class="shop-item"><div class="shop-icon">🧺</div><div class="shop-desc"><strong>Paniers plus grands <span id="stackLevel"></span></strong><small>Deux récoltes supplémentaires peuvent s'empiler par niveau.</small></div><button class="shop-buy" id="buyStack">🏺 3 huiles</button></div>
+  <div class="modal-footer"><button class="close-btn" data-close="shopModal">Retour à la ferme</button></div>
+ </div></div>
+ <div class="modal-backdrop" id="progressModal"><div class="modal">
+  <div class="eyebrow">TON EMPIRE OLÉICOLE</div><h2>La route de l'huile</h2><p>Chaque pression transforme 10 kg d'olives en une huile, puis relance l'oliveraie avec une productivité permanente supérieure.</p>
+  <div class="mini-stats"><div class="mini-stat"><small>HUILES PRODUITES</small><strong id="progressTotal">0</strong></div><div class="mini-stat"><small>BONUS PERMANENT</small><strong id="progressBonus">×1,00</strong></div></div>
+  <p class="copy">Débloque de nouveaux terroirs, améliore leurs niveaux en dépensant des olives et investis l'huile dans la boutique.</p>
+  <div class="modal-footer"><button class="close-btn" data-close="progressModal">Continuer</button></div>
+ </div></div>
+ <div class="modal-backdrop" id="settingsModal"><div class="modal">
+  <div class="eyebrow">OPTIONS DE LA FERME</div><h2>Sauvegarde locale</h2><p>La partie est enregistrée dans ce navigateur. Pas de production hors ligne et pas de compte nécessaire.</p>
+  <button class="action-btn alt" id="exportSave"><span>📦 Exporter une sauvegarde</span><span>JSON</span></button>
+  <button class="action-btn alt" id="importSave"><span>📂 Importer une sauvegarde</span><span>JSON</span></button><input type="file" id="importFile" accept="application/json" hidden>
+  <button class="action-btn" id="resetAsk"><span>↻ Recommencer la partie</span><span>!</span></button>
+  <div class="modal-footer"><button class="close-btn" data-close="settingsModal">Retour</button></div>
+ </div></div>
+ <div class="modal-backdrop" id="resetModal"><div class="modal">
+  <div class="eyebrow">ATTENTION</div><h2>Effacer la partie ?</h2><p>Cette action remplace la partie sauvegardée. Exporte-la d'abord si tu veux la garder.</p>
+  <div class="modal-footer"><button class="close-btn" data-close="resetModal">Annuler</button><button class="shop-buy" id="resetConfirm">Effacer la partie</button></div>
+ </div></div>
+ <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </main>
 <script>
 (function(){
 'use strict';
-const W=1280,H=640,KEY='olive-oil-empire-save-v2';
+const W=1280,H=610,KEY='olive-oil-empire-save-v3',OLD_KEY='olive-oil-empire-save-v2';
 const canvas=document.getElementById('world'),ctx=canvas.getContext('2d');
 const names=['Olive sauvage','Aglandau','Picholine','Cailletier','Lucques','Bouteillan','Grossane','Salonenque','Tanche','Cornicabra','Arbequina','Olivière'];
 const yields=[1,2,3,4,6,8,11,15,20,26,34,44];
 const costs=[0,12,35,80,155,280,460,700,1020,1450,2050,2850];
-const leafColors=[['#8ebc58','#4d813d','#b4d572'],['#82aa54','#497640','#bed47a'],['#759b4c','#396c3c','#a9ca68'],['#9ab75c','#557842','#cadc7c'],['#7eaa56','#356a45','#a8cc73'],['#689548','#315e3c','#94bb5d'],['#a7b65a','#627d3c','#d6d17b'],['#689e56','#2f6a48','#9ecb78'],['#879f4d','#4d6a37','#b5c96c'],['#719d48','#395f34','#a8c868'],['#95b760','#4e7b43','#c3d98b'],['#779e53','#365d3b','#b0c779']];
-function freshPlot(i){return{unlocked:i===0,level:1,auto:false,stock:i===0?1:0,grow:0};}
-function freshState(){return{olives:0,oil:0,totalOil:0,plots:Array.from({length:12},(_,i)=>freshPlot(i)),upgrades:{power:0,speed:0,stack:0}};}
-let s=freshState(),selected=0,targets=[],pointerDown=false,seenPlots=new Set(),toastTimer=0,lastTime=0,uiClock=0;
+const colors=[['#92bb60','#4f803e','#b8d476'],['#86ae59','#4c793f','#c4d980'],['#7ca550','#3d713e','#afcc70'],['#9ab95d','#557d42','#cfdf83'],['#83ad59','#376d46','#aed079'],['#6e9d4e','#315f3d','#9fc56a'],['#a6b95e','#607b3e','#d6d27d'],['#6f9f59','#316946','#a3ce7b'],['#899f4d','#506b38','#b7cb6c'],['#759e48','#3c6236','#abc967'],['#97b965','#4f7c43','#c5d98d'],['#7aa054','#365e3c','#b3ca7d']];
+function makePlot(i){return{unlocked:i===0,level:1,auto:false,stock:i===0?1:0,grow:i===0?0:7};}
+function fresh(){return{olives:0,oil:0,totalOil:0,plots:Array.from({length:12},(_,i)=>makePlot(i)),upgrades:{power:0,speed:0,stack:0}};}
+let game=fresh(),selected=0,hitTargets=[],pointerHeld=false,swipedPlots=new Set(),toastTimer=0,lastFrame=0,lastSave=0,lastUI=0,particles=[];
 function fmt(n){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:1});}
-function totalUnlocked(){return s.plots.filter(p=>p.unlocked).length;}
-function bonus(){return(1+s.totalOil*.2)*(1+s.upgrades.power*.25);}
-function capacity(){return 3+s.upgrades.stack*2;}
-function growTime(p,i){return Math.max(1.2,7/(1+s.totalOil*.12+s.upgrades.speed*.38+(p.level-1)*.1+i*.055));}
-function plotYield(p,i){return yields[i]*p.level*bonus();}
-function levelCost(p,i){return Math.ceil(5*Math.pow(p.level,1.55)*Math.pow(1.23,i));}
+function unlockedCount(){return game.plots.filter(p=>p.unlocked).length;}
+function multiplier(){return(1+game.totalOil*.2)*(1+game.upgrades.power*.25);}
+function stackLimit(){return 3+game.upgrades.stack*2;}
+function growSeconds(p,i){return Math.max(1.25,7/(1+game.totalOil*.12+game.upgrades.speed*.38+(p.level-1)*.1+i*.055));}
+function plotYield(p,i){return yields[i]*p.level*multiplier();}
+function upgradeCost(p,i){return Math.ceil(5*Math.pow(p.level,1.55)*Math.pow(1.23,i));}
 function autoCost(p,i){return Math.ceil(18*Math.pow(1.34,i)*(1+(p.level-1)*.27));}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100);}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(s));}catch(e){}}
-function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return;const d=JSON.parse(raw);if(!d||!Array.isArray(d.plots))return;s={...freshState(),...d,plots:Array.from({length:12},(_,i)=>({...freshPlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,...d.upgrades}};s.plots[0].unlocked=true;s.olives=Math.max(0,Number(s.olives)||0);s.oil=Math.max(0,Number(s.oil)||0);s.totalOil=Math.max(0,Number(s.totalOil)||0);}catch(e){s=freshState();}}
-function poly(points,fill,stroke,line=1){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.lineWidth=line;ctx.strokeStyle=stroke;ctx.stroke();}}
-function ellipse(x,y,rx,ry,fill,stroke){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}}
-function text(str,x,y,size,color,weight='700',align='center'){ctx.fillStyle=color;ctx.font=weight+' '+size+'px Trebuchet MS, sans-serif';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(str,x,y);}
-function roundBox(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}}
-function pathStone(x,y,r,rot){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ellipse(0,0,r*1.15,r*.7,'#c7c5a9','#a9aa91');ellipse(-r*.15,-r*.1,r*.65,r*.29,'#dedbc4');ctx.restore();}
+function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(game));}catch(e){}}
+function load(){try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(!raw)return;const d=JSON.parse(raw);if(!d||!Array.isArray(d.plots))return;game={...fresh(),...d,plots:Array.from({length:12},(_,i)=>({...makePlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,...d.upgrades}};game.plots[0].unlocked=true;game.olives=Math.max(0,Number(game.olives)||0);game.oil=Math.max(0,Number(game.oil)||0);game.totalOil=Math.max(0,Number(game.totalOil)||0);save();}catch(e){game=fresh();}}
+function poly(points,fill,stroke,lineWidth){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
+function ellipse(x,y,rx,ry,fill,stroke,lineWidth){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
+function line(points,color,width){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();}
+function label(str,x,y,size,color,weight,align){ctx.fillStyle=color;ctx.font=(weight||'800')+' '+size+'px Trebuchet MS, sans-serif';ctx.textAlign=align||'center';ctx.textBaseline='middle';ctx.fillText(str,x,y);}
+function box(x,y,w,h,r,fill,stroke,lineWidth){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
+function drawDistantTree(x,y,r,t){ellipse(x,y+6,r*1.3,r*.44,'#68894a40');const shades=['#759b50','#679147','#89aa57','#9ab85f'];for(let k=0;k<6;k++){const a=k*Math.PI/3;ellipse(x+Math.cos(a)*r*.42,y+Math.sin(a)*r*.24,r*.48,r*.36,shades[k%4]);}ellipse(x-r*.16,y-r*.16,r*.46,r*.34,'#b1cb73');line([[x,y+r*.1],[x+Math.sin(t/900+x)*2,y+r*.55]],'#8a6a42',Math.max(2,r*.12));}
 function drawBackground(t){
- const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#d9eab3');g.addColorStop(.48,'#c7df95');g.addColorStop(1,'#a9ce7d');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- for(let i=0;i<250;i++){const x=(i*179+47)%W,y=(i*97+23)%H;ctx.globalAlpha=.08+(i%4)*.02;ellipse(x,y,2+(i%3),1.5,i%2?'#436d38':'#f4f4c1');}ctx.globalAlpha=1;
- // Warm sunlight and distant grove
- for(let i=0;i<9;i++){const x=70+i*140,y=68+(i%3)*20;drawShrub(x,y,16+(i%3)*4,0.72);}
- // irregular grass and little flowers
- for(let i=0;i<90;i++){const x=(i*83+31)%W,y=(i*131+71)%H;ctx.strokeStyle=i%3?'#769f55':'#e9edb9';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3,y-5-(i%4));ctx.stroke();}
- // pale stone path winding between the farmhouse and mill
- ctx.save();ctx.globalAlpha=.72;for(let i=0;i<19;i++){const p=i/18;const x=270+p*700,y=190+p*235+Math.sin(p*5)*18;pathStone(x,y,7+(i%3),Math.sin(i)*.25);pathStone(x+13,y+11,5+(i%2),-.15);}ctx.restore();
- drawFence(52,380,205,555);drawFence(250,555,505,575);
+ const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#dcebb7');g.addColorStop(.44,'#c6e095');g.addColorStop(1,'#a8ce78');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ poly([[0,105],[120,68],[245,91],[365,56],[510,91],[655,65],[820,93],[985,55],[1130,76],[1280,44],[1280,240],[0,240]],'#b4d18a');
+ poly([[0,161],[165,117],[335,142],[470,99],[660,142],[833,113],[1010,137],[1154,102],[1280,121],[1280,285],[0,285]],'#c7df99');
+ for(let i=0;i<22;i++){const x=24+i*59,y=105+(i%4)*20;drawDistantTree(x,y,13+(i%3)*2,t);}
+ // grass flecks and little wild flowers
+ for(let i=0;i<210;i++){const x=(i*173+29)%W,y=(i*97+17)%H;ctx.globalAlpha=.13+(i%4)*.025;ellipse(x,y,1.5+(i%3)*.3,1,'#547d3e');if(i%13===0)ellipse(x+2,y-2,1.3,1.3,'#f5edbd');}ctx.globalAlpha=1;
+ // the pale winding stone lane to the olive press
+ line([[190,162],[320,192],[415,231],[545,270],[650,333],[795,385],[914,430],[1045,465]],'#b99d6d',43);
+ line([[190,157],[320,187],[415,226],[545,265],[650,328],[795,380],[914,425],[1045,460]],'#eee0b9',34);
+ line([[190,151],[320,181],[415,220],[545,259],[650,322],[795,374],[914,419],[1045,454]],'#f7ebcc',1.5);
+ for(let i=0;i<26;i++){const p=i/25,x=220+p*790,y=169+p*294+Math.sin(p*5)*10;ellipse(x,y,4+(i%3),2.4,'#c9b587');ellipse(x+8,y+8,3,2,'#e5d4ab');}
+ // distant wooden fence along orchard's lower edge
+ drawFence(80,493,360,567);drawFence(335,558,583,591);
+ // spare olive groves and ground plants
+ for(let i=0;i<14;i++){const x=30+i*94,y=565+(i%3)*8;drawBush(x,y,7+(i%4)*1.8,.68);}
 }
-function drawShrub(x,y,r,scale=1){ellipse(x+3,y+5,r*1.15*scale,r*.5*scale,'#86ad5f44');const cs=['#6b9b50','#7cab58','#9abf68'];for(let i=0;i<5;i++){const a=i/5*Math.PI*2;ellipse(x+Math.cos(a)*r*.45*scale,y+Math.sin(a)*r*.25*scale,r*.5*scale,r*.41*scale,cs[i%3]);}ellipse(x-r*.14*scale,y-r*.12*scale,r*.42*scale,r*.3*scale,'#b1cd78');}
-function drawFence(x1,y1,x2,y2){ctx.strokeStyle='#936d43';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();for(let i=0;i<=8;i++){const p=i/8,x=x1+(x2-x1)*p,y=y1+(y2-y1)*p;ctx.strokeStyle='#a17b4c';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,y-13);ctx.lineTo(x,y+8);ctx.stroke();ctx.strokeStyle='#d9bd85';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-2,y-9);ctx.lineTo(x+2,y-9);ctx.stroke();}}
-function drawHouse(x,y,scale=1){
- ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ellipse(3,70,95,22,'#567d4540');
- poly([[-86,8],[-7,47],[87,5],[0,-32]],'#e8d8ad','#bba77f',2);
- poly([[-70,-23],[0,8],[0,57],[-70,25]],'#f2e5bf','#b7a27b',2);poly([[0,8],[72,-23],[72,24],[0,57]],'#dbc699','#ae956b',2);
- poly([[-86,-26],[-9,-64],[82,-30],[5,7]],'#a94e35','#7e3c30',3);poly([[-86,-26],[-9,-64],[-8,-49],[-68,-18]],'#c76743');poly([[-9,-64],[82,-30],[60,-18],[-8,-49]],'#95412f');
- for(let i=0;i<5;i++){poly([[-72+i*14,-24-i*6],[-12+i*14,-53-i*5],[-8+i*14,-48-i*5],[-66+i*14,-18-i*6]],i%2?'#d77b4c':'#b8583b');}
- poly([[-45,10],[-23,21],[-23,53],[-45,42]],'#936a45','#775436',2);ellipse(-34,32,2,3,'#e9cd78');
- poly([[-65,-7],[-44,1],[-44,18],[-65,9]],'#69a6b7','#f5e9c9',3);poly([[22,-2],[43,-11],[43,7],[22,16]],'#69a6b7','#f5e9c9',3);
- poly([[-65,-9],[-44,-1],[-44,2],[-65,-6]],'#f4f2d9');poly([[22,-4],[43,-13],[43,-10],[22,-1]],'#f4f2d9');
- // chimney
- poly([[36,-48],[49,-42],[49,-25],[36,-31]],'#b77f5e','#805740',2);poly([[33,-51],[42,-56],[53,-51],[43,-46]],'#e3c8a2');
- ctx.restore();targets.push({type:'decoration',x:x-90,y:y-72,w:180,h:145});
-}
-function drawBarn(x,y,scale=1){
- ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ellipse(0,61,90,19,'#58784c35');
- poly([[-75,-6],[0,26],[77,-8],[0,-42]],'#a0b875','#64864b',2);poly([[-63,-11],[0,15],[0,62],[-63,35]],'#d84c43','#a83230',2);poly([[0,15],[64,-11],[64,36],[0,62]],'#c83d38','#a9322e',2);
- poly([[-82,-13],[0,-65],[85,-14],[0,21]],'#7a392e','#642f2a',3);poly([[-82,-13],[0,-65],[0,-51],[-70,-6]],'#a84d39');poly([[0,-65],[85,-14],[68,-5],[0,-51]],'#914032');
- for(let i=0;i<5;i++){const xx=-59+i*24;ctx.strokeStyle='#e8d1ad';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(xx,-23+i%2*5);ctx.lineTo(xx,39-i%2*2);ctx.stroke();}
- poly([[-28,30],[0,42],[0,63],[-28,51]],'#763b2e','#f1d4a9',2);poly([[0,42],[28,30],[28,51],[0,63]],'#863c30','#f1d4a9',2);
- poly([[-28,30],[0,42],[28,30],[0,17]],'#f8e3b7','#c6a778',2);poly([[-27,30],[0,42],[0,49],[-27,37]],'#f7dfaa');poly([[0,42],[27,30],[27,37],[0,49]],'#f7dfaa');
- // round barn window
- ellipse(0,-28,10,8,'#f6e0ac','#974338');ellipse(0,-28,5,4,'#78b4b3');
+function drawBush(x,y,r,scale){ellipse(x,y+r*.35,r*1.25,r*.43,'#60894b35');ellipse(x-r*.35,y,r*.6,r*.52,'#79a84e');ellipse(x+r*.25,y-r*.1,r*.63,r*.55,'#92b95d');ellipse(x,y-r*.3,r*.48,r*.4,'#b0ca70');}
+function drawFence(x1,y1,x2,y2){line([[x1,y1],[x2,y2]],'#805d3b',4);for(let i=0;i<=8;i++){const p=i/8,x=x1+(x2-x1)*p,y=y1+(y2-y1)*p;line([[x,y-13],[x,y+7]],'#9a7449',5);line([[x-2,y-8],[x+2,y-8]],'#d8bd83',1.6);}}
+function drawHouse(x,y,s){
+ ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(2,66,100,20,'#4d733b33');
+ poly([[-86,8],[-8,46],[86,7],[0,-28]],'#ead9b4','#bba77e',2);poly([[-70,-20],[0,7],[0,57],[-70,28]],'#f4e7c6','#b8a17b',2);poly([[0,7],[72,-19],[72,30],[0,57]],'#d9c69b','#ab9368',2);
+ poly([[-88,-24],[-10,-67],[82,-29],[4,10]],'#a84934','#78382e',3);poly([[-88,-24],[-10,-67],[-9,-52],[-70,-16]],'#c46643');poly([[-10,-67],[82,-29],[61,-17],[-9,-52]],'#93402f');
+ for(let i=0;i<5;i++)poly([[-71+i*14,-23-i*6],[-13+i*14,-54-i*5],[-8+i*14,-50-i*5],[-66+i*14,-18-i*6]],i%2?'#d67b4e':'#b9563a');
+ poly([[-46,10],[-23,21],[-23,51],[-46,40]],'#916843','#725033',2);ellipse(-28,32,2,2.5,'#f2cf76');
+ poly([[-64,-8],[-44,0],[-44,18],[-64,10]],'#75b2c0','#fff2d0',3);poly([[22,-1],[44,-10],[44,8],[22,17]],'#75b2c0','#fff2d0',3);
+ line([[-54,0],[-54,11]],'#e9e0b6',1.4);line([[33,-5],[33,13]],'#e9e0b6',1.4);
+ poly([[35,-50],[48,-43],[48,-25],[35,-32]],'#b77d5c','#875940',1.5);poly([[32,-53],[42,-58],[52,-53],[42,-47]],'#e4c9a0');
+ // sunlit window ledges and stacked wood
+ poly([[-68,21],[-42,31],[-42,35],[-68,25]],'#d6be8d');poly([[15,39],[45,28],[45,33],[15,44]],'#b49a6e');
  ctx.restore();
 }
-function drawMill(x,y,scale=1){
- ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ellipse(0,69,88,19,'#486b3938');
- poly([[-70,6],[0,35],[76,3],[0,-26]],'#d6c19a','#a99772',2);poly([[-56,-17],[0,5],[0,63],[-56,39]],'#ebdbb6','#b7a178',2);poly([[0,5],[57,-17],[57,39],[0,63]],'#d4bd93','#a58f68',2);
- // terracotta roof
- poly([[-72,-20],[0,-57],[73,-20],[0,13]],'#b95839','#88402f',3);poly([[-72,-20],[0,-57],[0,-45],[-58,-15]],'#d6774a');poly([[0,-57],[73,-20],[56,-12],[0,-45]],'#9d4833');
- for(let i=0;i<4;i++){poly([[-58+i*15,-20-i*7],[-4+i*15,-47-i*6],[0+i*15,-43-i*6],[-53+i*15,-15-i*7]],i%2?'#d87749':'#bd5b3b');}
- // olive press wheel and beams
- poly([[-38,18],[-26,23],[-26,54],[-38,49]],'#8b633a','#6e4b2b',2);poly([[-32,19],[-9,9],[-9,18],[-32,29]],'#9c7443','#6e4b2b',2);
- ellipse(-18,27,14,14,'#bd8a4f','#805a34');ellipse(-18,27,5,5,'#6c4d30');
- poly([[22,20],[37,14],[37,47],[22,53]],'#9b7448','#674a30',2);ellipse(30,20,8,4,'#6c8e52');ellipse(30,19,5,3,'#8fbd58');
- // door
- poly([[-13,32],[5,24],[5,57],[-13,64]],'#765239','#f0d7a2',2);ellipse(1,43,1.5,2,'#f0d385');
- // sign
- roundBox(-40,-70,82,19,4,'#fff4ce','#a58c5d');text('MOULIN',1,-60,11,'#587044','1000');
- ctx.restore();targets.push({type:'mill',x:x-91,y:y-72,w:182,h:150});
+function drawBarn(x,y,s){
+ ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(0,62,91,21,'#52764435');
+ poly([[-78,-6],[0,24],[78,-7],[0,-43]],'#aac57d','#6c8d4f',2);poly([[-65,-10],[0,16],[0,63],[-65,36]],'#d94b42','#a43230',2);poly([[0,16],[66,-10],[66,36],[0,63]],'#c83b37','#a32e2b',2);
+ poly([[-85,-14],[0,-68],[86,-14],[0,23]],'#813d30','#642f29',3);poly([[-85,-14],[0,-68],[0,-51],[-70,-6]],'#b9533c');poly([[0,-68],[86,-14],[68,-5],[0,-51]],'#984333');
+ for(let i=0;i<6;i++)poly([[-68+i*23,-25+(i%2)*5],[-6+i*15,-56+i*2],[-2+i*15,-51+i*2],[-63+i*15,-18+(i%2)*5]],i%2?'#dc7548':'#bb5b3d');
+ poly([[-29,30],[0,42],[0,63],[-29,52]],'#76382c','#efce9d',2);poly([[0,42],[29,30],[29,52],[0,63]],'#863b2d','#efce9d',2);
+ poly([[-29,30],[0,42],[29,30],[0,17]],'#f8e3b4','#c6a778',2);line([[0,19],[0,40]],'#bba071',1.5);
+ ellipse(0,-29,10,8,'#f6e0ac','#974338',2);ellipse(0,-29,5,4,'#78b4b3');
+ ctx.restore();
 }
-function center(i){const c=i%4,r=Math.floor(i/4);return{x:630+(c-r)*118,y:176+(c+r)*57};}
-function drawTree(x,y,i,ripe,scale,t){
- const col=leafColors[i];const phase=Math.sin(t/520+x*.031+y*.023)*1.4;
- ellipse(x+2,y+10,25*scale,9*scale,'#537c4140');
- // fork and trunk
- ctx.strokeStyle='#805b36';ctx.lineWidth=6*scale;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y+10*scale);ctx.lineTo(x+phase,y-9*scale);ctx.moveTo(x,y+1);ctx.lineTo(x-9*scale,y-8*scale);ctx.moveTo(x,y-1);ctx.lineTo(x+10*scale,y-12*scale);ctx.stroke();
- // overlapping cartoon leaf clusters
- ellipse(x+phase,y-20*scale,19*scale,16*scale,col[1],'#446b38');ellipse(x-12*scale,y-14*scale,13*scale,12*scale,col[0]);ellipse(x+13*scale,y-14*scale,13*scale,12*scale,col[0]);ellipse(x-3*scale,y-29*scale,15*scale,13*scale,col[2]);ellipse(x+6*scale,y-23*scale,12*scale,10*scale,col[0]);
- ellipse(x-7*scale,y-24*scale,4*scale,3*scale,'#ffffff24');ellipse(x+12*scale,y-15*scale,3*scale,2*scale,'#ffffff25');
- if(ripe){const fruits=[[-12,-17],[1,-12],[12,-22],[-2,-28],[8,-8],[17,-14],[-15,-25]];fruits.forEach((f,j)=>{if(j<(3+Math.min(4,Math.floor(scale*2)))){ellipse(x+f[0]*scale+phase,y+f[1]*scale,3.3*scale,4.2*scale,j%2?'#86a832':'#d5a934','#647936');ellipse(x+f[0]*scale+phase-1,y+f[1]*scale-1,1*scale,1.5*scale,'#e7da7a');}});}
+function drawMill(x,y,s){
+ ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(0,70,87,20,'#486b3938');
+ // stones & olive press block
+ poly([[-75,7],[0,37],[77,5],[0,-27]],'#cfc29b','#a39270',2);poly([[-61,-16],[0,6],[0,66],[-61,40]],'#e5d7b5','#b4a17b',2);poly([[0,6],[62,-16],[62,40],[0,66]],'#c9b48d','#9d8965',2);
+ for(let i=0;i<4;i++){line([[-52,-5+i*12],[-7,12+i*12]],'#c3ae87',1.2);line([[8,20+i*10],[52,4+i*10]],'#b29d78',1.2);}
+ poly([[-77,-20],[0,-59],[77,-20],[0,13]],'#b65a3b','#83402f',3);poly([[-77,-20],[0,-59],[0,-45],[-62,-15]],'#d3774a');poly([[0,-59],[77,-20],[57,-12],[0,-45]],'#9e4933');
+ for(let i=0;i<5;i++)poly([[-62+i*17,-20-i*7],[-7+i*15,-48-i*5],[-3+i*15,-44-i*5],[-57+i*17,-15-i*7]],i%2?'#d67c4f':'#b8573a');
+ // traditional olive press wheel
+ ellipse(-26,27,16,16,'#b98246','#765330',2);ellipse(-26,27,5,5,'#65482e','#d7ab69',2);line([[-26,12],[-26,42]],'#7e5a34',2);line([[-41,27],[-11,27]],'#7e5a34',2);
+ poly([[-40,17],[-31,21],[-31,54],[-40,50]],'#90683d','#68492c',1.8);poly([[-32,17],[-6,7],[-6,15],[-32,27]],'#a17a48','#68492c',1.8);
+ poly([[17,18],[34,10],[34,47],[17,55]],'#9d7546','#6a4b2f',2);ellipse(26,18,8,4,'#6a914b');ellipse(26,17,5,2.5,'#a7c76c');
+ poly([[-10,33],[9,25],[9,59],[-10,67]],'#725035','#f0d6a5',2);ellipse(3,45,1.5,2,'#f3d178');
+ box(-41,-73,82,19,4,'#fff4ce','#a58c5d',1.5);label('MOULIN',0,-63,11,'#587044','1000');
+ ctx.restore();hitTargets.push({type:'mill',x:x-94,y:y-77,w:188,h:158});
 }
-function drawPlots(t){
- targets=[];
- const order=Array.from({length:12},(_,i)=>i).sort((a,b)=>{const ca=center(a),cb=center(b);return ca.y-cb.y;});
- order.forEach(i=>{
-  const p=s.plots[i],c=center(i),x=c.x,y=c.y;
-  const diamond=[[x,y-39],[x+72,y],[x,y+39],[x-72,y]];
-  const turf=p.unlocked?(i===selected?'#c5e48b':'#b4d77a'):'#a8c780';
-  poly([[x+2,y-34],[x+76,y+4],[x+2,y+43],[x-73,y+5]],'#62844825');
-  poly(diamond,turf,p.unlocked?(i===selected?'#f6d55e':'#709b50'):'#7f9b66',i===selected?3:1.5);
-  targets.push({type:'plot',index:i,x:x-71,y:y-37,w:142,h:74});
-  if(p.unlocked){
-   // little grass clumps make each lot feel like a patch of land, not a card
-   for(let k=0;k<4;k++){const gx=x+Math.sin(i*4+k*7)*42,gy=y+Math.cos(i*5+k*3)*19;ellipse(gx,gy,2,1.2,k%2?'#92bf62':'#cde38b');}
-   const n=i===0?1:(i<3?2:(i<7?3:4));
-   const layouts={1:[[0,-3]],2:[[-20,-2],[18,3]],3:[[-24,-6],[10,-12],[1,14]],4:[[-28,-5],[3,-16],[25,1],[-2,16]]};
-   layouts[n].forEach((o,j)=>{
-    const tx=x+o[0],ty=y-8+o[1],scale=(i>=9?1.12: i>=5?1.02:.9)+(p.level-1)*.035+(j%2)*.025;
-    drawTree(tx,ty,i,p.stock>0,scale,t);
-    targets.push({type:'tree',index:i,x:tx-25*scale,y:ty-43*scale,w:50*scale,h:59*scale});
-   });
-   // Small crop marker and count bubble
-   roundBox(x-25,y+22,50,17,7,p.stock>0?'#f7d35c':'#fff3cfcc',p.stock>0?'#c59830':'#d0d4a7');
-   text(p.stock>0?'×'+p.stock:(p.auto?'AUTO':'POUSSE'),x,y+30,9,p.stock>0?'#77521a':'#63804d','1000');
-   roundBox(x-31,y-46,62,17,6,'#fff7dbee','#c4d7a2');
-   text(fmt(plotYield(p,i))+' kg',x,y-37,10,'#395c35','1000');
-   if(i===selected){ctx.beginPath();ctx.ellipse(x,y+2,18,5,0,0,Math.PI*2);ctx.strokeStyle='#ffe46d';ctx.lineWidth=2;ctx.stroke();}
+function plotPos(i){const c=i%4,r=Math.floor(i/4);return{x:625+(c-r)*100,y:164+(c+r)*48};}
+function treeLayout(n){if(n===1)return[[0,-3]];if(n===2)return[[-17,-4],[17,4]];if(n===3)return[[-25,-5],[1,-13],[22,6]];if(n===4)return[[-27,-7],[-7,-16],[20,-3],[4,13]];return[[-30,-6],[-12,-17],[12,-14],[28,1],[0,12]];}
+function drawTree(x,y,i,p,ripe,t,miniScale){
+ const c=colors[i],level=p?p.level:1,scale=(miniScale||1)*(.66+i*.022+Math.min(5,level-1)*.018);
+ const wave=Math.sin(t/500+x*.034+y*.021)*1.35;
+ ellipse(x+2,y+9*scale,22*scale,7*scale,'#4a703b38');
+ // crooked brown trunk and three branches
+ ctx.lineCap='round';ctx.strokeStyle='#805935';ctx.lineWidth=5*scale;ctx.beginPath();ctx.moveTo(x,y+8*scale);ctx.lineTo(x+wave,y-8*scale);ctx.moveTo(x+wave,y-3*scale);ctx.lineTo(x-9*scale,y-15*scale);ctx.moveTo(x+wave,y-5*scale);ctx.lineTo(x+11*scale,y-19*scale);ctx.stroke();
+ // canopy silhouette, layered blobs with highlights
+ ellipse(x+wave,y-20*scale,19*scale,16*scale,c[1],'#456c39',1.1*scale);
+ ellipse(x-13*scale,y-14*scale,13*scale,12*scale,c[0]);ellipse(x+13*scale,y-14*scale,13*scale,12*scale,c[0]);ellipse(x-4*scale,y-29*scale,15*scale,13*scale,c[2]);ellipse(x+8*scale,y-24*scale,12*scale,11*scale,c[0]);ellipse(x-15*scale,y-23*scale,9*scale,9*scale,c[1]);
+ ellipse(x-8*scale,y-25*scale,4.5*scale,3.4*scale,'#d9ed9a80');ellipse(x+10*scale,y-13*scale,3.5*scale,2.5*scale,'#d9ed9a70');ellipse(x+1*scale,y-31*scale,3.7*scale,2.3*scale,'#eff5c27d');
+ // olives - ripe harvests glow gold, unripe fruit stay green
+ const fruits=[[-13,-17],[0,-13],[12,-22],[-3,-29],[8,-8],[17,-14],[-17,-25],[-3,-21],[6,-34],[20,-27],[-9,-8],[3,-18]];
+ const num=Math.min(fruits.length,4+Math.floor(i*.75)+Math.min(4,level-1));
+ for(let k=0;k<num;k++){const f=fruits[k];const ripeFruit=ripe&&(k%4===0);ellipse(x+f[0]*scale+wave*.6,y+f[1]*scale,2.8*scale,3.8*scale,ripeFruit?'#e6b638':(k%2?'#8eaa35':'#658a2e'),'#496c2f',.5);ellipse(x+(f[0]-1)*scale+wave*.6,y+(f[1]-1)*scale,0.8*scale,1.1*scale,'#e0ec9a');}
+}
+function drawParcel(i,t){
+ const p=game.plots[i],pt=plotPos(i),x=pt.x,y=pt.y;
+ const diamond=[[x,y-35],[x+69,y],[x,y+36],[x-69,y]];
+ poly([[x+3,y-29],[x+74,y+5],[x+2,y+43],[x-73,y+5]],'#436d3830');
+ const land=p.unlocked?(i===selected?'#c5e58c':'#b8d87f'):'#a3bf78';
+ poly(diamond,land,p.unlocked?(i===selected?'#f6d760':'#719952'):'#7d9763',i===selected?3:1.5);
+ hitTargets.push({type:'parcel',index:i,x:x-72,y:y-38,w:144,h:78});
+ if(p.unlocked){
+  for(let k=0;k<4;k++){const gx=x+Math.sin(i*4+k*7)*43,gy=y+Math.cos(i*5+k*3)*17;ellipse(gx,gy,2,1.2,k%2?'#91bd5e':'#d2e58f');}
+  const treeCount=[1,1,2,2,2,3,3,3,4,4,4,5][i];
+  treeLayout(treeCount).forEach((o,j)=>{const tx=x+o[0],ty=y-9+o[1];drawTree(tx,ty,i,p,p.stock>0,t,1);hitTargets.push({type:'tree',index:i,x:tx-25,y:ty-40,w:50,h:54});});
+  // Per-plot yield plaque, like crop value badges in casual farming games
+  box(x-31,y-45,62,17,6,'#fff8dbee','#c4d7a2',1);
+  label(fmt(plotYield(p,i))+' kg',x,y-36,10,'#395c35','1000');
+  if(p.stock>0){
+   box(x-31,y+20,62,18,7,'#f6d35c','#c49a30',1.4);
+   label(p.stock>1?'PRÊT ×'+p.stock:'PRÊT !',x,y+29,9,'#75511c','1000');
+   if(i===selected){ellipse(x,y+1,22,5,null,'#ffe46d',2);}
   }else{
-   // Locked land remains in the map, visibly buyable
-   ellipse(x,y-2,14,17,'#d8e2c3','#819969');text('🔒',x,y-1,18,'#5d7a49','900');
-   roundBox(x-32,y+20,64,18,7,'#fff5d4','#c0b787');text(fmt(costs[i])+' kg',x,y+29,10,'#795e32','1000');
+   const total=growSeconds(p,i),pct=Math.max(0,Math.min(1,1-(p.grow||total)/total));
+   box(x-29,y+23,58,8,4,'#e3e8c5','#99b378',1);
+   box(x-27,y+25,54*pct,4,2,'#6caa48',null,0);
+   label(p.auto?'EMPIL.':'POUSSE',x,y+16,7,'#587947','1000');
+  }
+ }else{
+  // Soil under locked lots remains visible; the lock and price float above it
+  ellipse(x,y-4,15,17,'#d8e2c3','#819969',1.5);label('🔒',x,y-4,17,'#5d7a49','900');
+  box(x-32,y+19,64,18,7,'#fff5d4','#c0b787',1.2);label(fmt(costs[i])+' kg',x,y+28,10,'#795e32','1000');
+ }
+ if(i===selected&&p.unlocked){ctx.setLineDash([4,3]);poly([[x,y-40],[x+76,y],[x,y+40],[x-76,y]],null,'#ffe26c',2);ctx.setLineDash([]);}
+}
+function drawFarmer(t){
+ const x=258+Math.sin(t/950)*2,y=490;ellipse(x,y+15,17,6,'#66884a55');
+ // blue overalls, orange hat: tiny friendly farmer sprite
+ ellipse(x,y-8,8.5,10,'#efbd91');ellipse(x,y-20,10,4,'#e8ad3d');poly([[x-10,y-20],[x,y-27],[x+11,y-20],[x+12,y-15],[x-12,y-15]],'#e2a132','#95652a',1);
+ poly([[x-9,y+1],[x+8,y+1],[x+10,y+17],[x-8,y+17]],'#497b9a','#31586d',1);line([[x-6,y+3],[x-13,y+9]],'#edc19a',4.5);line([[x+5,y+3],[x+13,y+7]],'#edc19a',4.5);line([[x-4,y+15],[x-5,y+23]],'#715b43',4);line([[x+5,y+15],[x+9,y+22]],'#715b43',4);
+ // small wicker basket
+ ellipse(x+19,y+9,10,6,'#b8813b','#84572e',1.3);line([[x+11,y+7],[x+14,y+3],[x+24,y+3],[x+28,y+7]],'#84572e',1.5);ellipse(x+17,y+6,2,2.5,'#6e913b');ellipse(x+22,y+5,2,2.5,'#7fa747');
+}
+function drawCrates(){
+ // harvested olives waiting for the press
+ poly([[188,479],[221,493],[221,510],[188,496]],'#b78345','#805a33',2);poly([[221,493],[242,484],[242,501],[221,510]],'#986b3e','#805a33',2);poly([[188,479],[207,469],[242,484],[221,493]],'#e6c483','#805a33',2);
+ for(let i=0;i<5;i++)ellipse(200+(i%3)*9,478+Math.floor(i/3)*5,3.3,4.1,i%2?'#688e38':'#7da741','#4d6b32',.6);
+ line([[192,486],[218,497]],'#d2a567',1.5);line([[220,496],[239,488]],'#d2a567',1.5);
+ // stacked ceramic oil jars next to the press
+ ellipse(1150,481,13,5,'#c49b53','#8d6837',1.2);ctx.fillStyle='#d7b56d';ctx.beginPath();ctx.moveTo(1137,481);ctx.bezierCurveTo(1134,464,1141,450,1150,450);ctx.bezierCurveTo(1160,450,1166,464,1163,481);ctx.closePath();ctx.fill();ctx.strokeStyle='#8d6837';ctx.lineWidth=1.2;ctx.stroke();ellipse(1150,450,7,3,'#e8d08d','#8d6837',1);ellipse(1150,450,3,1.3,'#8d6837');
+}
+function drawFloating(now){
+ particles=particles.filter(p=>now-p.at<1000);
+ particles.forEach(p=>{const age=(now-p.at)/1000;ctx.globalAlpha=1-age;label(p.text,p.x,p.y-age*38,16,p.color,'1000');ctx.globalAlpha=1;});
+}
+function drawScene(now){
+ hitTargets=[];ctx.clearRect(0,0,W,H);
+ drawBackground(now);
+ drawHouse(203,129,.82);drawBarn(1127,145,.9);
+ // Sort by ground depth so the front rows draw over the back rows
+ const order=Array.from({length:12},(_,i)=>i).sort((a,b)=>plotPos(a).y-plotPos(b).y);
+ order.forEach(i=>drawParcel(i,now));
+ drawMill(1090,379,.91);hitTargets.push({type:'mill',x:994,y:298,w:192,h:165});
+ drawFarmer(now);drawCrates();drawFloating(now);
+}
+function resize(){
+ const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+ canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
+ ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
+}
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
+function hitAt(pt){for(let i=hitTargets.length-1;i>=0;i--){const h=hitTargets[i];if(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h)return h;}return null;}
+function feedback(x,y,text,color){particles.push({x,y,text,color,at:performance.now()});}
+function harvest(i,x,y){
+ const p=game.plots[i];if(!p||!p.unlocked)return;
+ selected=i;
+ if(p.stock<1){openPlotPanel(false);toast('Les olives poussent encore.');renderUI();return;}
+ const amount=plotYield(p,i)*p.stock,n=p.stock;game.olives+=amount;p.stock=0;p.grow=growSeconds(p,i);
+ feedback(x||plotPos(i).x,y||plotPos(i).y-24,'+'+fmt(amount)+' kg','#fff4b7');
+ openPlotPanel(false);renderUI();save();toast('+'+fmt(amount)+' kg d’olives récoltées'+(n>1?' · '+n+' paniers':''));
+}
+function buyPlot(i){
+ const p=game.plots[i];if(p.unlocked)return;
+ if(game.olives<costs[i]){toast('Il manque '+fmt(costs[i]-game.olives)+' kg d’olives.');return;}
+ game.olives-=costs[i];p.unlocked=true;p.grow=growSeconds(p,i);selected=i;renderUI();save();openPlotPanel(true);toast(names[i]+' débloqué !');
+}
+function openPlotPanel(show){const panel=document.getElementById('plotPanel');if(show)panel.classList.add('open');else panel.classList.remove('open');}
+function updatePlotPanel(){
+ const p=game.plots[selected],uc=upgradeCost(p,selected),ac=autoCost(p,selected);
+ document.getElementById('plotEyebrow').textContent='TERROIR N° '+(selected+1);
+ document.getElementById('plotTitle').textContent=names[selected];
+ document.getElementById('plotDescription').textContent='Une variété provençale. Améliore le niveau pour augmenter le rendement de chaque récolte.';
+ document.getElementById('plotYield').textContent=fmt(plotYield(p,selected))+' kg';
+ document.getElementById('plotLevel').textContent=p.level;
+ document.getElementById('levelCost').textContent=fmt(uc)+' kg';
+ document.getElementById('levelBtn').disabled=game.olives<uc;
+ document.getElementById('autoCost').textContent=p.auto?'ACTIF':fmt(ac)+' kg';
+ document.getElementById('autoBtn').disabled=p.auto||game.olives<ac;
+ document.getElementById('autoNote').textContent=p.auto?'Stockage actif : jusqu’à '+stackLimit()+' récoltes s’empilent. La cueillette reste manuelle.':'Avant l’automatisation, tu récoltes à chaque pousse. Après achat, plusieurs récoltes peuvent mûrir et s’empiler avant la cueillette.';
+}
+function updateShop(){
+ document.getElementById('powerLevel').textContent='Niv. '+game.upgrades.power;
+ document.getElementById('speedLevel').textContent='Niv. '+game.upgrades.speed;
+ document.getElementById('stackLevel').textContent='Niv. '+game.upgrades.stack;
+ const costs={power:Math.ceil(Math.pow(1.8,game.upgrades.power)),speed:Math.ceil(2*Math.pow(1.8,game.upgrades.speed)),stack:Math.ceil(3*Math.pow(1.8,game.upgrades.stack))};
+ document.getElementById('buyPower').textContent='🏺 '+costs.power+' huile';
+ document.getElementById('buySpeed').textContent='🏺 '+costs.speed+' huiles';
+ document.getElementById('buyStack').textContent='🏺 '+costs.stack+' huiles';
+ document.getElementById('buyPower').disabled=game.oil<costs.power||game.upgrades.power>=15;
+ document.getElementById('buySpeed').disabled=game.oil<costs.speed||game.upgrades.speed>=15;
+ document.getElementById('buyStack').disabled=game.oil<costs.stack||game.upgrades.stack>=15;
+}
+function renderUI(){
+ document.getElementById('oliveCount').textContent=fmt(game.olives);
+ document.getElementById('oilCount').textContent=fmt(game.oil);
+ document.getElementById('totalOil').textContent=fmt(game.totalOil);
+ document.getElementById('bonusCount').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+ document.getElementById('bottomChip').textContent=unlockedCount()+' / 12 parcelles débloquées';
+ document.getElementById('progressFill').style.width=Math.min(100,game.totalOil/25*100)+'%';
+ document.getElementById('bannerSub').textContent=game.totalOil?'Cycle n° '+(game.totalOil+1)+' · Rendement permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
+ updatePlotPanel();updateShop();
+}
+function pressMill(){
+ if(game.olives<10){toast('Le moulin a besoin de '+fmt(10-game.olives)+' kg d’olives en plus.');return;}
+ game.olives-=10;game.oil++;game.totalOil++;
+ game.plots=Array.from({length:12},(_,i)=>makePlot(i));game.plots[0].stock=0;game.plots[0].grow=4.5;selected=0;
+ renderUI();save();feedback(1090,286,'+1 HUILE','#fff4b4');toast('Huile produite ! Les terroirs repartent avec un rendement supérieur.');
+}
+function openModal(id){
+ document.getElementById(id).classList.add('open');
+ if(id==='progressModal'){document.getElementById('progressTotal').textContent=fmt(game.totalOil);document.getElementById('progressBonus').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+ if(id==='shopModal')updateShop();
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function buyUpgrade(kind){
+ const base={power:1,speed:2,stack:3}[kind],lvl=game.upgrades[kind],price=Math.ceil(base*Math.pow(1.8,lvl));
+ if(game.oil<price){toast('Il te faut '+price+' huile pour cette amélioration.');return;}
+ if(lvl>=15){toast('Cette amélioration est au niveau maximum.');return;}
+ game.oil-=price;game.upgrades[kind]++;renderUI();save();toast('Amélioration permanente achetée !');
+}
+function handleHit(h,pt){
+ if(!h)return;
+ if(h.type==='tree'){harvest(h.index,pt.x,pt.y-8);return;}
+ if(h.type==='parcel'){
+  const p=game.plots[h.index];
+  if(!p.unlocked){buyPlot(h.index);return;}
+  selected=h.index;openPlotPanel(true);renderUI();return;
+ }
+ if(h.type==='mill'){pressMill();return;}
+}
+canvas.addEventListener('pointerdown',e=>{
+ const pt=point(e),h=hitAt(pt);pointerHeld=true;swipedPlots=new Set();
+ if(h&&h.type==='tree'){swipedPlots.add(h.index);handleHit(h,pt);}
+ else handleHit(h,pt);
+ try{canvas.setPointerCapture(e.pointerId);}catch(_){}
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!pointerHeld)return;if(e.pointerType==='mouse'&&e.buttons===0)return;
+ const pt=point(e),h=hitAt(pt);
+ if(h&&h.type==='tree'&&!swipedPlots.has(h.index)){swipedPlots.add(h.index);handleHit(h,pt);}
+});
+function endPointer(){pointerHeld=false;swipedPlots.clear();}
+canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('contextmenu',e=>e.preventDefault());
+document.getElementById('levelBtn').addEventListener('click',()=>{
+ const p=game.plots[selected],price=upgradeCost(p,selected);
+ if(game.olives<price){toast('Il manque des olives pour améliorer ce terroir.');return;}
+ game.olives-=price;p.level++;renderUI();save();toast('Terroir niveau '+p.level+' : rendement augmenté !');
+});
+document.getElementById('autoBtn').addEventListener('click',()=>{
+ const p=game.plots[selected],price=autoCost(p,selected);
+ if(p.auto)return;if(game.olives<price){toast('Il manque des olives pour automatiser le stockage.');return;}
+ game.olives-=price;p.auto=true;if(p.grow===0&&p.stock<stackLimit())p.grow=growSeconds(p,selected);
+ renderUI();save();toast('Stockage automatisé ! Les récoltes s’empilent, à toi de les ramasser.');
+});
+document.getElementById('plotClose').addEventListener('click',()=>openPlotPanel(false));
+document.getElementById('shopOpen').addEventListener('click',()=>openModal('shopModal'));
+document.getElementById('progressOpen').addEventListener('click',()=>openModal('progressModal'));
+document.getElementById('settingsOpen').addEventListener('click',()=>openModal('settingsModal'));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.getElementById('buyPower').addEventListener('click',()=>buyUpgrade('power'));
+document.getElementById('buySpeed').addEventListener('click',()=>buyUpgrade('speed'));
+document.getElementById('buyStack').addEventListener('click',()=>buyUpgrade('stack'));
+document.getElementById('exportSave').addEventListener('click',()=>{
+ const blob=new Blob([JSON.stringify(game,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='olive-oil-empire-save.json';a.click();URL.revokeObjectURL(url);toast('Sauvegarde exportée.');
+});
+document.getElementById('importSave').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',async e=>{
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ try{const d=JSON.parse(await file.text());if(!Array.isArray(d.plots)||!d.upgrades)throw new Error('invalid');game={...fresh(),...d,plots:Array.from({length:12},(_,i)=>({...makePlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,...d.upgrades}};game.plots[0].unlocked=true;selected=0;renderUI();save();toast('Sauvegarde importée.');closeModal('settingsModal');}
+ catch(_){toast('Fichier de sauvegarde invalide.');}e.target.value='';
+});
+document.getElementById('resetAsk').addEventListener('click',()=>openModal('resetModal'));
+document.getElementById('resetConfirm').addEventListener('click',()=>{
+ game=fresh();selected=0;save();renderUI();closeModal('resetModal');closeModal('settingsModal');toast('Nouvelle partie commencée.');
+});
+function tick(now){
+ const dt=lastFrame?Math.min((now-lastFrame)/1000,.08):0;lastFrame=now;
+ game.plots.forEach((p,i)=>{
+  if(!p.unlocked||p.grow<=0)return;
+  p.grow=Math.max(0,p.grow-dt);
+  if(p.grow===0&&p.stock< (p.auto?stackLimit():1)){
+   p.stock++;
+   if(p.auto&&p.stock<stackLimit())p.grow=growSeconds(p,i);
   }
  });
+ if(now-lastSave>4000){save();lastSave=now;}
+ if(now-lastUI>300){renderUI();lastUI=now;}
+ drawScene(now);requestAnimationFrame(tick);
 }
-function drawFarmer(t){const x=246+Math.sin(t/900)*2,y=486;ellipse(x,y+16,17,6,'#66884a55');ellipse(x,y-8,9,11,'#f0bd91');ellipse(x,y-20,10,4,'#d99e38');poly([[x-10,y-19],[x,y-26],[x+11,y-19],[x+12,y-14],[x-12,y-14]],'#df9c31','#94652a',1);poly([[x-8,y+2],[x+7,y+1],[x+10,y+17],[x-8,y+17]],'#4c7891','#35576d',1);ctx.strokeStyle='#e7c29a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x-6,y+2);ctx.lineTo(x-13,y+10);ctx.moveTo(x+5,y+3);ctx.lineTo(x+13,y+7);ctx.stroke();ctx.strokeStyle='#6e5c43';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x-4,y+15);ctx.lineTo(x-5,y+23);ctx.moveTo(x+5,y+15);ctx.lineTo(x+9,y+22);ctx.stroke();ellipse(x+18,y+10,10,6,'#b87c37','#80552e');}
-function drawDecor(t){
- drawHouse(199,108,.91);
- drawBarn(1100,103,.88);
- drawMill(1090,390,.95);
- drawFarmer(t);
- // olives in a crate beside the path
- poly([[171,481],[204,494],[204,510],[171,497]],'#b78345','#805a33',2);poly([[204,494],[221,485],[221,500],[204,510]],'#986b3e','#805a33',2);poly([[171,481],[188,472],[221,485],[204,494]],'#e6c483','#805a33',2);for(let i=0;i<5;i++)ellipse(183+(i%3)*8,480+Math.floor(i/3)*4,3,4,i%2?'#688e38':'#7da741');
- // decorative flower tufts and stones
- for(let i=0;i<12;i++){const x=280+i*57,y=560+(i%3)*5;drawShrub(x,y,7+(i%3),.65);}
-}
-function drawScene(t){ctx.clearRect(0,0,W,H);drawBackground(t);drawPlots(t);drawDecor(t);}
-function resize(){const r=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.floor(r.width*dpr));canvas.height=Math.max(1,Math.floor(r.height*dpr));}
-function worldPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
-function hitAt(pt){for(let j=targets.length-1;j>=0;j--){const a=targets[j];if(pt.x>=a.x&&pt.x<=a.x+a.w&&pt.y>=a.y&&pt.y<=a.y+a.h)return a;}return null;}
-function harvest(i){const p=s.plots[i];if(!p||!p.unlocked)return;if(p.stock<1){toast('Les olives poussent encore.');return;}const amount=plotYield(p,i)*p.stock,n=p.stock;s.olives+=amount;p.stock=0;p.grow=growTime(p,i);selected=i;renderUI();save();toast('+'+fmt(amount)+' kg d’olives récoltées'+(n>1?' · '+n+' récoltes empilées':''));}
-function unlock(i){const p=s.plots[i];if(p.unlocked)return;if(s.olives<costs[i]){toast('Il manque '+fmt(costs[i]-s.olives)+' kg d’olives.');return;}s.olives-=costs[i];p.unlocked=true;p.grow=growTime(p,i);selected=i;renderUI();save();toast(names[i]+' débloqué !');}
-function levelSelected(){const p=s.plots[selected];if(!p||!p.unlocked)return;const cost=levelCost(p,selected);if(s.olives<cost){toast('Il manque '+fmt(cost-s.olives)+' kg d’olives.');return;}s.olives-=cost;p.level++;if(p.stock===0&&p.grow>0)p.grow=Math.min(p.grow,growTime(p,selected));renderUI();save();toast('Terroir amélioré · niveau '+p.level);}
-function autoSelected(){const p=s.plots[selected];if(!p||!p.unlocked)return;if(p.auto){toast('Le stockage est déjà automatisé.');return;}const cost=autoCost(p,selected);if(s.olives<cost){toast('Il manque '+fmt(cost-s.olives)+' kg d’olives.');return;}s.olives-=cost;p.auto=true;if(p.stock<capacity()&&p.grow===0)p.grow=growTime(p,selected);renderUI();save();toast('Stockage automatique activé. À toi de récolter !');}
-function pressMill(){if(s.olives<10){toast('Le moulin a besoin de '+fmt(10-s.olives)+' kg d’olives en plus.');return;}s.olives-=10;s.oil++;s.totalOil++;s.plots=Array.from({length:12},(_,i)=>freshPlot(i));s.plots[0].stock=0;s.plots[0].grow=4;selected=0;renderUI();save();toast('Huile produite ! Rendement permanent augmenté.');}
-function openModal(id){document.getElementById(id).classList.add('open');if(id==='shopModal')renderShop();if(id==='progressModal'){document.getElementById('progressTotal').textContent=fmt(s.totalOil);document.getElementById('progressBonus').textContent='×'+bonus().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});}}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-function renderUI(){
- document.getElementById('oliveCount').textContent=fmt(s.olives);document.getElementById('oilCount').textContent=fmt(s.oil);document.getElementById('totalOil').textContent=fmt(s.totalOil);document.getElementById('bonusCount').textContent='×'+bonus().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
- document.getElementById('plotLevel').textContent=s.plots[selected].level;document.getElementById('plotYield').textContent=fmt(plotYield(s.plots[selected],selected))+' kg';document.getElementById('plotTitle').textContent=names[selected];document.getElementById('plotEyebrow').textContent='TERROIR N° '+(selected+1);document.getElementById('plotDescription').textContent='Une variété méditerranéenne. La productivité augmente avec le niveau et chaque huile produite.';document.getElementById('levelCost').textContent=fmt(levelCost(s.plots[selected],selected))+' kg';document.getElementById('autoCost').textContent=s.plots[selected].auto?'ACTIF':fmt(autoCost(s.plots[selected],selected))+' kg';document.getElementById('levelBtn').disabled=s.olives<levelCost(s.plots[selected],selected);document.getElementById('autoBtn').disabled=s.plots[selected].auto||s.olives<autoCost(s.plots[selected],selected);document.getElementById('autoNote').textContent=s.plots[selected].auto?'Stockage actif : jusqu’à '+capacity()+' récoltes s’empilent sur ce terroir. Tu dois toujours les cueillir.':'Avant l’automatisation, il faut récolter chaque pousse. Après achat, les récoltes peuvent s’empiler. La cueillette reste manuelle.';
- document.getElementById('bottomChip').textContent=totalUnlocked()+' / 12 parcelles débloquées';document.getElementById('progressFill').style.width=Math.min(100,s.totalOil/25*100)+'%';document.getElementById('bannerSub').textContent=s.totalOil?'Cycle n° '+(s.totalOil+1)+' · Rendement permanent ×'+bonus().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
- renderShop();
-}
-function renderShop(){document.getElementById('powerLevel').textContent='Niv. '+s.upgrades.power;document.getElementById('speedLevel').textContent='Niv. '+s.upgrades.speed;document.getElementById('stackLevel').textContent='Niv. '+s.upgrades.stack;document.getElementById('buyPower').textContent='🏺 '+Math.ceil(1*Math.pow(1.8,s.upgrades.power))+' huile';document.getElementById('buySpeed').textContent='🏺 '+Math.ceil(2*Math.pow(1.8,s.upgrades.speed))+' huiles';document.getElementById('buyStack').textContent='🏺 '+Math.ceil(3*Math.pow(1.8,s.upgrades.stack))+' huiles';document.getElementById('buyPower').disabled=s.oil<Math.ceil(Math.pow(1.8,s.upgrades.power));document.getElementById('buySpeed').disabled=s.oil<Math.ceil(2*Math.pow(1.8,s.upgrades.speed));document.getElementById('buyStack').disabled=s.oil<Math.ceil(3*Math.pow(1.8,s.upgrades.stack));}
-function buyUpgrade(id){const base={power:1,speed:2,stack:3}[id],lvl=s.upgrades[id],price=Math.ceil(base*Math.pow(1.8,lvl));if(s.oil<price){toast('Il te faut '+price+' huile pour cette amélioration.');return;}if(lvl>=15){toast('Cette amélioration est au niveau maximum.');return;}s.oil-=price;s.upgrades[id]++;renderUI();save();toast('Amélioration permanente achetée !');}
-function actHit(a){if(!a)return;if(a.type==='tree'){harvest(a.index);return;}if(a.type==='plot'){const p=s.plots[a.index];if(!p.unlocked){unlock(a.index);return;}selected=a.index;document.getElementById('plotPanel').classList.add('open');renderUI();document.getElementById('plotPanel').classList.add('open');return;}if(a.type==='mill'){pressMill();return;}}
-canvas.addEventListener('pointerdown',e=>{const pt=worldPoint(e),hit=hitAt(pt);pointerDown=true;seenPlots=new Set();if(hit&&hit.type==='tree'){seenPlots.add(hit.index);actHit(hit);}else actHit(hit);try{canvas.setPointerCapture(e.pointerId);}catch(_){}});
-canvas.addEventListener('pointermove',e=>{if(!pointerDown)return;if(e.pointerType==='mouse'&&e.buttons===0)return;const hit=hitAt(worldPoint(e));if(hit&&hit.type==='tree'&&!seenPlots.has(hit.index)){seenPlots.add(hit.index);actHit(hit);}});
-function endPointer(){pointerDown=false;seenPlots.clear();}
-canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('contextmenu',e=>e.preventDefault());
-document.getElementById('levelBtn').addEventListener('click',levelSelected);document.getElementById('autoBtn').addEventListener('click',autoSelected);document.getElementById('plotClose').addEventListener('click',()=>document.getElementById('plotPanel').classList.remove('open'));
-document.getElementById('shopOpen').addEventListener('click',()=>openModal('shopModal'));document.getElementById('progressOpen').addEventListener('click',()=>openModal('progressModal'));document.getElementById('settingsOpen').addEventListener('click',()=>openModal('settingsModal'));
-document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
-document.getElementById('buyPower').addEventListener('click',()=>buyUpgrade('power'));document.getElementById('buySpeed').addEventListener('click',()=>buyUpgrade('speed'));document.getElementById('buyStack').addEventListener('click',()=>buyUpgrade('stack'));
-document.getElementById('exportSave').addEventListener('click',()=>{const a=document.createElement('a'),blob=new Blob([JSON.stringify(s,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);a.href=url;a.download='olive-oil-empire-save.json';a.click();URL.revokeObjectURL(url);toast('Sauvegarde exportée.');});
-document.getElementById('importSave').addEventListener('click',()=>document.getElementById('importFile').click());
-document.getElementById('importFile').addEventListener('change',async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;try{const d=JSON.parse(await file.text());if(!Array.isArray(d.plots)||!d.upgrades)throw new Error('invalid');s={...freshState(),...d,plots:Array.from({length:12},(_,i)=>({...freshPlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,...d.upgrades}};s.plots[0].unlocked=true;selected=0;renderUI();save();toast('Sauvegarde importée.');closeModal('settingsModal');}catch(_){toast('Fichier de sauvegarde invalide.');}e.target.value='';});
-document.getElementById('resetAsk').addEventListener('click',()=>openModal('resetModal'));
-document.getElementById('resetConfirm').addEventListener('click',()=>{s=freshState();selected=0;save();renderUI();closeModal('resetModal');closeModal('settingsModal');toast('Nouvelle partie commencée.');});
-let lastSave=0;
-function loop(now){const dt=lastTime?Math.min((now-lastTime)/1000,.1):0;lastTime=now;let changed=false;s.plots.forEach((p,i)=>{if(!p.unlocked)return;if(p.grow>0){p.grow=Math.max(0,p.grow-dt);if(p.grow===0&&p.stock<capacity()){p.stock++;if(p.auto&&p.stock<capacity())p.grow=growTime(p,i);}changed=true;}else if(p.unlocked&&p.stock===0){p.grow=growTime(p,i);changed=true;}});if(now-lastSave>3200){save();lastSave=now;}if(now-uiClock>300){renderUI();uiClock=now;}drawScene(now);requestAnimationFrame(loop);}
-window.addEventListener('resize',resize);load();resize();renderUI();requestAnimationFrame(loop);
+window.addEventListener('resize',resize);
+load();resize();renderUI();requestAnimationFrame(tick);
 })();
 </script>
+</main>
 </body>
 </html>
