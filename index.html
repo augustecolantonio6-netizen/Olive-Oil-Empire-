@@ -299,7 +299,7 @@ function resize(){
  ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
 }
 function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
-function hitAt(pt){for(let i=hitTargets.length-1;i>=0;i--){const h=hitTargets[i];if(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h)return h;}return null;}
+function hitAt(pt){for(let i=hitTargets.length-1;i>=0;i--){const h=hitTargets[i];if(h.type==='parcel'){const cx=h.x+h.w/2,cy=h.y+h.h/2;if(Math.abs(pt.x-cx)/69+Math.abs(pt.y-cy)/38>1)continue;}if(pt.x>=h.x&&pt.x<=h.x+h.w&&pt.y>=h.y&&pt.y<=h.y+h.h)return h;}return null;}
 function feedback(x,y,text,color){particles.push({x,y,text,color,at:performance.now()});}
 function harvest(i,x,y){
  const p=game.plots[i];if(!p||!p.unlocked)return;
@@ -442,6 +442,5 @@ window.addEventListener('resize',resize);
 load();resize();renderUI();requestAnimationFrame(tick);
 })();
 </script>
-</main>
 </body>
 </html>
