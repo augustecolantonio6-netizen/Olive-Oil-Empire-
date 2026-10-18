@@ -284,7 +284,7 @@ function drawScene(now){
  // Sort by ground depth so the front rows draw over the back rows
  const order=Array.from({length:12},(_,i)=>i).sort((a,b)=>plotPos(a).y-plotPos(b).y);
  order.forEach(i=>drawParcel(i,now));
- drawMill(1090,379,.91);hitTargets.push({type:'mill',x:994,y:298,w:192,h:165});
+ drawMill(1090,379,.91);
  drawFarmer(now);drawCrates();drawFloating(now);
 }
 function resize(){
