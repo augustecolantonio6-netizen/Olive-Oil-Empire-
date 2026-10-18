@@ -31,7 +31,8 @@ Le dossier `assets/` contient des sprites SVG indépendants : quatre états d'ol
 
 ## Commandes de jeu
 
-- **Récolter :** clique sur un olivier mûr ou glisse sur plusieurs arbres.
+- **Récolter :** clique sur un olivier mûr ou glisse sur plusieurs parcelles. Chaque parcelle est récoltée au maximum une fois par geste.
+- **Retour visuel de récolte :** arbre secoué, olives qui tombent, gain qui flotte au-dessus de la ferme et trace lumineuse du swipe ; une pulsation signale la maturation.
 - **Parcelle :** clique sur une parcelle pour l'acheter si elle est verrouillée, ou pour afficher ses améliorations.
 - **Niveau :** dépense des olives pour augmenter le rendement du terroir.
 - **Automatisation :** les olives peuvent pousser et s'empiler en plusieurs récoltes ; la cueillette reste toujours manuelle.
