@@ -427,11 +427,16 @@ document.getElementById('resetConfirm').addEventListener('click',()=>{
 function tick(now){
  const dt=lastFrame?Math.min((now-lastFrame)/1000,.08):0;lastFrame=now;
  game.plots.forEach((p,i)=>{
-  if(!p.unlocked||p.grow<=0)return;
-  p.grow=Math.max(0,p.grow-dt);
-  if(p.grow===0&&p.stock< (p.auto?stackLimit():1)){
-   p.stock++;
-   if(p.auto&&p.stock<stackLimit())p.grow=growSeconds(p,i);
+  if(!p.unlocked)return;
+  const cap=p.auto?stackLimit():1;
+  if(p.grow>0){
+   p.grow=Math.max(0,p.grow-dt);
+   if(p.grow===0&&p.stock<cap){
+    p.stock++;
+    if(p.auto&&p.stock<stackLimit())p.grow=growSeconds(p,i);
+   }
+  }else if(p.stock<cap&&(p.stock===0||p.auto)){
+   p.grow=growSeconds(p,i);
   }
  });
  if(now-lastSave>4000){save();lastSave=now;}
