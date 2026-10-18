@@ -157,8 +157,8 @@ function stackLimit(){return 3+game.upgrades.stack*2;}
 function growSeconds(p,i){return Math.max(1.25,7/(1+game.totalOil*.12+game.upgrades.speed*.38+(p.level-1)*.1+i*.055));}
 function treeYield(p,i){return yields[i]*p.level*multiplier();}
 function plotYield(p,i){return treeYield(p,i)*treeCounts[i];}
-function upgradeCost(p,i){return Math.ceil(4*Math.pow(p.level,1.65)*Math.pow(1.15,i)*(1+treeCounts[i]*.12));}
-function autoCost(p,i){return Math.ceil(10*Math.pow(1.3,i)*(1+(p.level-1)*.25));}
+function upgradeCost(p,i){return Math.ceil((3+yields[i]*treeCounts[i]*.8)*Math.pow(p.level,1.55)*Math.pow(1.05,i)*multiplier());}
+function autoCost(p,i){return Math.ceil((8+yields[i]*treeCounts[i]*.6)*Math.pow(1.10,i)*Math.pow(p.level,.15)*multiplier());}
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100);}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(game));}catch(e){}}
 function load(){try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(!raw)return;const d=JSON.parse(raw);if(!d||!Array.isArray(d.plots))return;game={...fresh(),...d,plots:Array.from({length:12},(_,i)=>({...makePlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,...d.upgrades}};game.plots[0].unlocked=true;game.olives=Math.max(0,Number(game.olives)||0);game.oil=Math.max(0,Number(game.oil)||0);game.totalOil=Math.max(0,Number(game.totalOil)||0);save();}catch(e){game=fresh();}}
@@ -217,7 +217,7 @@ function plotPos(i){const c=i%4,r=Math.floor(i/4);return{x:625+(c-r)*100,y:164+(
 function treeLayout(n){if(n===1)return[[0,-3]];if(n===2)return[[-17,-4],[17,4]];if(n===3)return[[-25,-5],[1,-13],[22,6]];if(n===4)return[[-27,-7],[-7,-16],[20,-3],[4,13]];return[[-30,-6],[-12,-17],[12,-14],[28,1],[0,12]];}
 function drawTree(x,y,i,p,ripe,t,miniScale){
  const scale=(miniScale||1)*(.72+i*.027+Math.min(5,(p?p.level:1)-1)*.022);
- const old=i>=8,young=i<2&&(!p||p.level<3);
+ const old=i>=8,young=i<4&&(!p||p.level<3);
  const key=old?'treeAncient':young?'treeYoung':ripe?'treeRipe':'tree';
  const img=sprite(key);
  const started=treeShake.get(i),age=started==null?9999:t-started;
