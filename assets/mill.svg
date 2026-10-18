@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300">
+<defs><linearGradient id="stone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f0e0bd"/><stop offset="1" stop-color="#b8a17d"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e68b55"/><stop offset="1" stop-color="#a84c32"/></linearGradient><linearGradient id="wood" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#5b3b25"/><stop offset=".5" stop-color="#a57743"/><stop offset="1" stop-color="#5b3b25"/></linearGradient><filter id="shadow" x="-15%" y="-15%" width="135%" height="145%"><feDropShadow dx="2" dy="8" stdDeviation="5" flood-color="#203b28" flood-opacity=".3"/></filter></defs>
+<ellipse cx="180" cy="263" rx="141" ry="18" fill="#31542c30"/><g filter="url(#shadow)">
+<!-- stone building base -->
+<path d="M40 119 L168 76 L311 125 L311 225 L168 272 L40 222Z" fill="#cdb891" stroke="#8f7b5b" stroke-width="3"/>
+<path d="M40 119 L168 76 L168 272 L40 222Z" fill="url(#stone)" stroke="#9e8c6b" stroke-width="3"/>
+<path d="M168 76 L311 125 L311 225 L168 272Z" fill="#b6a07e" stroke="#8f7b5b" stroke-width="3"/>
+<!-- irregular masonry -->
+<g fill="none" stroke="#b39d79" stroke-width="2" opacity=".85"><path d="M43 153 L166 192 M43 185 L166 224 M43 213 L166 250 M79 106 L79 237 M119 91 L119 255 M171 117 L309 159 M171 151 L309 192 M171 189 L309 227 M216 93 L216 256 M265 109 L265 240"/></g>
+<!-- roof tiles -->
+<path d="M21 127 L165 39 L333 112 L171 171Z" fill="url(#roof)" stroke="#833c2d" stroke-width="4" stroke-linejoin="round"/>
+<path d="M21 127 L165 39 L171 54 L37 138Z" fill="#f2a169"/><path d="M165 39 L333 112 L308 123 L171 54Z" fill="#994532"/>
+<g fill="none" stroke="#f7ad76" stroke-width="3"><path d="M43 114 L183 159 M65 101 L207 150 M88 87 L231 142 M111 73 L255 132 M135 57 L280 123 M157 45 L302 114"/><path d="M44 139 L180 60 M70 149 L205 74 M97 158 L231 86 M124 168 L256 97 M149 176 L280 110"/></g>
+<!-- covered front arch -->
+<path d="M63 182 Q63 151 92 143 Q121 151 121 202 L121 236 L63 215Z" fill="#77553b" stroke="#eee0bd" stroke-width="4"/><path d="M74 189 Q74 166 92 160 Q110 166 110 198 L110 231 L74 217Z" fill="#573b2a"/>
+<!-- traditional press wheel -->
+<ellipse cx="209" cy="182" rx="42" ry="49" fill="#765337" stroke="#4e3828" stroke-width="5"/><ellipse cx="209" cy="182" rx="33" ry="40" fill="#bc8c50" stroke="#6b482d" stroke-width="5"/><ellipse cx="209" cy="182" rx="10" ry="12" fill="#5d422b" stroke="#e3bd7c" stroke-width="4"/>
+<g stroke="#69472b" stroke-width="7" stroke-linecap="round"><path d="M209 143 L209 221"/><path d="M176 182 L242 182"/><path d="M184 153 L234 211"/><path d="M234 153 L184 211"/></g>
+<g stroke="#e7bd76" stroke-width="2" stroke-linecap="round"><path d="M209 147 L209 217"/><path d="M180 182 L238 182"/></g>
+<!-- wooden beam / press table -->
+<path d="M181 222 L266 200 L272 211 L185 237Z" fill="url(#wood)" stroke="#543922" stroke-width="2"/><path d="M183 237 L191 235 L191 253 L183 256Z M259 216 L268 213 L268 231 L259 234Z" fill="#785431" stroke="#543922" stroke-width="2"/>
+<!-- olive basket and oil amphora -->
+<path d="M125 229 L151 222 L155 244 L129 252Z" fill="#a9763c" stroke="#6f4d2a" stroke-width="2"/><path d="M128 230 L151 224 M130 238 L153 232 M132 246 L154 240" stroke="#d8aa68" stroke-width="2"/>
+<g fill="#719842" stroke="#466a2f" stroke-width="1.5"><ellipse cx="133" cy="225" rx="5" ry="3.5"/><ellipse cx="141" cy="222" rx="5" ry="3.5"/><ellipse cx="146" cy="228" rx="5" ry="3.5"/></g>
+<path d="M279 225 Q274 213 283 205 L287 197 L298 197 L301 205 Q310 216 305 231 Q297 243 284 234Z" fill="#cb9851" stroke="#7f5a32" stroke-width="2.5"/><ellipse cx="292" cy="199" rx="7" ry="3" fill="#e6c37b" stroke="#7f5a32" stroke-width="2"/><path d="M280 219 Q292 226 306 219" fill="none" stroke="#f4db96" stroke-width="3"/>
+<!-- stone sign board -->
+<path d="M103 118 L160 100 L160 120 L103 138Z" fill="#f8edcf" stroke="#a38b61" stroke-width="2"/><text x="132" y="122" transform="rotate(-17 132 122)" text-anchor="middle" font-family="Trebuchet MS,sans-serif" font-size="12" font-weight="bold" fill="#476542">MOULIN</text>
+</g></svg>
