@@ -18,9 +18,9 @@ Puis ouvre http://localhost:8000.
 ## Publier avec GitHub Pages
 
 1. Ouvre **Settings → Pages** dans le dépôt.
-2. Choisis **Deploy from a branch**.
-3. Sélectionne la branche `main` et le dossier `/(root)`, puis clique **Save**.
-4. Après le déploiement, GitHub affichera le lien du jeu dans cette page.
+2. Sous **Build and deployment**, dans **Source**, choisis **GitHub Actions**.
+3. Le workflow `.github/workflows/pages.yml` publiera automatiquement le site à chaque mise à jour de `main`.
+4. Après le premier déploiement, le lien apparaîtra dans **Settings → Pages**. Il ressemblera à `https://augustecolantonio6-netizen.github.io/Olive-Oil-Empire-/`.
 
 ## Fonctionnalités
 
