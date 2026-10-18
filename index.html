@@ -54,6 +54,22 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
 .modal{width:min(455px,96%);max-height:88%;overflow:auto;padding:18px;background:#fff9e9;border:3px solid #b8c798;border-radius:15px;box-shadow:0 8px #53734a}
 .modal h2{font-size:25px;margin:4px 0 6px}
 .modal p{font-size:12px;line-height:1.55;color:#738269}
+.milestone-next{margin:11px 0 12px;padding:10px 11px;background:#eef1db;border:1px solid #d6ddba;border-radius:10px}
+.milestone-next-top{display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:11px;color:#4d6d3d}
+.milestone-next-top span{font-size:10px;color:#84906e;font-weight:900;white-space:nowrap}
+.milestone-meter{height:7px;margin-top:7px;background:#d7dfbe;border:1px solid #c5d3a4}
+.milestone-meter>span{background:linear-gradient(90deg,#79ac48,#f1c448)}
+.milestone-list{display:grid;gap:7px;margin:10px 0;max-height:270px;overflow:auto;padding:1px 3px 4px 1px}
+.milestone-card{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid #dedfc9;border-radius:10px;background:#f4f1df}
+.milestone-card.unlocked{background:#fff2bd;border-color:#dbb650;box-shadow:inset 0 0 0 1px #f6df8a}
+.milestone-icon{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:10px;background:#e5e8d0;font-size:20px}
+.milestone-card.unlocked .milestone-icon{background:#f7da74}
+.milestone-info{flex:1;min-width:0}
+.milestone-title{font-size:11px;font-weight:1000;color:#3d5e36;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.milestone-title span{font-size:9px;white-space:nowrap;color:#82906c}
+.milestone-reward{font-size:10px;line-height:1.4;color:#7d876f;margin-top:3px}
+.milestone-status{font-size:9px;font-weight:1000;color:#8b8d70;margin-top:4px}
+.milestone-card.unlocked .milestone-status{color:#83601d}
 .shop-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #e2e4cf}
 .shop-icon{width:38px;height:38px;display:grid;place-items:center;flex-shrink:0;background:#edf0d9;border-radius:10px;font-size:24px}
 .shop-desc{flex:1;min-width:0}
@@ -113,7 +129,9 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
  <div class="modal-backdrop" id="progressModal"><div class="modal">
   <div class="eyebrow">TON EMPIRE OLÉICOLE</div><h2>La route de l'huile</h2><p>Chaque pression transforme 10 kg d'olives en une huile, puis relance l'oliveraie avec une productivité permanente supérieure.</p>
   <div class="mini-stats"><div class="mini-stat"><small>HUILES PRODUITES</small><strong id="progressTotal">0</strong></div><div class="mini-stat"><small>BONUS PERMANENT</small><strong id="progressBonus">×1,00</strong></div></div>
-  <p class="copy">Débloque de nouveaux terroirs, améliore leurs niveaux en dépensant des olives et investis l'huile dans la boutique.</p>
+  <div class="milestone-next"><div class="milestone-next-top"><strong id="nextMilestoneText">Prochain palier : 1 huile</strong><span id="nextMilestoneCount">0 / 1</span></div><div class="meter milestone-meter"><span id="milestoneMeterFill"></span></div></div>
+  <div class="milestone-list" id="milestoneList" aria-live="polite"></div>
+  <p class="copy">Les paliers sont permanents : dépenser ton huile ne les fait pas perdre. Le total historique sert à calculer les récompenses et ne redescend jamais.</p>
   <div class="modal-footer"><button class="close-btn" data-close="progressModal">Continuer</button></div>
  </div></div>
  <div class="modal-backdrop" id="settingsModal"><div class="modal">
@@ -146,14 +164,26 @@ const treeCounts=[1,1,2,2,2,3,3,3,4,4,4,5];
 const yields=[1,1.35,1.8,2.4,3.2,4.3,5.8,7.8,10.5,14,18.5,24];
 // Coûts d'achat calibrés sur la production cumulée : l'expansion demande plus de récoltes, mais augmente nettement le débit.
 const costs=[0,6,24,72,155,280,550,960,1600,2800,4500,7000];
+const milestones=[
+ {at:1,name:'Premier cru',icon:'🌟',bonus:.10,stack:0,reward:'+10 % de rendement permanent',toast:'+10 % de rendement permanent'},
+ {at:5,name:'Oliviers dorés',icon:'🌳',bonus:.15,stack:0,reward:'+15 % de rendement · éclats dorés sur les arbres',toast:'+15 % de rendement et oliviers dorés'},
+ {at:10,name:'Maître de presse',icon:'⚙️',bonus:.20,stack:2,reward:'+20 % de rendement · +2 places de stockage',toast:'+20 % de rendement et +2 places de stockage'},
+ {at:25,name:'Moulin historique',icon:'🏛️',bonus:.25,stack:0,reward:'+25 % de rendement · enseigne du moulin améliorée',toast:'+25 % de rendement et moulin historique'},
+ {at:50,name:'Empire oléicole',icon:'👑',bonus:.35,stack:2,reward:'+35 % de rendement · +2 places de stockage',toast:'+35 % de rendement et +2 places de stockage'},
+ {at:100,name:'Grand cru légendaire',icon:'🏆',bonus:.50,stack:0,reward:'+50 % de rendement · prestige visuel ultime',toast:'+50 % de rendement : Grand cru légendaire'}
+];
 const colors=[['#92bb60','#4f803e','#b8d476'],['#86ae59','#4c793f','#c4d980'],['#7ca550','#3d713e','#afcc70'],['#9ab95d','#557d42','#cfdf83'],['#83ad59','#376d46','#aed079'],['#6e9d4e','#315f3d','#9fc56a'],['#a6b95e','#607b3e','#d6d27d'],['#6f9f59','#316946','#a3ce7b'],['#899f4d','#506b38','#b7cb6c'],['#759e48','#3c6236','#abc967'],['#97b965','#4f7c43','#c5d98d'],['#7aa054','#365e3c','#b3ca7d']];
 function makePlot(i){return{unlocked:i===0,level:1,auto:false,stock:i===0?1:0,grow:i===0?0:7};}
 function fresh(){return{olives:0,oil:0,totalOil:0,plots:Array.from({length:12},(_,i)=>makePlot(i)),upgrades:{power:0,speed:0,stack:0}};}
 let game=fresh(),selected=0,hitTargets=[],pointerHeld=false,swipedPlots=new Set(),toastTimer=0,lastFrame=0,lastSave=0,lastUI=0,particles=[],fruitParticles=[],treeShake=new Map(),ripePulses=new Map(),swipeTrail=[];
 function fmt(n){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:1});}
 function unlockedCount(){return game.plots.filter(p=>p.unlocked).length;}
-function multiplier(){return(1+game.totalOil*.2)*(1+game.upgrades.power*.25);}
-function stackLimit(){return 3+game.upgrades.stack*2;}
+function milestoneYieldBonus(){return 1+milestones.reduce((sum,m)=>sum+(game.totalOil>=m.at?m.bonus:0),0);}
+function milestoneStackBonus(){return milestones.reduce((sum,m)=>sum+(game.totalOil>=m.at?m.stack:0),0);}
+function multiplier(){return(1+game.totalOil*.2)*(1+game.upgrades.power*.25)*milestoneYieldBonus();}
+function stackLimit(){return 3+game.upgrades.stack*2+milestoneStackBonus();}
+function nextMilestone(){return milestones.find(m=>game.totalOil<m.at)||null;}
+function milestoneProgress(){const next=nextMilestone();if(!next)return 100;const previous=[...milestones].reverse().find(m=>game.totalOil>=m.at);const start=previous?previous.at:0;return Math.max(0,Math.min(100,(game.totalOil-start)/(next.at-start)*100));}
 function growSeconds(p,i){return Math.max(1.25,7/(1+game.totalOil*.12+game.upgrades.speed*.38+(p.level-1)*.1+i*.055));}
 function treeYield(p,i){return yields[i]*p.level*multiplier();}
 function plotYield(p,i){return treeYield(p,i)*treeCounts[i];}
@@ -209,8 +239,18 @@ function drawBarn(x,y,s){
 }
 function drawMill(x,y,s){
  const img=sprite('mill');
+ if(game.totalOil>=25){
+  const a=game.totalOil>=100?'.24':'.13';
+  ellipse(x,y-13,81,57,'#f5cc4a'+a,'#e0b13f88',2);
+  if(game.totalOil>=50){for(let k=0;k<8;k++){const ang=k*Math.PI/4,px=x+Math.cos(ang)*72,py=y-13+Math.sin(ang)*43;label('✦',px,py,9,'#f7d05b','1000');}}
+ }
  if(img){const w=212*s,h=177*s;ctx.drawImage(img,x-w/2,y-102*s,w,h);}
  else{ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(0,70,87,20,'#486b3938');poly([[-75,7],[0,37],[77,5],[0,-27]],'#cfc29b','#a39270',2);poly([[-61,-16],[0,6],[0,66],[-61,40]],'#e5d7b5','#b4a17b',2);poly([[0,6],[62,-16],[62,40],[0,66]],'#c9b48d','#9d8965',2);poly([[-77,-20],[0,-59],[77,-20],[0,13]],'#b65a3b','#83402f',3);ctx.restore();}
+ if(game.totalOil>=25){
+  const plaque=game.totalOil>=100?'GRAND CRU':game.totalOil>=50?'MOULIN ROYAL':'HISTORIQUE';
+  box(x-42,y-74,84,17,5,'#ffefb6','#c09232',1.4);
+  label(plaque,x,y-65,9,'#785326','1000');
+ }
  hitTargets.push({type:'mill',x:x-95,y:y-81,w:190,h:158});
 }
 function plotPos(i){const c=i%4,r=Math.floor(i/4);return{x:625+(c-r)*100,y:164+(c+r)*48};}
@@ -235,6 +275,13 @@ function drawTree(x,y,i,p,ripe,t,miniScale){
   ctx.filter='hue-rotate('+hue+'deg) saturate('+(1+(i%4)*.045)+')';
   ctx.drawImage(img,-w/2,14*scale-h,w,h);
   ctx.restore();
+  if(game.totalOil>=5){
+   const sparkleX=x+w*.32,sparkleY=y-h*.57;
+   ctx.save();ctx.globalAlpha=.58+.28*Math.sin(t/180+i);label('✦',sparkleX,sparkleY,Math.max(6,8*scale),'#ffe17a','1000');ctx.restore();
+  }
+  if(game.totalOil>=100&&i>=8){
+   ctx.save();ctx.globalAlpha=.72;label('★',x+w*.34,y-h*.75,Math.max(7,10*scale),'#fff0a0','1000');ctx.restore();
+  }
  }else{
   const c=colors[i],wave=Math.sin(t/500+x*.034+y*.023)*1.35;
   const dx=x+wobble,dy=y+lift;
@@ -424,21 +471,39 @@ function renderUI(){
  document.getElementById('totalOil').textContent=fmt(game.totalOil);
  document.getElementById('bonusCount').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
  document.getElementById('bottomChip').textContent=unlockedCount()+' / 12 parcelles débloquées';
- document.getElementById('progressFill').style.width=Math.min(100,game.totalOil/25*100)+'%';
- document.getElementById('bannerTitle').textContent=game.olives>=10?'MOULIN PRÊT !':(game.totalOil?'OLIVERAIE EN PROGRÈS !':'RÉCOLTE DES OLIVES !');
+ document.getElementById('progressFill').style.width=milestoneProgress()+'%';
+ document.getElementById('bannerTitle').textContent=game.olives>=10?'MOULIN PRÊT !':(game.totalOil>=100?'GRAND CRU LÉGENDAIRE':game.totalOil>=25?'MOULIN HISTORIQUE':game.totalOil?'OLIVERAIE EN PROGRÈS !':'RÉCOLTE DES OLIVES !');
  document.getElementById('bannerSub').textContent=game.totalOil?'Cycle n° '+(game.totalOil+1)+' · Rendement permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
  document.getElementById('hint').textContent=game.olives>=10?'🏺 Le moulin peut presser 1 kg d’huile : clique dessus à droite !':'👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.';
  updatePlotPanel();updateShop();
 }
 function pressMill(){
  if(game.olives<10){toast('Le moulin a besoin de '+fmt(10-game.olives)+' kg d’olives en plus.');return;}
+ const previousTotal=game.totalOil;
  game.olives-=10;game.oil++;game.totalOil++;
  game.plots=Array.from({length:12},(_,i)=>makePlot(i));game.plots[0].stock=0;game.plots[0].grow=4.5;selected=0;
- renderUI();save();feedback(1090,286,'+1 HUILE','#fff4b4');toast('Huile produite ! Les terroirs repartent avec un rendement supérieur.');
+ renderUI();save();feedback(1090,286,'+1 HUILE','#fff4b4');
+ const earned=milestones.find(m=>previousTotal<m.at&&game.totalOil>=m.at);
+ if(earned)toast('🏆 PALIER '+earned.at+' : '+earned.name+' — '+earned.toast);
+ else toast('Huile produite ! Bonus permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2})+'.');
+}
+function renderMilestones(){
+ const root=document.getElementById('milestoneList');if(!root)return;
+ const next=nextMilestone();
+ document.getElementById('nextMilestoneText').textContent=next?'Prochain palier : '+next.name:'Tous les paliers sont débloqués !';
+ document.getElementById('nextMilestoneCount').textContent=next?fmt(game.totalOil)+' / '+next.at:'100 / 100';
+ document.getElementById('milestoneMeterFill').style.width=milestoneProgress()+'%';
+ root.innerHTML='';
+ milestones.forEach(m=>{
+  const unlocked=game.totalOil>=m.at;
+  const row=document.createElement('div');row.className='milestone-card'+(unlocked?' unlocked':'');
+  row.innerHTML='<div class="milestone-icon">'+m.icon+'</div><div class="milestone-info"><div class="milestone-title">'+m.name+'<span>'+m.at+' huile'+(m.at>1?'s':'')+'</span></div><div class="milestone-reward">'+m.reward+'</div><div class="milestone-status">'+(unlocked?'✓ ACQUIS À VIE':'🔒 À débloquer')+'</div></div>';
+  root.appendChild(row);
+ });
 }
 function openModal(id){
  document.getElementById(id).classList.add('open');
- if(id==='progressModal'){document.getElementById('progressTotal').textContent=fmt(game.totalOil);document.getElementById('progressBonus').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+ if(id==='progressModal'){document.getElementById('progressTotal').textContent=fmt(game.totalOil);document.getElementById('progressBonus').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});renderMilestones();}
  if(id==='shopModal')updateShop();
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
