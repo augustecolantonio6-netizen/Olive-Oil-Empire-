@@ -240,8 +240,8 @@ function drawBarn(x,y,s){
 function drawMill(x,y,s){
  const img=sprite('mill');
  if(game.totalOil>=25){
-  const a=game.totalOil>=100?'.24':'.13';
-  ellipse(x,y-13,81,57,'#f5cc4a'+a,'#e0b13f88',2);
+  const alpha=game.totalOil>=100?.24:.13;
+  ellipse(x,y-13,81,57,'rgba(245,204,74,'+alpha+')','rgba(224,177,63,.55)',2);
   if(game.totalOil>=50){for(let k=0;k<8;k++){const ang=k*Math.PI/4,px=x+Math.cos(ang)*72,py=y-13+Math.sin(ang)*43;label('✦',px,py,9,'#f7d05b','1000');}}
  }
  if(img){const w=212*s,h=177*s;ctx.drawImage(img,x-w/2,y-102*s,w,h);}
