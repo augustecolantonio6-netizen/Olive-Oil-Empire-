@@ -113,7 +113,7 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
   <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">⚙️</button>
  </div>
  <div class="hint" id="hint">👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.</div>
- <div class="bottom-chip" id="bottomChip">1 / 12 parcelles débloquées</div>
+ <div class="bottom-chip" id="bottomChip">1 / 9 parcelles débloquées</div>
  <section class="panel" id="plotPanel" aria-live="polite">
   <button class="panel-x" id="plotClose" aria-label="Fermer">×</button>
   <div class="eyebrow" id="plotEyebrow">TERROIR N° 1</div><h2 id="plotTitle">Olive sauvage</h2>
@@ -166,12 +166,12 @@ const sprites={};
 [['tree','assets/tree.svg'],['treeRipe','assets/tree-ripe.svg'],['treeYoung','assets/tree-young.svg'],['treeAncient','assets/tree-ancient.svg'],['plot','assets/plot-grass.svg'],['plotLocked','assets/plot-locked.svg'],['house','assets/house.svg'],['barn','assets/barn.svg'],['mill','assets/mill.svg'],['crate','assets/crate.svg']].forEach(([key,src])=>{const img=new Image();img.decoding='async';img.src=src;sprites[key]=img;});
 function sprite(key){const img=sprites[key];return img&&img.complete&&img.naturalWidth>0?img:null;}
 
-const names=['Olive sauvage','Aglandau','Picholine','Cailletier','Lucques','Bouteillan','Grossane','Salonenque','Tanche','Cornicabra','Arbequina','Olivière'];
+const names=['Olive sauvage','Aglandau','Picholine','Cailletier','Lucques','Bouteillan','Grossane','Salonenque','Tanche'];
 // Production de base par arbre : les parcelles avancées ont des variétés plus productives.
-const treeCounts=[1,1,2,2,2,3,3,3,4,4,4,5];
-const yields=[1,1.35,1.8,2.4,3.2,4.3,5.8,7.8,10.5,14,18.5,24];
-// Coûts d'achat calibrés sur la production cumulée : l'expansion demande plus de récoltes, mais augmente nettement le débit.
-const costs=[0,6,24,72,155,280,550,960,1600,2800,4500,7000];
+const treeCounts=[1,1,2,2,2,3,3,3,4];
+const yields=[1,1.35,1.8,2.4,3.2,4.3,5.8,7.8,10.5];
+// Coûts exponentiels : chaque nouvelle parcelle coûte six fois plus que la précédente.
+const costs=[0,15,90,540,3240,19440,116640,699840,4199040];
 const milestones=[
  {at:1,name:'Premier cru',icon:'🌟',bonus:.10,stack:0,growth:0,reward:'+10 % de rendement permanent',toast:'+10 % de rendement permanent'},
  {at:5,name:'Oliviers dorés',icon:'🌳',bonus:.15,stack:0,growth:0,reward:'+15 % de rendement · éclats dorés sur les arbres',toast:'+15 % de rendement et oliviers dorés'},
@@ -180,9 +180,9 @@ const milestones=[
  {at:50,name:'Empire oléicole',icon:'👑',bonus:.35,stack:2,growth:.10,reward:'+35 % de rendement · +2 stockage · pousse 10 % plus vite',toast:'+35 % de rendement, stockage et pousse améliorés'},
  {at:100,name:'Grand cru légendaire',icon:'🏆',bonus:.50,stack:0,growth:.10,reward:'+50 % de rendement · pousse 10 % plus vite · halo légendaire du moulin',toast:'+50 % de rendement, pousse accélérée et prestige légendaire'}
 ];
-const colors=[['#92bb60','#4f803e','#b8d476'],['#86ae59','#4c793f','#c4d980'],['#7ca550','#3d713e','#afcc70'],['#9ab95d','#557d42','#cfdf83'],['#83ad59','#376d46','#aed079'],['#6e9d4e','#315f3d','#9fc56a'],['#a6b95e','#607b3e','#d6d27d'],['#6f9f59','#316946','#a3ce7b'],['#899f4d','#506b38','#b7cb6c'],['#759e48','#3c6236','#abc967'],['#97b965','#4f7c43','#c5d98d'],['#7aa054','#365e3c','#b3ca7d']];
+const colors=[['#92bb60','#4f803e','#b8d476'],['#86ae59','#4c793f','#c4d980'],['#7ca550','#3d713e','#afcc70'],['#9ab95d','#557d42','#cfdf83'],['#83ad59','#376d46','#aed079'],['#6e9d4e','#315f3d','#9fc56a'],['#a6b95e','#607b3e','#d6d27d'],['#6f9f59','#316946','#a3ce7b'],['#899f4d','#506b38','#b7cb6c']];
 function makePlot(i){return{unlocked:i===0,level:1,auto:false,stock:i===0?1:0,grow:i===0?0:7};}
-function fresh(){return{olives:0,oil:0,totalOil:0,plots:Array.from({length:12},(_,i)=>makePlot(i)),upgrades:{power:0,speed:0,stack:0,master:0}};}
+function fresh(){return{olives:0,oil:0,totalOil:0,plots:Array.from({length:9},(_,i)=>makePlot(i)),upgrades:{power:0,speed:0,stack:0,master:0}};}
 let game=fresh(),selected=0,hitTargets=[],pointerHeld=false,swipedPlots=new Set(),toastTimer=0,lastFrame=0,lastSave=0,lastUI=0,particles=[],fruitParticles=[],treeShake=new Map(),ripePulses=new Map(),swipeTrail=[];
 function fmt(n){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:1});}
 function unlockedCount(){return game.plots.filter(p=>p.unlocked).length;}
@@ -224,7 +224,7 @@ function normalizeGameData(data){
   stack:finiteNumber(upgrades.stack,0,0,15,true),
   master:finiteNumber(upgrades.master,0,0,1,true)
  };
- normalized.plots=Array.from({length:12},(_,i)=>{
+ normalized.plots=Array.from({length:9},(_,i)=>{
   const src=data.plots[i]&&typeof data.plots[i]==='object'?data.plots[i]:{};
   const unlocked=i===0||src.unlocked===true;
   const auto=unlocked&&src.auto===true;
@@ -338,7 +338,7 @@ function drawMill(x,y,s){
  if(game.totalOil>=100){ctx.save();ctx.globalAlpha=.7+.2*Math.sin(performance.now()/240);label('♛',x+57*s,y-87*s,18*s,'#ffe16b','1000');ctx.restore();}
  hitTargets.push({type:'mill',x:x-95,y:y-81,w:190,h:158});
 }
-function plotPos(i){const c=i%4,r=Math.floor(i/4);return{x:625+(c-r)*100,y:164+(c+r)*48};}
+function plotPos(i){const c=i%3,r=Math.floor(i/3);return{x:640+(c-r)*105,y:185+(c+r)*52};}
 function treeLayout(n){if(n===1)return[[0,-3]];if(n===2)return[[-17,-4],[17,4]];if(n===3)return[[-25,-5],[1,-13],[22,6]];if(n===4)return[[-27,-7],[-7,-16],[20,-3],[4,13]];return[[-30,-6],[-12,-17],[12,-14],[28,1],[0,12]];}
 function drawTree(x,y,i,p,ripe,t,miniScale){
  const scale=(miniScale||1)*(.72+i*.027+Math.min(5,(p?p.level:1)-1)*.022);
@@ -493,7 +493,7 @@ function drawScene(now){
  drawBackground(now);
  drawHouse(203,129,.82);drawBarn(1127,145,.9);
  // Sort by ground depth so the front rows draw over the back rows
- const order=Array.from({length:12},(_,i)=>i).sort((a,b)=>plotPos(a).y-plotPos(b).y);
+ const order=Array.from({length:9},(_,i)=>i).sort((a,b)=>plotPos(a).y-plotPos(b).y);
  order.forEach(i=>drawParcel(i,now));
  drawMill(1090,379,.91);
  drawFarmer(now);drawCrates();drawHarvestEffects(now);drawFloating(now);
@@ -561,7 +561,7 @@ function renderUI(){
  document.getElementById('oilCount').textContent=fmt(game.oil);
  document.getElementById('totalOil').textContent=fmt(game.totalOil);
  document.getElementById('bonusCount').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
- document.getElementById('bottomChip').textContent=unlockedCount()+' / 12 parcelles débloquées';
+ document.getElementById('bottomChip').textContent=unlockedCount()+' / 9 parcelles débloquées';
  document.getElementById('progressFill').style.width=milestoneProgress()+'%';
  document.getElementById('bannerTitle').textContent=game.olives>=10?'MOULIN PRÊT !':(game.totalOil>=100?'GRAND CRU LÉGENDAIRE':game.totalOil>=25?'MOULIN HISTORIQUE':game.totalOil?'OLIVERAIE EN PROGRÈS !':'RÉCOLTE DES OLIVES !');
  document.getElementById('bannerSub').textContent=game.totalOil?'Cycle n° '+(game.totalOil+1)+' · Rendement permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
@@ -572,7 +572,7 @@ function pressMill(){
  if(game.olives<10){toast('Le moulin a besoin de '+fmt(10-game.olives)+' kg d’olives en plus.');return;}
  const previousTotal=game.totalOil;
  game.olives-=10;game.oil++;game.totalOil++;
- game.plots=Array.from({length:12},(_,i)=>makePlot(i));game.plots[0].stock=0;game.plots[0].grow=4.5;selected=0;
+ game.plots=Array.from({length:9},(_,i)=>makePlot(i));game.plots[0].stock=0;game.plots[0].grow=4.5;selected=0;
  renderUI();save();feedback(1090,286,'+1 HUILE','#fff4b4');
  const earned=milestones.find(m=>previousTotal<m.at&&game.totalOil>=m.at);
  if(earned)toast('🏆 PALIER '+earned.at+' : '+earned.name+' — '+earned.toast);
