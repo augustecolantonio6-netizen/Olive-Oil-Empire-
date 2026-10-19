@@ -18,12 +18,13 @@ Puis ouvre http://localhost:8000.
 
 ## GitHub Pages
 
-Le workflow `.github/workflows/pages.yml` publie les fichiers statiques après chaque commit sur `main`.
+Le workflow `.github/workflows/pages.yml` publie les fichiers statiques après chaque commit sur `main`. Avant publication, il vérifie la syntaxe JavaScript, les identifiants HTML utilisés par le jeu et la présence des sprites SVG. Une erreur bloque le déploiement au lieu de publier une version manifestement incomplète.
 
 1. Ouvre [Settings → Pages](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/settings/pages).
 2. Dans **Build and deployment → Source**, sélectionne **GitHub Actions**.
-3. Vérifie le résultat dans [Actions](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/actions). Une coche verte confirme que la publication est terminée.
+3. Vérifie le résultat dans [Actions](https://github.com/augustecolantonio6-netizen/Olive-Oil-Empire-/actions). Une coche verte confirme que les contrôles et la publication sont terminés.
 4. Le site devrait ensuite être disponible ici : https://augustecolantonio6-netizen.github.io/Olive-Oil-Empire-/
+
 
 ## Contenu du projet
 
@@ -78,4 +79,4 @@ Les bonus de rendement des paliers se cumulent. Les réductions de pousse des pa
 - **Moulin :** clique dessus avec au moins 10 kg d'olives pour produire 1 kg d'huile. La progression des parcelles repart à une seule parcelle, avec un bonus permanent de productivité.
 - **Boutique :** dépense l'huile pour des bonus permanents de rendement, vitesse de pousse et capacité de stockage.
 
-La sauvegarde est locale au navigateur, sans production hors ligne. Le menu ⚙ permet d'exporter ou d'importer un fichier JSON et de recommencer.
+La sauvegarde est locale au navigateur, sans production hors ligne. Le jeu migre les sauvegardes précédentes vers le format v4, valide et normalise les données avant de les charger, et garde une copie de secours de la dernière sauvegarde. Le menu ⚙ permet d'exporter ou d'importer un fichier JSON, de restaurer la copie de secours et de recommencer. Les imports invalides sont refusés sans remplacer la partie en cours.
