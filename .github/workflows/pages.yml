@@ -43,7 +43,7 @@ jobs:
           const absent = assets.filter(path => !fs.existsSync(path));
           if (absent.length) throw new Error('Missing sprite assets: ' + absent.join(', '));
 
-          if (!match[1].includes('function pressMill()') || !match[1].includes('function normalizeGameData()')) {
+          if (!match[1].includes('function pressMill()') || !match[1].includes('function normalizeGameData(')) {
             throw new Error('Core gameplay or save validation function is missing');
           }
           console.log('Game smoke check passed: JS syntax, HTML hooks, and ' + assets.length + ' SVG assets.');
