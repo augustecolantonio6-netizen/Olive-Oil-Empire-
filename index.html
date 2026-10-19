@@ -696,6 +696,7 @@ document.getElementById('resetConfirm').addEventListener('click',()=>{
  game=fresh();selected=0;save();renderUI();closeModal('resetModal');closeModal('settingsModal');toast('Nouvelle partie commencée.');
 });
 function tick(now){
+ if(document.hidden){lastFrame=now;if(now-lastSave>4000){save();lastSave=now;}requestAnimationFrame(tick);return;}
  const dt=lastFrame?Math.min((now-lastFrame)/1000,.08):0;lastFrame=now;
  game.plots.forEach((p,i)=>{
   if(!p.unlocked)return;
@@ -715,6 +716,12 @@ function tick(now){
  drawScene(now);requestAnimationFrame(tick);
 }
 window.addEventListener('resize',resize);
+window.addEventListener('pagehide',()=>{save();});
+document.addEventListener('visibilitychange',()=>{
+ lastFrame=0;
+ if(document.hidden){save();}
+ else{resize();renderUI();}
+});
 load();resize();renderUI();requestAnimationFrame(tick);
 })();
 
