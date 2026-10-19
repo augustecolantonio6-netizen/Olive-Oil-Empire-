@@ -79,6 +79,10 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
 .shop-buy:disabled{opacity:.45;cursor:not-allowed}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 .close-btn{border:0;border-radius:8px;padding:9px 13px;background:#e9ecd9;color:#516844;font-weight:1000}
+.save-health{margin:10px 0 4px;padding:10px 11px;border-radius:9px;font-size:11px;line-height:1.45;font-weight:900;background:#eef0df;color:#6b775c;border:1px solid #d8ddc5}
+.save-health.good{background:#edf4dc;color:#466b38;border-color:#cbdcb1}
+.save-health.bad{background:#fff0d9;color:#8a5a1b;border-color:#e8c995}
+.action-btn[hidden]{display:none}
 .toast{position:absolute;z-index:12;left:50%;top:23%;transform:translate(-50%,-8px);padding:10px 17px;border:2px solid #d8c16d;border-radius:100px;background:#fff9e7;color:#4b6539;font-size:13px;font-weight:1000;box-shadow:0 4px #9c984f;opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;text-align:center;max-width:86%}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:700px){
@@ -137,6 +141,8 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
  </div></div>
  <div class="modal-backdrop" id="settingsModal"><div class="modal">
   <div class="eyebrow">OPTIONS DE LA FERME</div><h2>Sauvegarde locale</h2><p>La partie est enregistrée dans ce navigateur. Pas de production hors ligne et pas de compte nécessaire.</p>
+  <div class="save-health good" id="saveHealth" role="status">Vérification de la sauvegarde…</div>
+  <button class="action-btn alt" id="restoreBackup" hidden><span>↶ Restaurer la dernière sauvegarde</span><span>Backup</span></button>
   <button class="action-btn alt" id="exportSave"><span>📦 Exporter une sauvegarde</span><span>JSON</span></button>
   <button class="action-btn alt" id="importSave"><span>📂 Importer une sauvegarde</span><span>JSON</span></button><input type="file" id="importFile" accept="application/json" hidden>
   <button class="action-btn" id="resetAsk"><span>↻ Recommencer la partie</span><span>!</span></button>
@@ -153,7 +159,7 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
 
 (function(){
 'use strict';
-const W=1280,H=610,KEY='olive-oil-empire-save-v3',OLD_KEY='olive-oil-empire-save-v2';
+const W=1280,H=610,KEY='olive-oil-empire-save-v4',BACKUP_KEY='olive-oil-empire-backup-v4',LEGACY_KEYS=['olive-oil-empire-save-v3','olive-oil-empire-save-v2','olive-oil-empire-save-v1'];
 const canvas=document.getElementById('world'),ctx=canvas.getContext('2d');
 const sprites={};
 [['tree','assets/tree.svg'],['treeRipe','assets/tree-ripe.svg'],['treeYoung','assets/tree-young.svg'],['treeAncient','assets/tree-ancient.svg'],['plot','assets/plot-grass.svg'],['plotLocked','assets/plot-locked.svg'],['house','assets/house.svg'],['barn','assets/barn.svg'],['mill','assets/mill.svg'],['crate','assets/crate.svg']].forEach(([key,src])=>{const img=new Image();img.decoding='async';img.src=src;sprites[key]=img;});
@@ -192,8 +198,83 @@ function plotYield(p,i){return treeYield(p,i)*treeCounts[i];}
 function upgradeCost(p,i){return Math.ceil((3+yields[i]*treeCounts[i]*.8)*Math.pow(p.level,1.55)*Math.pow(1.05,i)*multiplier());}
 function autoCost(p,i){return Math.ceil((8+yields[i]*treeCounts[i]*.6)*Math.pow(1.10,i)*Math.pow(p.level,.15)*multiplier());}
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100);}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(game));}catch(e){}}
-function load(){try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(!raw)return;const d=JSON.parse(raw);if(!d||!Array.isArray(d.plots))return;game={...fresh(),...d,plots:Array.from({length:12},(_,i)=>({...makePlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,master:0,...d.upgrades}};game.plots[0].unlocked=true;game.olives=Math.max(0,Number(game.olives)||0);game.oil=Math.max(0,Number(game.oil)||0);game.totalOil=Math.max(0,Number(game.totalOil)||0);save();}catch(e){game=fresh();}}
+function updateSaveStatus(message,ok=true){
+ const el=document.getElementById('saveHealth');
+ if(el){el.textContent=message;el.className='save-health '+(ok?'good':'bad');}
+ const restore=document.getElementById('restoreBackup');
+ if(restore){try{restore.hidden=!localStorage.getItem(BACKUP_KEY);}catch(e){restore.hidden=true;}}
+}
+function finiteNumber(value,fallback,min,max,integer=false){
+ const n=Number(value);
+ if(!Number.isFinite(n))return fallback;
+ const safe=Math.max(min,Math.min(max,n));
+ return integer?Math.floor(safe):safe;
+}
+function normalizeGameData(data){
+ if(!data||typeof data!=='object'||Array.isArray(data)||!Array.isArray(data.plots)||!data.upgrades||typeof data.upgrades!=='object'||Array.isArray(data.upgrades))throw new Error('Structure de sauvegarde invalide');
+ const normalized=fresh();
+ normalized.olives=finiteNumber(data.olives,0,0,1e18,false);
+ normalized.oil=finiteNumber(data.oil,0,0,1e12,true);
+ normalized.totalOil=Math.max(normalized.oil,finiteNumber(data.totalOil,normalized.oil,0,1e12,true));
+ const upgrades=data.upgrades||{};
+ normalized.upgrades={
+  power:finiteNumber(upgrades.power,0,0,15,true),
+  speed:finiteNumber(upgrades.speed,0,0,15,true),
+  stack:finiteNumber(upgrades.stack,0,0,15,true),
+  master:finiteNumber(upgrades.master,0,0,1,true)
+ };
+ normalized.plots=Array.from({length:12},(_,i)=>{
+  const src=data.plots[i]&&typeof data.plots[i]==='object'?data.plots[i]:{};
+  const unlocked=i===0||src.unlocked===true;
+  const auto=unlocked&&src.auto===true;
+  let stock=unlocked?finiteNumber(src.stock,0,0,1000,true):0;
+  if(!auto)stock=Math.min(stock,1);
+  let grow=unlocked?finiteNumber(src.grow,0,0,3600,false):0;
+  if(unlocked&&stock===0&&grow===0)grow=1.5;
+  return {
+   unlocked,
+   level:finiteNumber(src.level,1,1,1000000,true),
+   auto,
+   stock,
+   grow
+  };
+ });
+ normalized.plots[0].unlocked=true;
+ return normalized;
+}
+function save(makeBackup=true){
+ try{
+  const previous=makeBackup?localStorage.getItem(KEY):null;
+  if(previous){try{localStorage.setItem(BACKUP_KEY,previous);}catch(backupError){}}
+  localStorage.setItem(KEY,JSON.stringify({...game,schemaVersion:4}));
+  updateSaveStatus('Sauvegarde locale OK · '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),true);
+  return true;
+ }catch(e){
+  updateSaveStatus('Écriture impossible dans ce navigateur. Exporte ta sauvegarde pour ne pas perdre la partie.',false);
+  return false;
+ }
+}
+function load(){
+ let invalidFound=false,storageFailed=false;
+ const candidates=[KEY,BACKUP_KEY,...LEGACY_KEYS];
+ for(const key of candidates){
+  let raw=null;
+  try{raw=localStorage.getItem(key);}catch(e){storageFailed=true;break;}
+  if(!raw)continue;
+  try{
+   game=normalizeGameData(JSON.parse(raw));
+   save(false);
+   if(key===BACKUP_KEY)updateSaveStatus('Partie récupérée depuis la sauvegarde de secours.',true);
+   else if(key!==KEY)updateSaveStatus('Ancienne sauvegarde récupérée et mise à niveau.',true);
+   else updateSaveStatus('Sauvegarde locale chargée.',true);
+   return;
+  }catch(e){invalidFound=true;}
+ }
+ game=fresh();
+ if(storageFailed)updateSaveStatus('Le navigateur bloque le stockage local. Utilise l’export JSON pour conserver ta partie.',false);
+ else if(invalidFound)updateSaveStatus('Sauvegarde illisible : nouvelle partie chargée. Vérifie ton export si tu en as un.',false);
+ else updateSaveStatus('Nouvelle partie · sauvegarde locale activée.',true);
+}
 function poly(points,fill,stroke,lineWidth){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
 function ellipse(x,y,rx,ry,fill,stroke,lineWidth){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
 function line(points,color,width){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();}
@@ -582,14 +663,33 @@ document.getElementById('buySpeed').addEventListener('click',()=>buyUpgrade('spe
 document.getElementById('buyStack').addEventListener('click',()=>buyUpgrade('stack'));
 document.getElementById('buyMasterPress').addEventListener('click',buyMasterPress);
 document.getElementById('exportSave').addEventListener('click',()=>{
- const blob=new Blob([JSON.stringify(game,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='olive-oil-empire-save.json';a.click();URL.revokeObjectURL(url);toast('Sauvegarde exportée.');
+ try{
+  const blob=new Blob([JSON.stringify({...game,schemaVersion:4,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='olive-oil-empire-save.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  updateSaveStatus('Export JSON créé. Garde le fichier dans un endroit sûr.',true);toast('Sauvegarde exportée.');
+ }catch(e){updateSaveStatus('Export impossible dans ce navigateur.',false);toast('Export impossible.');}
+});
+document.getElementById('restoreBackup').addEventListener('click',()=>{
+ try{
+  const raw=localStorage.getItem(BACKUP_KEY);if(!raw)throw new Error('backup missing');
+  game=normalizeGameData(JSON.parse(raw));selected=0;save(false);renderUI();
+  updateSaveStatus('Sauvegarde de secours restaurée.',true);toast('Partie restaurée depuis la sauvegarde de secours.');
+ }catch(e){updateSaveStatus('La sauvegarde de secours est absente ou invalide.',false);toast('Restauration impossible.');}
 });
 document.getElementById('importSave').addEventListener('click',()=>document.getElementById('importFile').click());
 document.getElementById('importFile').addEventListener('change',async e=>{
  const file=e.target.files&&e.target.files[0];if(!file)return;
- try{const d=JSON.parse(await file.text());if(!Array.isArray(d.plots)||!d.upgrades)throw new Error('invalid');game={...fresh(),...d,plots:Array.from({length:12},(_,i)=>({...makePlot(i),...(d.plots[i]||{})})),upgrades:{power:0,speed:0,stack:0,master:0,...d.upgrades}};game.plots[0].unlocked=true;selected=0;renderUI();save();toast('Sauvegarde importée.');closeModal('settingsModal');}
- catch(_){toast('Fichier de sauvegarde invalide.');}e.target.value='';
+ try{
+  const parsed=JSON.parse(await file.text());
+  const restored=normalizeGameData(parsed.game||parsed);
+  game=restored;selected=0;renderUI();save();closeModal('settingsModal');
+  updateSaveStatus('Sauvegarde importée et validée.',true);toast('Sauvegarde importée.');
+ }catch(err){
+  updateSaveStatus('Import refusé : le fichier est invalide. Ta partie actuelle est conservée.',false);
+  toast('Fichier de sauvegarde invalide.');
+ }finally{e.target.value='';}
 });
 document.getElementById('resetAsk').addEventListener('click',()=>openModal('resetModal'));
 document.getElementById('resetConfirm').addEventListener('click',()=>{
