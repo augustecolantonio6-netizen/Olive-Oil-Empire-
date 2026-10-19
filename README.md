@@ -50,6 +50,23 @@ Le rendement d'une récolte est calculé ainsi : **kg de base par arbre × nombr
 
 Les prix d'amélioration du niveau et du stockage sont calculés selon la productivité de la parcelle et le bonus permanent déjà obtenu ; le coût exact est affiché dans le panneau avant l'achat.
 
+## Prestige et récompenses permanentes
+
+Le stock **Huile disponible** est la monnaie que tu peux dépenser dans la boutique. **Huile cumulée à vie** est le total de toutes les huiles fabriquées : il ne diminue jamais lorsque tu achètes une amélioration et sert à calculer le bonus de prestige.
+
+Chaque pression au moulin coûte 10 kg d'olives et produit 1 kg d'huile. Elle relance les parcelles à une seule parcelle, mais conserve l'huile disponible non dépensée, les améliorations de boutique et tous les paliers déjà acquis.
+
+| Huile cumulée | Récompense permanente |
+|---:|---|
+| 1 | +10 % de rendement |
+| 5 | +15 % de rendement et éclats dorés sur les arbres |
+| 10 | +20 % de rendement, +2 places de stockage et déblocage de la Presse de maître |
+| 25 | +25 % de rendement, temps de pousse réduit de 15 % et enseigne du moulin améliorée |
+| 50 | +35 % de rendement, +2 places de stockage supplémentaires et temps de pousse réduit de 10 % |
+| 100 | +50 % de rendement, temps de pousse réduit de 10 % et halo de prestige légendaire |
+
+Les bonus de rendement des paliers se cumulent. Les réductions de pousse des paliers 25, 50 et 100 se cumulent également, avec un plancher de temps de pousse pour préserver la lisibilité du jeu. À partir de 10 huiles cumulées, la boutique révèle la **Presse de maître** : elle coûte 8 huiles disponibles et ajoute +25 % de rendement permanent ; l'achat est unique.
+
 ## Commandes de jeu
 
 - **Récolter :** clique sur un olivier mûr ou glisse sur plusieurs parcelles. Chaque parcelle est récoltée au maximum une fois par geste.
