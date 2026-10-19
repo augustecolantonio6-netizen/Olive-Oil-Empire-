@@ -1,3 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 150">
-<defs><linearGradient id="dirt" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c5c5a4"/><stop offset="1" stop-color="#8d9d78"/></linearGradient></defs>
-<path d="M140 12 L267 76 L140 141 L13 76Z" fill="#718b5d" opacity=".3"/><path d="M140 10 L267 75 L140 140 L13 75Z" fill="url(#dirt)" stroke="#718b5c" stroke-width="3"/><path d="M140 22 L246 76 L140 130 L34 76Z" fill="none" stroke="#d0cfac" stroke-width="3" stroke-dasharray="7 5"/><path d="M18 75 L140 136 L262 75" fill="none" stroke="#796949" stroke-width="5" stroke-linecap="round"/><path d="M22 72 L140 129 L258 72" fill="none" stroke="#d8c8a0" stroke-width="2" stroke-linecap="round"/><g fill="#9da388"><ellipse cx="66" cy="76" rx="5" ry="3"/><ellipse cx="207" cy="71" rx="6" ry="3.5"/><ellipse cx="143" cy="109" rx="5" ry="3"/><ellipse cx="92" cy="51" rx="4" ry="2.5"/><ellipse cx="183" cy="99" rx="4" ry="2.5"/></g></svg>
+<defs><linearGradient id="dirt" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b7b59e"/><stop offset="1" stop-color="#928f79"/></linearGradient></defs>
+<path d="M140 15 L265 77 L140 140 L15 77Z" fill="#343e3020"/>
+<path d="M140 8 L267 72 L140 137 L13 72Z" fill="url(#dirt)" stroke="#767b67" stroke-width="2.3"/>
+<path d="M140 19 L246 73 L140 127 L34 73Z" fill="none" stroke="#d8d1b9" stroke-width="1.8" stroke-dasharray="4 5" opacity=".85"/>
+<path d="M18 75 L140 138 L262 75" fill="none" stroke="#736b55" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M26 70 L140 127 L254 70" fill="none" stroke="#d6c7a6" stroke-width="2" stroke-linecap="round"/>
+<g fill="#d3cdb8" opacity=".65"><ellipse cx="66" cy="76" rx="4.5" ry="2.6"/><ellipse cx="207" cy="71" rx="5" ry="2.7"/><ellipse cx="143" cy="109" rx="4.5" ry="2.4"/><ellipse cx="92" cy="51" rx="3.5" ry="2.2"/><ellipse cx="183" cy="99" rx="3.5" ry="2.2"/></g>
+</svg>
