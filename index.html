@@ -3,132 +3,143 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#315b35">
+<meta name="theme-color" content="#263f30">
 <title>Olive Oil Empire — Oliveraie Idle</title>
 <style>
-:root{--leaf:#37643a;--leaf-dark:#264a2e;--leaf-light:#86b957;--cream:#fff8e1;--gold:#f5c74d;--red:#e93e4b;--blue:#3b9ed6;--ink:#334b31;--muted:#7b896e;--line:#d8ddbd}
+:root{
+ --ink:#26352b;--ink-soft:#526456;--muted:#818a79;--paper:#f5f1e6;--paper-deep:#e9e3d3;
+ --olive:#355541;--olive-deep:#213a2d;--olive-light:#81916a;--gold:#b78f4b;--line:#d5d0bf;
+}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#e8eddb;font-family:"Trebuchet MS",system-ui,-apple-system,sans-serif;color:var(--ink)}
-body{padding:12px;display:flex;justify-content:center;align-items:flex-start}
+html,body{margin:0;min-height:100%;background:#e9e6dc;color:var(--ink);font-family:Inter,"Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif}
+body{padding:18px;display:flex;justify-content:center;align-items:flex-start}
 button{font:inherit;cursor:pointer}
-button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
-.stage{position:relative;width:min(1500px,calc(100vw - 24px));aspect-ratio:2.08/1;overflow:hidden;background:#b8d88b;border:5px solid #fff8e8;border-radius:18px;box-shadow:0 14px 45px #30472b30;isolation:isolate}
-#world{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}#world:focus-visible{outline:3px solid #f0c548;outline-offset:-5px;border-radius:6px}
-.brand{position:absolute;left:14px;top:13px;z-index:2;display:flex;gap:8px;align-items:center;padding:7px 11px;background:linear-gradient(#4c8348,#2b5836);border:2px solid #b0d88b;border-radius:10px;color:#fff8dc;font-weight:1000;font-size:clamp(9px,1vw,14px);letter-spacing:1px;text-shadow:0 2px #25492c;box-shadow:0 3px #24492b;pointer-events:none}
-.brand-olive{font-size:22px;filter:drop-shadow(0 1px #213b27)}
-.resources{position:absolute;left:12px;top:65px;z-index:2;width:clamp(145px,17%,205px);padding:7px;background:#fff9e8ee;border:2px solid #b8c798;border-radius:11px;box-shadow:0 4px #78996b,0 7px 15px #3d5a2b20}
-.res-row{display:flex;align-items:center;gap:8px;min-height:34px;padding:4px 5px;border-bottom:1px solid #e6e3c9}
+button:focus-visible{outline:2px solid #b78f4b;outline-offset:3px}
+.stage{position:relative;width:min(1500px,calc(100vw - 36px));aspect-ratio:2.08/1;overflow:hidden;background:#c5c5aa;border:1px solid #cfcaba;border-radius:16px;box-shadow:0 22px 65px rgba(39,47,35,.14);isolation:isolate}
+#world{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#world:focus-visible{outline:2px solid #b78f4b;outline-offset:-4px}
+.brand{position:absolute;left:19px;top:18px;z-index:2;display:flex;align-items:center;gap:10px;padding:0;color:#f5f0e2;pointer-events:none}
+.brand-mark{width:34px;height:34px;display:grid;place-items:center;border:1px solid #b8b79a;border-radius:50%;color:#e3d4a5;font-family:Georgia,serif;font-size:18px;font-style:italic}
+.brand-copy{display:flex;flex-direction:column;gap:3px}
+.brand-copy strong{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:15px;line-height:1;font-weight:600;letter-spacing:.6px}
+.brand-copy small{font-size:9px;letter-spacing:1.35px;text-transform:uppercase;color:#e1deca;opacity:.86}
+.resources{position:absolute;left:18px;top:66px;z-index:2;width:clamp(190px,18%,244px);padding:8px 12px;background:rgba(247,244,234,.93);border:1px solid rgba(217,211,194,.95);border-radius:8px;box-shadow:0 7px 20px rgba(32,44,32,.10);backdrop-filter:blur(8px)}
+.res-row{display:flex;align-items:center;gap:10px;min-height:39px;padding:5px 2px;border-bottom:1px solid #e5dfd0}
 .res-row:last-child{border-bottom:0}
-.res-icon{width:26px;height:26px;display:grid;place-items:center;flex-shrink:0;border-radius:7px;background:#edf0d7;font-size:17px}
+.res-icon{width:28px;height:28px;display:grid;place-items:center;flex-shrink:0;border:1px solid #d5d2bd;border-radius:50%;background:#eeecdf;color:#52674e;font-size:9px;font-weight:700;letter-spacing:.25px}
 .res-copy{min-width:0;flex:1}
-.res-label{font-size:clamp(8px,.75vw,10px);font-weight:1000;letter-spacing:.65px;color:#82916e;text-transform:uppercase}
-.res-value{font-size:clamp(13px,1.25vw,17px);font-weight:1000;color:#385c36;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px white}
-.res-extra{font-size:10px;color:#8a956e;font-weight:900}
-.meter{height:5px;background:#e0e5c9;border-radius:10px;margin-top:4px;overflow:hidden}
-.meter>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8ab94a,#f0c34a);transition:width .2s}
-.ribbon{position:absolute;z-index:2;left:50%;top:10px;transform:translateX(-50%);width:clamp(225px,31%,390px);text-align:center;filter:drop-shadow(0 3px 0 #a72e38);pointer-events:none}
-.ribbon-main{position:relative;background:linear-gradient(#ff626f,#e73646);border:2px solid #ff9aa0;border-radius:3px;color:white;font-weight:1000;font-size:clamp(14px,1.55vw,21px);letter-spacing:.6px;text-shadow:0 2px #a52830;padding:7px 15px}
-.ribbon-main:before,.ribbon-main:after{content:"";position:absolute;top:10px;border-style:solid;border-width:16px 18px 16px 0;border-color:transparent #b72c38 transparent transparent;left:-16px;z-index:-1}
-.ribbon-main:after{left:auto;right:-16px;transform:scaleX(-1)}
-.ribbon-sub{margin-top:3px;color:#fffde4;font-size:clamp(9px,1vw,12px);font-weight:1000;text-shadow:0 2px #45613e;letter-spacing:.3px}
-.top-actions{position:absolute;right:12px;top:12px;z-index:3;display:flex;gap:7px}
-.icon-btn{width:clamp(33px,3.9vw,48px);height:clamp(33px,3.9vw,48px);display:grid;place-items:center;border:2px solid #d8f4ff;border-radius:10px;background:linear-gradient(#58c0f3,#2688c4);color:#fff;font-size:clamp(17px,2vw,25px);text-shadow:0 2px #166193;box-shadow:0 3px #21628a;transition:transform .12s,filter .12s}
-.icon-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.hint{position:absolute;z-index:2;left:13px;bottom:13px;max-width:38%;padding:8px 11px;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:10px;box-shadow:0 3px #a2b38c;color:#526a43;font-size:clamp(9px,.95vw,12px);font-weight:1000;pointer-events:none}
-.bottom-chip{position:absolute;z-index:2;bottom:13px;left:50%;transform:translateX(-50%);max-width:38%;padding:7px 13px;background:#fff8dfed;border:2px solid #d9dfbc;border-radius:100px;font-size:clamp(9px,.9vw,12px);font-weight:1000;color:#557345;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-.panel{position:absolute;z-index:5;right:13px;bottom:13px;width:clamp(220px,25%,310px);max-height:66%;overflow:auto;padding:13px;background:#fff9e9f5;border:2px solid #b8c798;border-radius:13px;box-shadow:0 4px #78996b,0 8px 16px #30472b22;display:none}
+.res-label{font-size:9px;font-weight:600;letter-spacing:1px;color:#7b8576;text-transform:uppercase}
+.res-value{margin-top:3px;font-size:16px;line-height:1.1;font-weight:620;color:#283f30;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.res-extra{font-size:10px;color:#818875;font-weight:500}
+.meter{height:3px;background:#dedbc9;border-radius:0;margin-top:7px;overflow:hidden}
+.meter>span{display:block;height:100%;width:0;background:#aa8b50;transition:width .25s}
+.ribbon{position:absolute;z-index:2;left:50%;top:19px;transform:translateX(-50%);width:clamp(190px,29%,360px);text-align:center;pointer-events:none}
+.ribbon-main{color:#f7f1df;font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:clamp(16px,1.65vw,23px);font-weight:500;letter-spacing:1.25px;line-height:1.2}
+.ribbon-sub{margin-top:6px;color:#e6e0cd;font-size:9px;font-weight:500;letter-spacing:1.35px;text-transform:uppercase;opacity:.88}
+.top-actions{position:absolute;right:18px;top:18px;z-index:3;display:flex;gap:6px}
+.icon-btn{min-height:34px;padding:0 12px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(222,220,198,.6);border-radius:5px;background:rgba(36,57,43,.84);color:#f6f1e4;font-size:11px;font-weight:550;letter-spacing:.1px;box-shadow:0 2px 8px rgba(29,40,29,.08);transition:background .15s,border-color .15s}
+.icon-btn:hover{background:#f4f0e4;color:#294332;border-color:#f4f0e4}
+.hint{position:absolute;z-index:2;left:18px;bottom:17px;max-width:37%;padding:9px 12px;background:rgba(247,244,234,.89);border:1px solid #d9d4c4;border-radius:5px;color:#536455;font-size:10px;line-height:1.35;font-weight:500;pointer-events:none;box-shadow:0 3px 12px rgba(40,50,35,.06)}
+.bottom-chip{position:absolute;z-index:2;bottom:17px;left:50%;transform:translateX(-50%);max-width:34%;padding:7px 10px;background:rgba(37,56,42,.82);border:1px solid rgba(245,241,226,.3);border-radius:4px;font-size:9px;letter-spacing:1px;font-weight:550;text-transform:uppercase;color:#f4efde;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.panel{position:absolute;z-index:5;right:18px;bottom:17px;width:clamp(250px,26%,340px);max-height:72%;overflow:auto;padding:18px;background:rgba(247,244,234,.97);border:1px solid #d5cfbc;border-radius:8px;box-shadow:0 12px 34px rgba(29,43,31,.18);display:none;backdrop-filter:blur(12px)}
 .panel.open{display:block}
-.panel-x{float:right;width:25px;height:25px;border:0;border-radius:7px;background:#e8e9d5;color:#536a45;font-weight:1000}
-.eyebrow{font-size:9px;color:#82936c;font-weight:1000;letter-spacing:1.5px;text-transform:uppercase}
-.panel h2,.modal h2{font-family:Georgia,serif;font-size:22px;margin:4px 0;color:#365c36}
-.copy{font-size:11px;line-height:1.5;color:#718068;margin:6px 0 10px}
-.mini-stats{display:flex;gap:7px;margin:9px 0}
-.mini-stat{background:#eff0dc;border-radius:8px;padding:7px;flex:1;min-width:0}
-.mini-stat small{display:block;font-size:9px;font-weight:1000;color:#83906e}
-.mini-stat strong{font-size:14px;color:#3f673a}
-.action-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:7px;padding:9px 10px;border:2px solid #75a75b;border-bottom-width:4px;border-radius:9px;background:linear-gradient(#a8d96d,#7bb94a);color:#294f2e;font-weight:1000;font-size:11px;text-align:left}
-.action-btn.alt{border-color:#8b9cb0;background:linear-gradient(#dce9f3,#c2d7df);color:#3b5d65}
-.action-btn:disabled{filter:grayscale(.5);opacity:.45;cursor:not-allowed}
-.modal-backdrop{position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;padding:15px;background:#263a2880}
+.panel-x{float:right;width:27px;height:27px;border:1px solid #d9d2c1;border-radius:4px;background:transparent;color:#566456;font-size:18px;font-weight:400}
+.panel-x:hover{background:#e9e4d7}
+.eyebrow{font-size:9px;color:#8b8a76;font-weight:650;letter-spacing:1.5px;text-transform:uppercase}
+.panel h2,.modal h2{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:26px;line-height:1.12;font-weight:500;margin:7px 0;color:#293e30}
+.copy{font-size:11px;line-height:1.55;color:#6e786c;margin:8px 0 13px}
+.mini-stats{display:flex;gap:8px;margin:12px 0}
+.mini-stat{background:#eeebdf;border:1px solid #e3dece;border-radius:5px;padding:10px;flex:1;min-width:0}
+.mini-stat small{display:block;font-size:8px;font-weight:650;letter-spacing:1px;color:#818677}
+.mini-stat strong{display:block;margin-top:4px;font-size:16px;font-weight:600;color:#314936;font-variant-numeric:tabular-nums}
+.action-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;padding:11px 12px;border:1px solid #405f47;border-radius:4px;background:#355541;color:#f6f1e5;font-weight:550;font-size:11px;text-align:left;transition:background .15s,color .15s}
+.action-btn:hover:not(:disabled){background:#263f30}
+.action-btn.alt{border-color:#cfc7b5;background:transparent;color:#455947}
+.action-btn.alt:hover:not(:disabled){background:#e9e5d9}
+.action-btn:disabled{opacity:.42;cursor:not-allowed}
+.modal-backdrop{position:absolute;inset:0;z-index:8;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(25,37,29,.42);backdrop-filter:blur(3px)}
 .modal-backdrop.open{display:flex}
-.modal{width:min(455px,96%);max-height:88%;overflow:auto;padding:18px;background:#fff9e9;border:3px solid #b8c798;border-radius:15px;box-shadow:0 8px #53734a}
-.modal h2{font-size:25px;margin:4px 0 6px}
-.modal p{font-size:12px;line-height:1.55;color:#738269}
-.milestone-next{margin:11px 0 12px;padding:10px 11px;background:#eef1db;border:1px solid #d6ddba;border-radius:10px}
-.milestone-next-top{display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:11px;color:#4d6d3d}
-.milestone-next-top span{font-size:10px;color:#84906e;font-weight:900;white-space:nowrap}
-.milestone-meter{height:7px;margin-top:7px;background:#d7dfbe;border:1px solid #c5d3a4}
-.milestone-meter>span{background:linear-gradient(90deg,#79ac48,#f1c448)}
-.milestone-list{display:grid;gap:7px;margin:10px 0;max-height:270px;overflow:auto;padding:1px 3px 4px 1px}
-.milestone-card{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid #dedfc9;border-radius:10px;background:#f4f1df}
-.milestone-card.unlocked{background:#fff2bd;border-color:#dbb650;box-shadow:inset 0 0 0 1px #f6df8a}
-.milestone-icon{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:10px;background:#e5e8d0;font-size:20px}
-.milestone-card.unlocked .milestone-icon{background:#f7da74}
+.modal{width:min(490px,96%);max-height:88%;overflow:auto;padding:24px;background:#f7f3e8;border:1px solid #d4cebc;border-radius:9px;box-shadow:0 18px 55px rgba(20,29,22,.22)}
+.modal h2{font-size:30px;margin:8px 0 10px}
+.modal p{font-size:12px;line-height:1.6;color:#6d786b}
+.milestone-next{margin:13px 0 14px;padding:12px;background:#eeebdf;border:1px solid #ded8c6;border-radius:5px}
+.milestone-next-top{display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:11px;color:#374e3b}
+.milestone-next-top span{font-size:10px;color:#828878;font-weight:500;white-space:nowrap}
+.milestone-meter{height:4px;margin-top:9px;background:#d9d4c4;border:0}
+.milestone-meter>span{background:#aa8b50}
+.milestone-list{display:grid;gap:7px;margin:12px 0;max-height:270px;overflow:auto;padding:1px 3px 4px 1px}
+.milestone-card{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #ded8c6;border-radius:5px;background:#f2eee2}
+.milestone-card.unlocked{background:#e8ede0;border-color:#c4d0bc}
+.milestone-icon{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:50%;border:1px solid #d7d2c0;background:#e8e5d8;color:#51664f;font-family:Georgia,serif;font-size:12px;font-weight:600;letter-spacing:.3px}
+.milestone-card.unlocked .milestone-icon{background:#dfe9d9;border-color:#b8c9b2}
 .milestone-info{flex:1;min-width:0}
-.milestone-title{font-size:11px;font-weight:1000;color:#3d5e36;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.milestone-title span{font-size:9px;white-space:nowrap;color:#82906c}
-.milestone-reward{font-size:10px;line-height:1.4;color:#7d876f;margin-top:3px}
-.milestone-status{font-size:9px;font-weight:1000;color:#8b8d70;margin-top:4px}
-.milestone-card.unlocked .milestone-status{color:#83601d}
-.shop-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #e2e4cf}.shop-item[hidden]{display:none}
-.shop-icon{width:38px;height:38px;display:grid;place-items:center;flex-shrink:0;background:#edf0d9;border-radius:10px;font-size:24px}
+.milestone-title{font-size:11px;font-weight:650;color:#344a37;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.milestone-title span{font-size:9px;white-space:nowrap;color:#838979;font-weight:500}
+.milestone-reward{font-size:10px;line-height:1.45;color:#727c6e;margin-top:4px}
+.milestone-status{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:650;color:#868b78;margin-top:5px}
+.milestone-card.unlocked .milestone-status{color:#4f7151}
+.shop-item{display:flex;align-items:center;gap:11px;padding:13px 0;border-top:1px solid #e3ddcd}
+.shop-item[hidden],.action-btn[hidden]{display:none}
+.shop-icon{width:34px;height:34px;display:grid;place-items:center;flex-shrink:0;border:1px solid #d7d2c0;border-radius:50%;background:#eeebdf;color:#51674e;font-family:Georgia,serif;font-size:11px;font-weight:600}
 .shop-desc{flex:1;min-width:0}
-.shop-desc strong{display:block;font-size:12px;color:#365c36}
-.shop-desc small{display:block;font-size:10px;color:#7f8a73;margin-top:3px;line-height:1.4}
-.shop-buy{border:2px solid #cda33a;border-radius:8px;padding:7px;background:#f7d168;color:#755219;font-size:10px;font-weight:1000;white-space:nowrap}
-.shop-buy:disabled{opacity:.45;cursor:not-allowed}
-.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-.close-btn{border:0;border-radius:8px;padding:9px 13px;background:#e9ecd9;color:#516844;font-weight:1000}
-.save-health{margin:10px 0 4px;padding:10px 11px;border-radius:9px;font-size:11px;line-height:1.45;font-weight:900;background:#eef0df;color:#6b775c;border:1px solid #d8ddc5}
-.save-health.good{background:#edf4dc;color:#466b38;border-color:#cbdcb1}
-.save-health.bad{background:#fff0d9;color:#8a5a1b;border-color:#e8c995}
-.action-btn[hidden]{display:none}
-.toast{position:absolute;z-index:12;left:50%;top:23%;transform:translate(-50%,-8px);padding:10px 17px;border:2px solid #d8c16d;border-radius:100px;background:#fff9e7;color:#4b6539;font-size:13px;font-weight:1000;box-shadow:0 4px #9c984f;opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;text-align:center;max-width:86%}
+.shop-desc strong{display:block;font-size:12px;font-weight:650;color:#344a37}
+.shop-desc small{display:block;font-size:10px;color:#788071;margin-top:4px;line-height:1.45}
+.shop-buy{border:1px solid #a98a50;border-radius:4px;padding:8px 10px;background:#e9dfc5;color:#68532f;font-size:10px;font-weight:650;white-space:nowrap;transition:background .15s}
+.shop-buy:hover:not(:disabled){background:#ded0ae}
+.shop-buy:disabled{opacity:.4;cursor:not-allowed}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.close-btn{border:1px solid #d7d0be;border-radius:4px;padding:10px 13px;background:transparent;color:#50604f;font-weight:550;font-size:11px}
+.close-btn:hover{background:#eae5d7}
+.save-health{margin:12px 0 5px;padding:11px 12px;border-radius:5px;font-size:11px;line-height:1.5;background:#eeebdf;color:#677363;border:1px solid #ddd7c6}
+.save-health.good{background:#e8ede0;color:#4f684f;border-color:#cbd6c1}
+.save-health.bad{background:#f2e6d9;color:#875f42;border-color:#dfc6ad}
+.toast{position:absolute;z-index:12;left:50%;bottom:72px;top:auto;transform:translate(-50%,6px);padding:9px 13px;border:1px solid rgba(212,204,181,.95);border-radius:4px;background:rgba(247,243,232,.96);color:#3d5441;font-size:11px;font-weight:550;box-shadow:0 5px 18px rgba(30,40,29,.12);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;text-align:center;max-width:86%}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:700px){
- body{padding:4px}.stage{width:calc(100vw - 8px);aspect-ratio:1.45/1;min-height:280px;border-width:3px;border-radius:10px}
- .brand{top:5px;left:5px;font-size:7px;padding:4px 5px}.brand-olive{font-size:15px}
- .resources{top:49px;left:5px;width:112px;padding:4px;border-radius:7px}.res-row{gap:5px;min-height:26px;padding:2px}.res-icon{width:19px;height:19px;font-size:12px}.res-label{font-size:7px}.res-value{font-size:11px}.res-extra{font-size:8px}
- .ribbon{top:5px;width:39%}.ribbon-main{font-size:10px;padding:5px 7px}.ribbon-sub{font-size:7px}
- .top-actions{top:5px;right:5px;gap:4px}.icon-btn{width:27px;height:27px;font-size:15px;border-radius:7px}
- .hint{left:5px;bottom:5px;max-width:44%;padding:5px 7px;font-size:8px}.bottom-chip{bottom:5px;padding:4px 7px;font-size:8px}
- .panel{right:5px;bottom:5px;width:min(245px,67%);padding:9px;max-height:72%}.panel h2{font-size:18px}.copy{font-size:10px}.action-btn{padding:7px;font-size:10px}
- .modal{padding:13px}.modal h2{font-size:22px}
+ body{padding:5px}.stage{width:calc(100vw - 10px);aspect-ratio:1.42/1;min-height:300px;border-radius:10px}
+ .brand{left:8px;top:8px;gap:6px}.brand-mark{width:25px;height:25px;font-size:14px}.brand-copy strong{font-size:11px}.brand-copy small{font-size:7px;letter-spacing:.9px}
+ .resources{top:43px;left:7px;width:125px;padding:4px 7px;border-radius:6px}.res-row{gap:5px;min-height:29px;padding:3px 0}.res-icon{width:20px;height:20px;font-size:7px}.res-label{font-size:7px;letter-spacing:.6px}.res-value{font-size:12px}.res-extra{font-size:8px}.meter{margin-top:4px}
+ .ribbon{top:10px;width:35%}.ribbon-main{font-size:13px;letter-spacing:.6px}.ribbon-sub{font-size:7px;letter-spacing:.6px;margin-top:4px}
+ .top-actions{top:7px;right:7px;gap:3px}.icon-btn{min-height:27px;padding:0 6px;font-size:8px;border-radius:4px}
+ .hint{left:7px;bottom:7px;max-width:42%;padding:6px 7px;font-size:8px}.bottom-chip{bottom:7px;padding:5px 6px;font-size:7px;letter-spacing:.5px;max-width:28%}
+ .panel{right:7px;bottom:7px;width:min(290px,73%);padding:12px;max-height:75%}.panel h2{font-size:21px}.copy{font-size:10px}.action-btn{padding:9px;font-size:10px}
+ .modal{padding:16px}.modal h2{font-size:25px}
 }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <main class="stage" id="stage">
  <canvas id="world" tabindex="0" role="application" aria-keyshortcuts="ArrowLeft ArrowRight Enter Space M Escape" aria-label="Oliveraie isométrique. Clique sur les arbres mûrs pour récolter, sur une parcelle pour l'améliorer et sur le moulin pour produire de l'huile. Raccourcis : flèches, Entrée, M et Échap."></canvas>
- <div class="brand"><span class="brand-olive">🫒</span><span>OLIVERAIE DE PROVENCE</span></div>
+ <div class="brand"><span class="brand-mark">O</span><span class="brand-copy"><strong>OLIVA</strong><small>Domaine en Provence</small></span></div>
  <div class="resources">
-  <div class="res-row"><div class="res-icon">🫒</div><div class="res-copy"><div class="res-label">Olives en réserve</div><div class="res-value"><span id="oliveCount">0</span> kg</div></div></div>
-  <div class="res-row"><div class="res-icon">🏺</div><div class="res-copy"><div class="res-label">Huile disponible</div><div class="res-value"><span id="oilCount">0</span> <span class="res-extra">kg</span></div></div></div>
-  <div class="res-row"><div class="res-icon">🌟</div><div class="res-copy"><div class="res-label">Huile cumulée</div><div class="res-value"><span id="totalOil">0</span> kg <span id="bonusCount" class="res-extra">×1,00</span></div><div class="meter"><span id="progressFill"></span></div></div></div>
+  <div class="res-row"><div class="res-icon">OL</div><div class="res-copy"><div class="res-label">Olives en réserve</div><div class="res-value"><span id="oliveCount">0</span> kg</div></div></div>
+  <div class="res-row"><div class="res-icon">HU</div><div class="res-copy"><div class="res-label">Huile disponible</div><div class="res-value"><span id="oilCount">0</span> <span class="res-extra">kg</span></div></div></div>
+  <div class="res-row"><div class="res-icon">Σ</div><div class="res-copy"><div class="res-label">Huile cumulée</div><div class="res-value"><span id="totalOil">0</span> kg <span id="bonusCount" class="res-extra">×1,00</span></div><div class="meter"><span id="progressFill"></span></div></div></div>
  </div>
- <div class="ribbon"><div class="ribbon-main" id="bannerTitle">RÉCOLTE DES OLIVES !</div><div class="ribbon-sub" id="bannerSub">De l'arbre à l'or vert</div></div>
+ <div class="ribbon"><div class="ribbon-main" id="bannerTitle">L’OLIVERAIE</div><div class="ribbon-sub" id="bannerSub">Du fruit à l’huile · Provence</div></div>
  <div class="top-actions">
-  <button class="icon-btn" title="Boutique des améliorations" aria-label="Boutique" id="shopOpen">🏺</button>
-  <button class="icon-btn" title="Progression" aria-label="Progression" id="progressOpen">📈</button>
-  <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">⚙️</button>
+  <button class="icon-btn" title="Boutique des améliorations" aria-label="Boutique" id="shopOpen">Boutique</button>
+  <button class="icon-btn" title="Progression" aria-label="Progression" id="progressOpen">Journal</button>
+  <button class="icon-btn" title="Paramètres et sauvegarde" aria-label="Paramètres" id="settingsOpen">Options</button>
  </div>
- <div class="hint" id="hint">👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.</div>
- <div class="bottom-chip" id="bottomChip">1 / 9 parcelles débloquées</div>
+ <div class="hint" id="hint">Clique un arbre mûr pour récolter. Clique une parcelle pour son détail.</div>
+ <div class="bottom-chip" id="bottomChip">01 / 09 parcelles ouvertes</div>
  <section class="panel" id="plotPanel" aria-live="polite">
   <button class="panel-x" id="plotClose" aria-label="Fermer">×</button>
   <div class="eyebrow" id="plotEyebrow">TERROIR N° 1</div><h2 id="plotTitle">Olive sauvage</h2>
   <p class="copy" id="plotDescription">Un premier olivier pour lancer la récolte.</p>
   <div class="mini-stats"><div class="mini-stat"><small>RENDEMENT</small><strong id="plotYield">1 kg</strong></div><div class="mini-stat"><small>NIVEAU</small><strong id="plotLevel">1</strong></div></div>
-  <button class="action-btn" id="levelBtn"><span>⬆ Améliorer le terroir</span><span id="levelCost">5 kg</span></button>
-  <button class="action-btn alt" id="autoBtn"><span>🧺 Empiler les récoltes</span><span id="autoCost">18 kg</span></button>
+  <button class="action-btn" id="levelBtn"><span>Améliorer le terroir</span><span id="levelCost">5 kg</span></button>
+  <button class="action-btn alt" id="autoBtn"><span>Automatiser le stockage</span><span id="autoCost">18 kg</span></button>
   <p class="copy" id="autoNote">L'automatisation empile les récoltes mûres. La cueillette reste manuelle.</p>
  </section>
  <div class="modal-backdrop" id="shopModal"><div class="modal">
   <div class="eyebrow">INVESTIR L'HUILE</div><h2>La boutique du moulin</h2><p>L'huile est une monnaie de progression. Ces améliorations restent acquises après chaque nouveau cycle.</p>
-  <div class="shop-item"><div class="shop-icon">🌳</div><div class="shop-desc"><strong>Terroirs fertiles <span id="powerLevel"></span></strong><small>+25 % de rendement sur toutes les parcelles par niveau.</small></div><button class="shop-buy" id="buyPower">🏺 1 huile</button></div>
-  <div class="shop-item"><div class="shop-icon">☀️</div><div class="shop-desc"><strong>Soleil provençal <span id="speedLevel"></span></strong><small>Accélère la pousse de tous les oliviers.</small></div><button class="shop-buy" id="buySpeed">🏺 2 huiles</button></div>
-  <div class="shop-item"><div class="shop-icon">🧺</div><div class="shop-desc"><strong>Paniers plus grands <span id="stackLevel"></span></strong><small>Deux récoltes supplémentaires peuvent s'empiler par niveau.</small></div><button class="shop-buy" id="buyStack">🏺 3 huiles</button></div>
-  <div class="shop-item" id="masterPressItem" hidden><div class="shop-icon">⚙️</div><div class="shop-desc"><strong>Presse de maître <span id="masterPressStatus"></span></strong><small>Débloquée après 10 huiles cumulées ; achat unique pour +25 % de rendement permanent.</small></div><button class="shop-buy" id="buyMasterPress">🏺 8 huiles</button></div>
+  <div class="shop-item"><div class="shop-icon">01</div><div class="shop-desc"><strong>Terroirs fertiles <span id="powerLevel"></span></strong><small>+25 % de rendement sur toutes les parcelles par niveau.</small></div><button class="shop-buy" id="buyPower">1 huile</button></div>
+  <div class="shop-item"><div class="shop-icon">02</div><div class="shop-desc"><strong>Soleil provençal <span id="speedLevel"></span></strong><small>Accélère la pousse de tous les oliviers.</small></div><button class="shop-buy" id="buySpeed">2 huiles</button></div>
+  <div class="shop-item"><div class="shop-icon">03</div><div class="shop-desc"><strong>Paniers plus grands <span id="stackLevel"></span></strong><small>Deux récoltes supplémentaires peuvent s'empiler par niveau.</small></div><button class="shop-buy" id="buyStack">3 huiles</button></div>
+  <div class="shop-item" id="masterPressItem" hidden><div class="shop-icon">04</div><div class="shop-desc"><strong>Presse de maître <span id="masterPressStatus"></span></strong><small>Débloquée après 10 huiles cumulées ; achat unique pour +25 % de rendement permanent.</small></div><button class="shop-buy" id="buyMasterPress">8 huiles</button></div>
   <div class="modal-footer"><button class="close-btn" data-close="shopModal">Retour à la ferme</button></div>
  </div></div>
  <div class="modal-backdrop" id="progressModal"><div class="modal">
@@ -142,10 +153,10 @@ button:focus-visible{outline:3px solid #efc24f;outline-offset:3px}
  <div class="modal-backdrop" id="settingsModal"><div class="modal">
   <div class="eyebrow">OPTIONS DE LA FERME</div><h2>Sauvegarde locale</h2><p>La partie est enregistrée dans ce navigateur. Pas de production hors ligne et pas de compte nécessaire.</p>
   <div class="save-health good" id="saveHealth" role="status">Vérification de la sauvegarde…</div>
-  <button class="action-btn alt" id="restoreBackup" hidden><span>↶ Restaurer la dernière sauvegarde</span><span>Backup</span></button>
-  <button class="action-btn alt" id="exportSave"><span>📦 Exporter une sauvegarde</span><span>JSON</span></button>
-  <button class="action-btn alt" id="importSave"><span>📂 Importer une sauvegarde</span><span>JSON</span></button><input type="file" id="importFile" accept="application/json" hidden>
-  <button class="action-btn" id="resetAsk"><span>↻ Recommencer la partie</span><span>!</span></button>
+  <button class="action-btn alt" id="restoreBackup" hidden><span>Restaurer la sauvegarde de secours</span><span>JSON</span></button>
+  <button class="action-btn alt" id="exportSave"><span>Exporter une sauvegarde</span><span>JSON</span></button>
+  <button class="action-btn alt" id="importSave"><span>Importer une sauvegarde</span><span>JSON</span></button><input type="file" id="importFile" accept="application/json" hidden>
+  <button class="action-btn" id="resetAsk"><span>Recommencer la partie</span><span>Effacer</span></button>
   <p class="copy">Clavier : ← / → pour sélectionner un terroir, Entrée ou Espace pour récolter, M pour le moulin, Échap pour fermer les panneaux.</p>
   <div class="modal-footer"><button class="close-btn" data-close="settingsModal">Retour</button></div>
  </div></div>
@@ -173,12 +184,12 @@ const yields=[1,1.35,1.8,2.4,3.2,4.3,5.8,7.8,10.5];
 // Coûts exponentiels : chaque nouvelle parcelle coûte six fois plus que la précédente.
 const costs=[0,15,90,540,3240,19440,116640,699840,4199040];
 const milestones=[
- {at:1,name:'Premier cru',icon:'🌟',bonus:.10,stack:0,growth:0,reward:'+10 % de rendement permanent',toast:'+10 % de rendement permanent'},
- {at:5,name:'Oliviers dorés',icon:'🌳',bonus:.15,stack:0,growth:0,reward:'+15 % de rendement · éclats dorés sur les arbres',toast:'+15 % de rendement et oliviers dorés'},
- {at:10,name:'Presse de maître',icon:'⚙️',bonus:.20,stack:2,growth:0,reward:'+20 % rendement · +2 stockage · débloque une amélioration exclusive',toast:'+20 % de rendement, +2 stockage et presse exclusive débloquée'},
- {at:25,name:'Moulin historique',icon:'🏛️',bonus:.25,stack:0,growth:.15,reward:'+25 % de rendement · pousse 15 % plus vite · décor du moulin amélioré',toast:'+25 % de rendement, pousse accélérée et moulin historique'},
- {at:50,name:'Empire oléicole',icon:'👑',bonus:.35,stack:2,growth:.10,reward:'+35 % de rendement · +2 stockage · pousse 10 % plus vite',toast:'+35 % de rendement, stockage et pousse améliorés'},
- {at:100,name:'Grand cru légendaire',icon:'🏆',bonus:.50,stack:0,growth:.10,reward:'+50 % de rendement · pousse 10 % plus vite · halo légendaire du moulin',toast:'+50 % de rendement, pousse accélérée et prestige légendaire'}
+ {at:1,name:'Premier cru',icon:'01',bonus:.10,stack:0,growth:0,reward:'+10 % de rendement permanent',toast:'+10 % de rendement permanent'},
+ {at:5,name:'Oliviers dorés',icon:'02',bonus:.15,stack:0,growth:0,reward:'+15 % de rendement · éclats dorés sur les arbres',toast:'+15 % de rendement et oliviers dorés'},
+ {at:10,name:'Presse de maître',icon:'03',bonus:.20,stack:2,growth:0,reward:'+20 % rendement · +2 stockage · débloque une amélioration exclusive',toast:'+20 % de rendement, +2 stockage et presse exclusive débloquée'},
+ {at:25,name:'Moulin historique',icon:'04',bonus:.25,stack:0,growth:.15,reward:'+25 % de rendement · pousse 15 % plus vite · décor du moulin amélioré',toast:'+25 % de rendement, pousse accélérée et moulin historique'},
+ {at:50,name:'Empire oléicole',icon:'05',bonus:.35,stack:2,growth:.10,reward:'+35 % de rendement · +2 stockage · pousse 10 % plus vite',toast:'+35 % de rendement, stockage et pousse améliorés'},
+ {at:100,name:'Grand cru légendaire',icon:'06',bonus:.50,stack:0,growth:.10,reward:'+50 % de rendement · pousse 10 % plus vite · halo légendaire du moulin',toast:'+50 % de rendement, pousse accélérée et prestige légendaire'}
 ];
 const colors=[['#92bb60','#4f803e','#b8d476'],['#86ae59','#4c793f','#c4d980'],['#7ca550','#3d713e','#afcc70'],['#9ab95d','#557d42','#cfdf83'],['#83ad59','#376d46','#aed079'],['#6e9d4e','#315f3d','#9fc56a'],['#a6b95e','#607b3e','#d6d27d'],['#6f9f59','#316946','#a3ce7b'],['#899f4d','#506b38','#b7cb6c']];
 function makePlot(i){return{unlocked:i===0,level:1,auto:false,stock:i===0?1:0,grow:i===0?0:7};}
@@ -279,7 +290,7 @@ function load(){
 function poly(points,fill,stroke,lineWidth){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
 function ellipse(x,y,rx,ry,fill,stroke,lineWidth){ctx.beginPath();ctx.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
 function line(points,color,width){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();}
-function label(str,x,y,size,color,weight,align){ctx.fillStyle=color;ctx.font=(weight||'800')+' '+size+'px Trebuchet MS, sans-serif';ctx.textAlign=align||'center';ctx.textBaseline='middle';ctx.fillText(str,x,y);}
+function label(str,x,y,size,color,weight,align){ctx.fillStyle=color;const requested=Number(weight)||500;const fontWeight=requested>=800?'700':requested>=600?'600':'500';ctx.font=fontWeight+' '+size+'px system-ui, -apple-system, sans-serif';ctx.textAlign=align||'center';ctx.textBaseline='middle';ctx.fillText(str,x,y);}
 function box(x,y,w,h,r,fill,stroke,lineWidth){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();}}
 function drawDistantTree(x,y,r,t){
  const img=sprite('tree');
@@ -293,24 +304,30 @@ function drawDistantTree(x,y,r,t){
  }
 }
 function drawBackground(t){
- const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#dcebb7');g.addColorStop(.44,'#c6e095');g.addColorStop(1,'#a8ce78');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- poly([[0,105],[120,68],[245,91],[365,56],[510,91],[655,65],[820,93],[985,55],[1130,76],[1280,44],[1280,240],[0,240]],'#b4d18a');
- poly([[0,161],[165,117],[335,142],[470,99],[660,142],[833,113],[1010,137],[1154,102],[1280,121],[1280,285],[0,285]],'#c7df99');
- for(let i=0;i<22;i++){const x=24+i*59,y=105+(i%4)*20;drawDistantTree(x,y,13+(i%3)*2,t);}
- // grass flecks and little wild flowers
- for(let i=0;i<210;i++){const x=(i*173+29)%W,y=(i*97+17)%H;ctx.globalAlpha=.13+(i%4)*.025;ellipse(x,y,1.5+(i%3)*.3,1,'#547d3e');if(i%13===0)ellipse(x+2,y-2,1.3,1.3,'#f5edbd');}ctx.globalAlpha=1;
- // the pale winding stone lane to the olive press
- line([[190,162],[320,192],[415,231],[545,270],[650,333],[795,385],[914,430],[1045,465]],'#b99d6d',43);
- line([[190,157],[320,187],[415,226],[545,265],[650,328],[795,380],[914,425],[1045,460]],'#eee0b9',34);
- line([[190,151],[320,181],[415,220],[545,259],[650,322],[795,374],[914,419],[1045,454]],'#f7ebcc',1.5);
- for(let i=0;i<26;i++){const p=i/25,x=220+p*790,y=169+p*294+Math.sin(p*5)*10;ellipse(x,y,4+(i%3),2.4,'#c9b587');ellipse(x+8,y+8,3,2,'#e5d4ab');}
- // distant wooden fence along orchard's lower edge
+ const sky=ctx.createLinearGradient(0,0,0,H);
+ sky.addColorStop(0,'#d8d9c2');sky.addColorStop(.42,'#c9ceb0');sky.addColorStop(1,'#aeb69a');
+ ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+ poly([[0,112],[135,78],[258,98],[395,65],[530,95],[682,60],[830,91],[980,59],[1132,81],[1280,48],[1280,235],[0,235]],'#aeb99d');
+ poly([[0,164],[162,125],[332,145],[474,105],[655,144],[832,117],[1005,137],[1159,106],[1280,125],[1280,286],[0,286]],'#bcc4a2');
+ // Distant rows of olive trees: lower contrast so the orchard remains the focal point.
+ for(let i=0;i<22;i++){const x=24+i*59,y=109+(i%4)*19;ctx.save();ctx.globalAlpha=.48;drawDistantTree(x,y,12+(i%3)*2,t);ctx.restore();}
+ // A restrained, irregular ground texture.
+ for(let i=0;i<125;i++){
+  const x=(i*173+29)%W,y=(i*97+17)%H;
+  ctx.globalAlpha=.07+(i%4)*.018;
+  ellipse(x,y,1.2+(i%3)*.25,.8,i%7===0?'#efe8ce':'#53694c');
+ }
+ ctx.globalAlpha=1;
+ // Pale limestone path, softened against the earth.
+ line([[190,162],[320,192],[415,231],[545,270],[650,333],[795,385],[914,430],[1045,465]],'#92866c',41);
+ line([[190,157],[320,187],[415,226],[545,265],[650,328],[795,380],[914,425],[1045,460]],'#d0c4a5',32);
+ line([[190,151],[320,181],[415,220],[545,259],[650,322],[795,374],[914,419],[1045,454]],'#e1d7bc',1.3);
+ for(let i=0;i<21;i++){const p=i/20,x=220+p*790,y=169+p*294+Math.sin(p*5)*10;ellipse(x,y,3+(i%3),1.8,'#ad9e7d');}
  drawFence(80,493,360,567);drawFence(335,558,583,591);
- // spare olive groves and ground plants
  for(let i=0;i<14;i++){const x=30+i*94,y=565+(i%3)*8;drawBush(x,y,7+(i%4)*1.8,.68);}
 }
-function drawBush(x,y,r,scale){ellipse(x,y+r*.35,r*1.25,r*.43,'#60894b35');ellipse(x-r*.35,y,r*.6,r*.52,'#79a84e');ellipse(x+r*.25,y-r*.1,r*.63,r*.55,'#92b95d');ellipse(x,y-r*.3,r*.48,r*.4,'#b0ca70');}
-function drawFence(x1,y1,x2,y2){line([[x1,y1],[x2,y2]],'#805d3b',4);for(let i=0;i<=8;i++){const p=i/8,x=x1+(x2-x1)*p,y=y1+(y2-y1)*p;line([[x,y-13],[x,y+7]],'#9a7449',5);line([[x-2,y-8],[x+2,y-8]],'#d8bd83',1.6);}}
+function drawBush(x,y,r,scale){ellipse(x,y+r*.35,r*1.25,r*.43,'#485a4030');ellipse(x-r*.35,y,r*.6,r*.52,'#667a54');ellipse(x+r*.25,y-r*.1,r*.63,r*.55,'#7c8d61');ellipse(x,y-r*.3,r*.48,r*.4,'#9aa47a');}
+function drawFence(x1,y1,x2,y2){line([[x1,y1],[x2,y2]],'#6d6048',3.5);for(let i=0;i<=8;i++){const p=i/8,x=x1+(x2-x1)*p,y=y1+(y2-y1)*p;line([[x,y-13],[x,y+7]],'#817153',4.2);line([[x-2,y-8],[x+2,y-8]],'#c5b48d',1.3);}}
 function drawHouse(x,y,s){
  const img=sprite('house');
  if(img){const w=280*s,h=230*s;ctx.drawImage(img,x-w/2,y-141*s,w,h);}
@@ -326,7 +343,7 @@ function drawMill(x,y,s){
  if(game.totalOil>=25){
   const alpha=game.totalOil>=100?.24:.13;
   ellipse(x,y-13,81,57,'rgba(245,204,74,'+alpha+')','rgba(224,177,63,.55)',2);
-  if(game.totalOil>=50){for(let k=0;k<8;k++){const ang=k*Math.PI/4,px=x+Math.cos(ang)*72,py=y-13+Math.sin(ang)*43;label('✦',px,py,9,'#f7d05b','1000');}}
+  if(game.totalOil>=50){for(let k=0;k<8;k++){const ang=k*Math.PI/4,px=x+Math.cos(ang)*72,py=y-13+Math.sin(ang)*43;ellipse(px,py,2.2,2.2,'#c7a354');}}
  }
  if(img){const w=212*s,h=177*s;ctx.drawImage(img,x-w/2,y-102*s,w,h);}
  else{ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(0,70,87,20,'#486b3938');poly([[-75,7],[0,37],[77,5],[0,-27]],'#cfc29b','#a39270',2);poly([[-61,-16],[0,6],[0,66],[-61,40]],'#e5d7b5','#b4a17b',2);poly([[0,6],[62,-16],[62,40],[0,66]],'#c9b48d','#9d8965',2);poly([[-77,-20],[0,-59],[77,-20],[0,13]],'#b65a3b','#83402f',3);ctx.restore();}
@@ -335,7 +352,7 @@ function drawMill(x,y,s){
   box(x-42,y-74,84,17,5,'#ffefb6','#c09232',1.4);
   label(plaque,x,y-65,9,'#785326','1000');
  }
- if(game.totalOil>=100){ctx.save();ctx.globalAlpha=.7+.2*Math.sin(performance.now()/240);label('♛',x+57*s,y-87*s,18*s,'#ffe16b','1000');ctx.restore();}
+ if(game.totalOil>=100){ctx.save();ctx.globalAlpha=.7+.2*Math.sin(performance.now()/240);label('IV',x+57*s,y-87*s,10*s,'#dfc783','600');ctx.restore();}
  hitTargets.push({type:'mill',x:x-95,y:y-81,w:190,h:158});
 }
 function plotPos(i){const c=i%3,r=Math.floor(i/3);return{x:640+(c-r)*105,y:185+(c+r)*52};}
@@ -362,10 +379,10 @@ function drawTree(x,y,i,p,ripe,t,miniScale){
   ctx.restore();
   if(game.totalOil>=5){
    const sparkleX=x+w*.32,sparkleY=y-h*.57;
-   ctx.save();ctx.globalAlpha=.58+.28*Math.sin(t/180+i);label('✦',sparkleX,sparkleY,Math.max(6,8*scale),'#ffe17a','1000');ctx.restore();
+   ctx.save();ctx.globalAlpha=.58+.28*Math.sin(t/180+i);ellipse(sparkleX,sparkleY,1.5*scale,1.5*scale,'#dfc783');ctx.restore();
   }
   if(game.totalOil>=100&&i>=8){
-   ctx.save();ctx.globalAlpha=.72;label('★',x+w*.34,y-h*.75,Math.max(7,10*scale),'#fff0a0','1000');ctx.restore();
+   ctx.save();ctx.globalAlpha=.72;ellipse(x+w*.34,y-h*.75,2.2*scale,2.2*scale,'#dfc783');ctx.restore();
   }
  }else{
   const c=colors[i],wave=Math.sin(t/500+x*.034+y*.023)*1.35;
@@ -389,20 +406,20 @@ function drawParcel(i,t){
   const treeCount=treeCounts[i];
   treeLayout(treeCount).forEach((o,j)=>{const tx=x+o[0],ty=y-9+o[1];drawTree(tx,ty,i,p,p.stock>0,t,1);hitTargets.push({type:'tree',index:i,x:tx-29,y:ty-42,w:58,h:60});});
   box(x-31,y-45,62,17,6,'#fff8dbee','#c4d7a2',1);
-  label(fmt(plotYield(p,i))+' kg',x,y-36,10,'#395c35','1000');
+  label(fmt(plotYield(p,i))+' kg',x,y-36,10,'#354b37','700');
   if(p.stock>0){
    box(x-31,y+20,62,18,7,'#f6d35c','#c49a30',1.4);
-   label(p.stock>1?'PRÊT ×'+p.stock:'PRÊT !',x,y+29,9,'#75511c','1000');
+   label(p.stock>1?'PRÊT ×'+p.stock:'PRÊT',x,y+29,9,'#5b4b2d','700');
    if(i===selected)ellipse(x,y+1,22,5,null,'#ffe46d',2);
   }else{
    const total=growSeconds(p,i),pct=Math.max(0,Math.min(1,1-(p.grow||total)/total));
    box(x-29,y+23,58,8,4,'#e3e8c5','#99b378',1);
    box(x-27,y+25,54*pct,4,2,'#6caa48',null,0);
-   label(p.auto?'EMPIL.':'POUSSE',x,y+16,7,'#587947','1000');
+   label(p.auto?'AUTO':'POUSSE',x,y+16,7,'#53694f','600');
   }
  }else{
-  ellipse(x,y-4,15,17,'#d8e2c3','#819969',1.5);label('🔒',x,y-4,17,'#5d7a49','900');
-  box(x-32,y+19,64,18,7,'#fff5d4','#c0b787',1.2);label(fmt(costs[i])+' kg',x,y+28,10,'#795e32','1000');
+  ellipse(x,y-4,15,17,'#d8e2c3','#819969',1.5);label('—',x,y-4,17,'#64725d','600');
+  box(x-32,y+19,64,18,7,'#fff5d4','#c0b787',1.2);label(fmt(costs[i])+' kg',x,y+28,10,'#5f5239','600');
  }
  if(game.totalOil>=50&&p.unlocked){ctx.save();ctx.globalAlpha=.55+.2*Math.sin(t/350+i);poly([[x,y-38],[x+74,y],[x,y+39],[x-74,y]],null,'#e7bf48',1.6);ctx.restore();if(game.totalOil>=100)label('★',x+49,y-18,10,'#fff1a0','1000');}
  if(i===selected&&p.unlocked){ctx.setLineDash([4,3]);poly([[x,y-40],[x+76,y],[x,y+40],[x-76,y]],null,'#ffe26c',2);ctx.setLineDash([]);}
@@ -475,7 +492,7 @@ function drawHarvestEffects(now){
   ctx.save();ctx.globalAlpha=alpha;ellipse(c.x,c.y-5,r,r*.48,null,'#ffe36a',2.4);ctx.restore();
   for(let k=0;k<4;k++){
    const a=age*4+k*Math.PI/2,x=c.x+Math.cos(a)*r*.8,y=c.y-5+Math.sin(a)*r*.42;
-   ctx.save();ctx.globalAlpha=alpha;label('✦',x,y,8,'#fff3ad','900');ctx.restore();
+   ctx.save();ctx.globalAlpha=alpha;ellipse(x,y,1.6,1.6,'#efe1b5');ctx.restore();
   }
  }
  // A short golden swipe trail makes the hand gesture visible.
@@ -508,17 +525,14 @@ function hitAt(pt){let best=null,bestScore=-Infinity;for(let i=0;i<hitTargets.le
 function feedback(x,y,text,color){particles.push({x,y,text,color,at:performance.now()});}
 function harvest(i,x,y,notifyIfUnripe=true){
  const p=game.plots[i];if(!p||!p.unlocked)return;
- if(p.stock<1){
-  if(notifyIfUnripe){selected=i;openPlotPanel(true);renderUI();toast('Les olives poussent encore.');}
-  return;
- }
+ // A click on an unripe tree stays silent: no modal and no blocking message.
+ if(p.stock<1)return;
  selected=i;
  const amount=plotYield(p,i)*p.stock,n=p.stock,now=performance.now(),pos=plotPos(i);
  game.olives+=amount;p.stock=0;p.grow=growSeconds(p,i);
  spawnHarvestOlives(i,n,now);
- feedback(Number.isFinite(x)?x:pos.x,Number.isFinite(y)?y:pos.y-24,'+'+fmt(amount)+' kg','#fff4b7');
+ feedback(Number.isFinite(x)?x:pos.x,Number.isFinite(y)?y:pos.y-24,'+'+fmt(amount)+' kg','#efe1b5');
  openPlotPanel(false);renderUI();save();
- toast('+'+fmt(amount)+' kg d’olives récoltées'+(n>1?' · '+n+' récoltes empilées':''));
 }
 function buyPlot(i){
  const p=game.plots[i];if(p.unlocked)return;
@@ -544,13 +558,13 @@ function updateShop(){
  document.getElementById('speedLevel').textContent='Niv. '+game.upgrades.speed;
  document.getElementById('stackLevel').textContent='Niv. '+game.upgrades.stack;
  const costs={power:Math.ceil(Math.pow(1.8,game.upgrades.power)),speed:Math.ceil(2*Math.pow(1.8,game.upgrades.speed)),stack:Math.ceil(3*Math.pow(1.8,game.upgrades.stack))};
- document.getElementById('buyPower').textContent='🏺 '+costs.power+' huile';
- document.getElementById('buySpeed').textContent='🏺 '+costs.speed+' huiles';
- document.getElementById('buyStack').textContent='🏺 '+costs.stack+' huiles';
+ document.getElementById('buyPower').textContent=costs.power+' huile';
+ document.getElementById('buySpeed').textContent=costs.speed+' huiles';
+ document.getElementById('buyStack').textContent=costs.stack+' huiles';
  const masterItem=document.getElementById('masterPressItem');
  masterItem.hidden=game.totalOil<10;
  document.getElementById('masterPressStatus').textContent=game.upgrades.master?'· ACTIVÉE':'· DISPONIBLE';
- document.getElementById('buyMasterPress').textContent=game.upgrades.master?'✓ ACTIVÉE':'🏺 8 huiles';
+ document.getElementById('buyMasterPress').textContent=game.upgrades.master?'Activée':'8 huiles';
  document.getElementById('buyMasterPress').disabled=game.upgrades.master>0||game.oil<8;
  document.getElementById('buyPower').disabled=game.oil<costs.power||game.upgrades.power>=15;
  document.getElementById('buySpeed').disabled=game.oil<costs.speed||game.upgrades.speed>=15;
@@ -561,11 +575,11 @@ function renderUI(){
  document.getElementById('oilCount').textContent=fmt(game.oil);
  document.getElementById('totalOil').textContent=fmt(game.totalOil);
  document.getElementById('bonusCount').textContent='×'+multiplier().toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
- document.getElementById('bottomChip').textContent=unlockedCount()+' / 9 parcelles débloquées';
+ document.getElementById('bottomChip').textContent=String(unlockedCount()).padStart(2,'0')+' / 09 parcelles ouvertes';
  document.getElementById('progressFill').style.width=milestoneProgress()+'%';
- document.getElementById('bannerTitle').textContent=game.olives>=10?'MOULIN PRÊT !':(game.totalOil>=100?'GRAND CRU LÉGENDAIRE':game.totalOil>=25?'MOULIN HISTORIQUE':game.totalOil?'OLIVERAIE EN PROGRÈS !':'RÉCOLTE DES OLIVES !');
- document.getElementById('bannerSub').textContent=game.totalOil?'Cycle n° '+(game.totalOil+1)+' · Rendement permanent ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'De l’arbre à l’or vert';
- document.getElementById('hint').textContent=game.olives>=10?'🏺 Le moulin peut presser 1 kg d’huile : clique dessus à droite !':'👆 Clique/glisse sur les arbres. Clique le moulin à 10 kg.';
+ document.getElementById('bannerTitle').textContent='L’OLIVERAIE';
+ document.getElementById('bannerSub').textContent=game.totalOil?'Cycle '+(game.totalOil+1)+' · rendement ×'+multiplier().toLocaleString('fr-FR',{maximumFractionDigits:2}):'Du fruit à l’huile · Provence';
+ document.getElementById('hint').textContent=game.olives>=10?'Moulin disponible : 10 kg d’olives par pression.':'Clique un arbre mûr pour récolter. Clique une parcelle pour son détail.';
  updatePlotPanel();updateShop();
 }
 function pressMill(){
@@ -588,7 +602,7 @@ function renderMilestones(){
  milestones.forEach(m=>{
   const unlocked=game.totalOil>=m.at;
   const row=document.createElement('div');row.className='milestone-card'+(unlocked?' unlocked':'');
-  row.innerHTML='<div class="milestone-icon">'+m.icon+'</div><div class="milestone-info"><div class="milestone-title">'+m.name+'<span>'+m.at+' huile'+(m.at>1?'s':'')+'</span></div><div class="milestone-reward">'+m.reward+'</div><div class="milestone-status">'+(unlocked?'✓ ACQUIS À VIE':'🔒 À débloquer')+'</div></div>';
+  row.innerHTML='<div class="milestone-icon">'+m.icon+'</div><div class="milestone-info"><div class="milestone-title">'+m.name+'<span>'+m.at+' huile'+(m.at>1?'s':'')+'</span></div><div class="milestone-reward">'+m.reward+'</div><div class="milestone-status">'+(unlocked?'Acquis à vie':'À débloquer')+'</div></div>';
   root.appendChild(row);
  });
 }
