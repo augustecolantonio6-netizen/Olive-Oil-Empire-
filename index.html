@@ -130,6 +130,7 @@ button:focus-visible{outline:2px solid #b78f4b;outline-offset:3px}
   <div class="eyebrow" id="plotEyebrow">TERROIR N° 1</div><h2 id="plotTitle">Olive sauvage</h2>
   <p class="copy" id="plotDescription">Un premier olivier pour lancer la récolte.</p>
   <div class="mini-stats"><div class="mini-stat"><small>RENDEMENT</small><strong id="plotYield">1 kg</strong></div><div class="mini-stat"><small>NIVEAU</small><strong id="plotLevel">1</strong></div></div>
+  <button class="action-btn" id="buyPlotBtn" hidden><span>Acquérir cette parcelle</span><span id="buyPlotCost">15 kg</span></button>
   <button class="action-btn" id="levelBtn"><span>Améliorer le terroir</span><span id="levelCost">5 kg</span></button>
   <button class="action-btn alt" id="autoBtn"><span>Automatiser le stockage</span><span id="autoCost">18 kg</span></button>
   <p class="copy" id="autoNote">L'automatisation empile les récoltes mûres. La cueillette reste manuelle.</p>
@@ -174,7 +175,7 @@ button:focus-visible{outline:2px solid #b78f4b;outline-offset:3px}
 const W=1280,H=610,KEY='olive-oil-empire-save-v4',BACKUP_KEY='olive-oil-empire-backup-v4',LEGACY_KEYS=['olive-oil-empire-save-v3','olive-oil-empire-save-v2','olive-oil-empire-save-v1'];
 const canvas=document.getElementById('world'),ctx=canvas.getContext('2d');
 const sprites={};
-[['tree','assets/tree.svg'],['treeRipe','assets/tree-ripe.svg'],['treeYoung','assets/tree-young.svg'],['treeAncient','assets/tree-ancient.svg'],['plot','assets/plot-grass.svg'],['plotLocked','assets/plot-locked.svg'],['house','assets/house.svg'],['barn','assets/barn.svg'],['mill','assets/mill.svg'],['crate','assets/crate.svg']].forEach(([key,src])=>{const img=new Image();img.decoding='async';img.src=src;sprites[key]=img;});
+[['tree','assets/tree.svg'],['treeRipe','assets/tree-ripe.svg'],['treeYoung','assets/tree-young.webp'],['treeAncient','assets/tree-ancient.webp'],['plot','assets/plot-grass.svg'],['plotLocked','assets/plot-locked.webp'],['house','assets/house.webp'],['barn','assets/barn.svg'],['mill','assets/mill.svg'],['crate','assets/crate.webp']].forEach(([key,src])=>{const img=new Image();img.decoding='async';img.src=src;sprites[key]=img;});
 function sprite(key){const img=sprites[key];return img&&img.complete&&img.naturalWidth>0?img:null;}
 
 const names=['Olive sauvage','Aglandau','Picholine','Cailletier','Lucques','Bouteillan','Grossane','Salonenque','Tanche'];
@@ -330,7 +331,7 @@ function drawBush(x,y,r,scale){ellipse(x,y+r*.35,r*1.25,r*.43,'#485a4030');ellip
 function drawFence(x1,y1,x2,y2){line([[x1,y1],[x2,y2]],'#6d6048',3.5);for(let i=0;i<=8;i++){const p=i/8,x=x1+(x2-x1)*p,y=y1+(y2-y1)*p;line([[x,y-13],[x,y+7]],'#817153',4.2);line([[x-2,y-8],[x+2,y-8]],'#c5b48d',1.3);}}
 function drawHouse(x,y,s){
  const img=sprite('house');
- if(img){const w=280*s,h=230*s;ctx.drawImage(img,x-w/2,y-141*s,w,h);}
+ if(img){const w=250*s,h=265*s;ctx.drawImage(img,x-w/2,y-(h-89*s),w,h);}
  else{ctx.save();ctx.translate(x,y);ctx.scale(s,s);ellipse(2,66,100,20,'#4d733b33');poly([[-86,8],[-8,46],[86,7],[0,-28]],'#ead9b4','#bba77e',2);poly([[-70,-20],[0,7],[0,57],[-70,28]],'#f4e7c6','#b8a17b',2);poly([[0,7],[72,-19],[72,30],[0,57]],'#d9c69b','#ab9368',2);poly([[-88,-24],[-10,-67],[82,-29],[4,10]],'#a84934','#78382e',3);ctx.restore();}
 }
 function drawBarn(x,y,s){
@@ -369,7 +370,7 @@ function drawTree(x,y,i,p,ripe,t,miniScale){
  const rotation=Math.sin(age/23)*strength*.07;
  ellipse(x+2,y+9*scale,25*scale,7*scale,'#365a2c32');
  if(img){
-  const w=(young?72:old?103:86)*scale,h=(young?84:old?99:95)*scale;
+  const w=(young?56:old?104:86)*scale,h=(young?106:old?132:95)*scale;
   ctx.save();
   ctx.translate(x+wobble,y+lift);
   ctx.rotate(rotation);
@@ -396,33 +397,35 @@ function drawTree(x,y,i,p,ripe,t,miniScale){
 function drawParcel(i,t){
  const p=game.plots[i],pt=plotPos(i),x=pt.x,y=pt.y;
  const diamond=[[x,y-35],[x+69,y],[x,y+36],[x-69,y]];
- poly([[x+3,y-29],[x+74,y+5],[x+2,y+43],[x-73,y+5]],'#436d3830');
+ poly([[x+3,y-29],[x+74,y+5],[x+2,y+43],[x-73,y+5]],'#344a3519');
  const patch=sprite(p.unlocked?'plot':'plotLocked');
  if(patch)ctx.drawImage(patch,x-81,y-44,162,87);
- else poly(diamond,p.unlocked?(i===selected?'#c5e58c':'#b8d87f'):'#a3bf78',p.unlocked?(i===selected?'#f6d760':'#719952'):'#7d9763',i===selected?3:1.5);
+ else poly(diamond,p.unlocked?(i===selected?'#c5e58c':'#b8d87f'):'#a3a38a',p.unlocked?(i===selected?'#d4c294':'#8f9e79'):'#7d8472',i===selected?2:1);
  hitTargets.push({type:'parcel',index:i,x:x-72,y:y-38,w:144,h:78});
  if(p.unlocked){
-  for(let k=0;k<4;k++){const gx=x+Math.sin(i*4+k*7)*43,gy=y+Math.cos(i*5+k*3)*17;ellipse(gx,gy,2,1.2,k%2?'#91bd5e':'#d2e58f');}
-  const treeCount=treeCounts[i];
-  treeLayout(treeCount).forEach((o,j)=>{const tx=x+o[0],ty=y-9+o[1];drawTree(tx,ty,i,p,p.stock>0,t,1);hitTargets.push({type:'tree',index:i,x:tx-29,y:ty-42,w:58,h:60});});
-  box(x-31,y-45,62,17,6,'#fff8dbee','#c4d7a2',1);
-  label(fmt(plotYield(p,i))+' kg',x,y-36,10,'#354b37','700');
-  if(p.stock>0){
-   box(x-31,y+20,62,18,7,'#f6d35c','#c49a30',1.4);
-   label(p.stock>1?'PRÊT ×'+p.stock:'PRÊT',x,y+29,9,'#5b4b2d','700');
-   if(i===selected)ellipse(x,y+1,22,5,null,'#ffe46d',2);
-  }else{
-   const total=growSeconds(p,i),pct=Math.max(0,Math.min(1,1-(p.grow||total)/total));
-   box(x-29,y+23,58,8,4,'#e3e8c5','#99b378',1);
-   box(x-27,y+25,54*pct,4,2,'#6caa48',null,0);
-   label(p.auto?'AUTO':'POUSSE',x,y+16,7,'#53694f','600');
+  for(let k=0;k<3;k++){
+   const gx=x+Math.sin(i*4+k*7)*43,gy=y+Math.cos(i*5+k*3)*17;
+   ellipse(gx,gy,1.6,1,k%2?'#8b9b6b':'#b7bc91');
   }
- }else{
-  ellipse(x,y-4,15,17,'#d8e2c3','#819969',1.5);label('—',x,y-4,17,'#64725d','600');
-  box(x-32,y+19,64,18,7,'#fff5d4','#c0b787',1.2);label(fmt(costs[i])+' kg',x,y+28,10,'#5f5239','600');
+  const treeCount=treeCounts[i];
+  treeLayout(treeCount).forEach(o=>{
+   const tx=x+o[0],ty=y-9+o[1];
+   drawTree(tx,ty,i,p,p.stock>0,t,1);
+   hitTargets.push({type:'tree',index:i,x:tx-29,y:ty-42,w:58,h:60});
+  });
+  // No text badges on the land: a quiet ring only marks ready trees.
+  if(p.stock>0){
+   const pulse=.45+.2*Math.sin(t/290+i);
+   ctx.save();ctx.globalAlpha=pulse;
+   ellipse(x,y+1,25,6,null,'#d0b777',1.5);
+   ctx.restore();
+  }
  }
- if(game.totalOil>=50&&p.unlocked){ctx.save();ctx.globalAlpha=.55+.2*Math.sin(t/350+i);poly([[x,y-38],[x+74,y],[x,y+39],[x-74,y]],null,'#e7bf48',1.6);ctx.restore();if(game.totalOil>=100)label('★',x+49,y-18,10,'#fff1a0','1000');}
- if(i===selected&&p.unlocked){ctx.setLineDash([4,3]);poly([[x,y-40],[x+76,y],[x,y+40],[x-76,y]],null,'#ffe26c',2);ctx.setLineDash([]);}
+ if(game.totalOil>=50&&p.unlocked){
+  ctx.save();ctx.globalAlpha=.22+.08*Math.sin(t/350+i);
+  poly([[x,y-38],[x+74,y],[x,y+39],[x-74,y]],null,'#d1b46b',1.3);
+  ctx.restore();
+ }
 }
 function drawFarmer(t){
  const x=258+Math.sin(t/950)*2,y=490;ellipse(x,y+15,17,6,'#66884a55');
@@ -434,7 +437,7 @@ function drawFarmer(t){
 }
 function drawCrates(){
  const img=sprite('crate');
- if(img)ctx.drawImage(img,176,456,76,63);
+ if(img)ctx.drawImage(img,148,426,112,108);
  else{poly([[188,479],[221,493],[221,510],[188,496]],'#b78345','#805a33',2);poly([[221,493],[242,484],[242,501],[221,510]],'#986b3e','#805a33',2);poly([[188,479],[207,469],[242,484],[221,493]],'#e6c483','#805a33',2);for(let i=0;i<5;i++)ellipse(200+(i%3)*9,478+Math.floor(i/3)*5,3.3,4.1,i%2?'#688e38':'#7da741','#4d6b32',.6);}
  ellipse(1150,481,13,5,'#c49b53','#8d6837',1.2);ctx.fillStyle='#d7b56d';ctx.beginPath();ctx.moveTo(1137,481);ctx.bezierCurveTo(1134,464,1141,450,1150,450);ctx.bezierCurveTo(1160,450,1166,464,1163,481);ctx.closePath();ctx.fill();ctx.strokeStyle='#8d6837';ctx.lineWidth=1.2;ctx.stroke();ellipse(1150,450,7,3,'#e8d08d','#8d6837',1);ellipse(1150,450,3,1.3,'#8d6837');
 }
@@ -531,29 +534,43 @@ function harvest(i,x,y){
  const amount=plotYield(p,i)*p.stock,n=p.stock,now=performance.now(),pos=plotPos(i);
  game.olives+=amount;p.stock=0;p.grow=growSeconds(p,i);
  spawnHarvestOlives(i,n,now);
- feedback(Number.isFinite(x)?x:pos.x,Number.isFinite(y)?y:pos.y-24,'+'+fmt(amount)+' kg','#efe1b5');
+ // Resource total updates in the HUD; no floating text over the trees.
  openPlotPanel(false);renderUI();save();
 }
 function buyPlot(i){
- const p=game.plots[i];if(p.unlocked)return;
- if(game.olives<costs[i]){toast('Il manque '+fmt(costs[i]-game.olives)+' kg d’olives.');return;}
- game.olives-=costs[i];p.unlocked=true;p.grow=growSeconds(p,i);selected=i;renderUI();save();openPlotPanel(true);toast(names[i]+' débloqué !');
+ const p=game.plots[i];if(!p||p.unlocked||game.olives<costs[i])return;
+ game.olives-=costs[i];p.unlocked=true;p.grow=growSeconds(p,i);selected=i;
+ renderUI();save();openPlotPanel(true);
 }
 function openPlotPanel(show){const panel=document.getElementById('plotPanel');if(show)panel.classList.add('open');else panel.classList.remove('open');}
 function updatePlotPanel(){
  const p=game.plots[selected],uc=upgradeCost(p,selected),ac=autoCost(p,selected);
- document.getElementById('plotEyebrow').textContent='TERROIR N° '+(selected+1);
+ const buyButton=document.getElementById('buyPlotBtn');
+ document.getElementById('plotEyebrow').textContent='TERROIR N° '+String(selected+1).padStart(2,'0');
  document.getElementById('plotTitle').textContent=names[selected];
- document.getElementById('plotDescription').textContent=treeCounts[selected]+' olivier'+(treeCounts[selected]>1?'s':'')+' · '+fmt(treeYield(p,selected))+' kg par arbre · '+fmt(plotYield(p,selected))+' kg par récolte. Terroir '+(selected<4?'de départ':selected<8?'productif':'premium')+'.';
- document.getElementById('plotYield').textContent=fmt(plotYield(p,selected))+' kg';
- document.getElementById('plotLevel').textContent=p.level;
- document.getElementById('levelCost').textContent=fmt(uc)+' kg';
- document.getElementById('levelBtn').disabled=game.olives<uc;
- document.getElementById('autoCost').textContent=p.auto?'ACTIF':fmt(ac)+' kg';
- document.getElementById('autoBtn').disabled=p.auto||game.olives<ac;
- document.getElementById('autoNote').textContent=p.auto?'Stockage actif : jusqu’à '+stackLimit()+' récoltes s’empilent. La cueillette reste manuelle.':'Avant l’automatisation, tu récoltes à chaque pousse. Après achat, plusieurs récoltes peuvent mûrir et s’empiler avant la cueillette.';
-}
-function updateShop(){
+ document.getElementById('plotLevel').textContent=p.unlocked?p.level:'—';
+ document.getElementById('plotYield').textContent=p.unlocked?fmt(plotYield(p,selected))+' kg':'—';
+ if(!p.unlocked){
+  document.getElementById('plotDescription').textContent='Nouvelle terre à acquérir. Coût : '+fmt(costs[selected])+' kg d’olives.';
+  document.getElementById('levelBtn').hidden=true;
+  document.getElementById('autoBtn').hidden=true;
+  document.getElementById('autoNote').hidden=true;
+  buyButton.hidden=false;
+  document.getElementById('buyPlotCost').textContent=fmt(costs[selected])+' kg';
+  buyButton.disabled=game.olives<costs[selected];
+ }else{
+  document.getElementById('plotDescription').textContent=treeCounts[selected]+' olivier'+(treeCounts[selected]>1?'s':'')+' · '+fmt(treeYield(p,selected))+' kg par arbre · terroir '+(selected<4?'jeune':selected<8?'productif':'ancien')+'.';
+  buyButton.hidden=true;
+  document.getElementById('levelBtn').hidden=false;
+  document.getElementById('autoBtn').hidden=false;
+  document.getElementById('autoNote').hidden=false;
+  document.getElementById('levelCost').textContent=fmt(uc)+' kg';
+  document.getElementById('levelBtn').disabled=game.olives<uc;
+  document.getElementById('autoCost').textContent=p.auto?'Actif':fmt(ac)+' kg';
+  document.getElementById('autoBtn').disabled=p.auto||game.olives<ac;
+  document.getElementById('autoNote').textContent=p.auto?'Stockage automatisé actif. La cueillette reste manuelle.':'Automatise le stockage pour laisser plusieurs récoltes mûrir avant la cueillette.';
+ }
+}function updateShop(){
  document.getElementById('powerLevel').textContent='Niv. '+game.upgrades.power;
  document.getElementById('speedLevel').textContent='Niv. '+game.upgrades.speed;
  document.getElementById('stackLevel').textContent='Niv. '+game.upgrades.stack;
@@ -629,8 +646,6 @@ function handleHit(h,pt,fromSwipe=false){
  if(!h)return;
  if(h.type==='tree'){harvest(h.index,pt.x,pt.y-8);return;}
  if(h.type==='parcel'){
-  const p=game.plots[h.index];
-  if(!p.unlocked){buyPlot(h.index);return;}
   selected=h.index;openPlotPanel(true);renderUI();return;
  }
  if(h.type==='mill'){pressMill();return;}
@@ -675,16 +690,17 @@ canvas.addEventListener('keydown',e=>{
   document.querySelectorAll('.modal-backdrop.open').forEach(el=>el.classList.remove('open'));
  }
 });
+document.getElementById('buyPlotBtn').addEventListener('click',()=>buyPlot(selected));
 document.getElementById('levelBtn').addEventListener('click',()=>{
  const p=game.plots[selected],price=upgradeCost(p,selected);
- if(game.olives<price){toast('Il manque des olives pour améliorer ce terroir.');return;}
- game.olives-=price;p.level++;renderUI();save();toast('Terroir niveau '+p.level+' : rendement augmenté !');
+ if(!p.unlocked||game.olives<price)return;
+ game.olives-=price;p.level++;renderUI();save();
 });
 document.getElementById('autoBtn').addEventListener('click',()=>{
  const p=game.plots[selected],price=autoCost(p,selected);
- if(p.auto)return;if(game.olives<price){toast('Il manque des olives pour automatiser le stockage.');return;}
+ if(!p.unlocked||p.auto||game.olives<price)return;
  game.olives-=price;p.auto=true;if(p.grow===0&&p.stock<stackLimit())p.grow=growSeconds(p,selected);
- renderUI();save();toast('Stockage automatisé ! Les récoltes s’empilent, à toi de les ramasser.');
+ renderUI();save();
 });
 document.getElementById('plotClose').addEventListener('click',()=>openPlotPanel(false));
 document.getElementById('shopOpen').addEventListener('click',()=>openModal('shopModal'));
