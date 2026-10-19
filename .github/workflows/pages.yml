@@ -39,7 +39,7 @@ jobs:
           const missing = [...new Set(refs.filter(id => !ids.includes(id)))];
           if (missing.length) throw new Error('Missing HTML elements: ' + missing.join(', '));
 
-          const assets = [...new Set([...match[1].matchAll(/assets\/[^'"]+\.svg/g)].map(m => m[0]))];
+          const assets = [...new Set([...match[1].matchAll(/assets\/[^'"]+\.(?:svg|webp)/g)].map(m => m[0]))];
           const absent = assets.filter(path => !fs.existsSync(path));
           if (absent.length) throw new Error('Missing sprite assets: ' + absent.join(', '));
 
