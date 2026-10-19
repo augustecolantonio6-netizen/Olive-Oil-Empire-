@@ -26,6 +26,15 @@ Le workflow `.github/workflows/pages.yml` publie les fichiers statiques après c
 4. Le site devrait ensuite être disponible ici : https://augustecolantonio6-netizen.github.io/Olive-Oil-Empire-/
 
 
+## Fiabilité et sauvegardes
+
+- Sauvegarde automatique dans `localStorage` après les actions, toutes les quelques secondes et lorsque la page est quittée.
+- Les anciens formats v1, v2 et v3 sont migrés en v4 au premier chargement.
+- Une copie de secours est conservée pour permettre de revenir à l'état précédent.
+- Les sauvegardes importées sont vérifiées et normalisées avant de remplacer la partie active ; un fichier invalide ne modifie pas la partie en cours.
+- En arrière-plan, le cycle de pousse est suspendu : aucune production hors ligne n'est attribuée.
+- Le workflow GitHub Pages vérifie la syntaxe du script, les références HTML et les dix sprites avant de publier.
+
 ## Contenu du projet
 
 Le dossier `assets/` contient des sprites SVG indépendants : quatre états d'olivier, parcelles ouvertes et verrouillées, maison provençale, grange rouge, moulin traditionnel et caisse de récolte. Ils sont intégrés au canvas et restent séparés de l'interface HTML, de la progression et de la sauvegarde.
@@ -78,5 +87,6 @@ Les bonus de rendement des paliers se cumulent. Les réductions de pousse des pa
 - **Automatisation :** les olives peuvent pousser et s'empiler en plusieurs récoltes ; la cueillette reste toujours manuelle.
 - **Moulin :** clique dessus avec au moins 10 kg d'olives pour produire 1 kg d'huile. La progression des parcelles repart à une seule parcelle, avec un bonus permanent de productivité.
 - **Boutique :** dépense l'huile pour des bonus permanents de rendement, vitesse de pousse et capacité de stockage.
+- **Clavier :** après avoir placé le focus sur la scène avec Tab, ← / → sélectionne un terroir ouvert, Entrée ou Espace récolte la parcelle sélectionnée, M active le moulin, et Échap ferme les panneaux.
 
 La sauvegarde est locale au navigateur, sans production hors ligne. Le jeu migre les sauvegardes précédentes vers le format v4, valide et normalise les données avant de les charger, et garde une copie de secours de la dernière sauvegarde. Le menu ⚙ permet d'exporter ou d'importer un fichier JSON, de restaurer la copie de secours et de recommencer. Les imports invalides sont refusés sans remplacer la partie en cours.
