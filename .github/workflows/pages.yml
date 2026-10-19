@@ -22,6 +22,32 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Check game source and assets
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const match = html.match(/<script>([\\s\\S]*?)<\\/script>/i);
+          if (!match) throw new Error('Missing inline game script');
+          new Function(match[1]);
+
+          const ids = [...html.matchAll(/\\bid="([^"]+)"/g)].map(m => m[1]);
+          const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+          if (duplicates.length) throw new Error('Duplicate HTML IDs: ' + [...new Set(duplicates)].join(', '));
+
+          const refs = [...match[1].matchAll(/getElementById\\('([^']+)'\\)/g)].map(m => m[1]);
+          const missing = [...new Set(refs.filter(id => !ids.includes(id)))];
+          if (missing.length) throw new Error('Missing HTML elements: ' + missing.join(', '));
+
+          const assets = [...new Set([...match[1].matchAll(/assets\\/[^'"]+\\.svg/g)].map(m => m[0]))];
+          const absent = assets.filter(path => !fs.existsSync(path));
+          if (absent.length) throw new Error('Missing sprite assets: ' + absent.join(', '));
+
+          if (!match[1].includes('function pressMill()') || !match[1].includes('function normalizeGameData()')) {
+            throw new Error('Core gameplay or save validation function is missing');
+          }
+          console.log('Game smoke check passed: JS syntax, HTML hooks, and ' + assets.length + ' SVG assets.');
+          NODE
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
